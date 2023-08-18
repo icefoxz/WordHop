@@ -22,7 +22,7 @@ public class StageConfigSo : ScriptableObject
         var array = GetLayouts(buttonCount);
         if (array.Length == 0)
             throw new NullReferenceException($"找不到[{buttonCount}]的布局!");
-        return array[UnityEngine.Random.Range(0, Layouts.Length)];
+        return array[UnityEngine.Random.Range(0, array.Length)];
     }
 
     public ISmallLevel GetRandomLevel(int index)

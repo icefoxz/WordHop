@@ -58,6 +58,7 @@ public class Editor_StageSaver : MonoBehaviour
         }
         var json = Json.Serialize(layoutConfig);
         System.IO.File.WriteAllText($"Assets/Configs/Layouts/{布局名}.json", json);
+        AssetDatabase.Refresh();
     }
 }
 #endif
