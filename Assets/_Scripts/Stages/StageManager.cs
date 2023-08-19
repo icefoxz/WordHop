@@ -24,6 +24,7 @@ public class StageManager : MonoBehaviour
     private List<TapPad> TapPads { get; } = new List<TapPad>();
     private GamePlayField GamePlay { get; set; } 
     private StageConfigSo StageConfig { get; set; }
+    private WordConfigSo WordConfig { get; set; }
     private class GamePlayField
     {
         public int LevelIndex { get; private set; } = 0;
@@ -70,11 +71,17 @@ public class StageManager : MonoBehaviour
         {
             Order = DefaultOrder;
         }
+
+        public bool IsWin(int order)
+        {
+            return Order == order;
+        }
     }
 
-    public void Init(StageConfigSo stageConfigSo)
+    public void Init(StageConfigSo stageConfigSo, WordConfigSo wordConfigSo)
     {
         StageConfig = stageConfigSo;
+        WordConfig = wordConfigSo; //todo: 把点击顺序, 换成文字顺序
         StartWindow = new WindowButtonUi(startView, StartGame, true);
         WinWindow = new WindowButtonUi(winView, StartGame);
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, bag => WinWindow.Show());
@@ -111,9 +118,10 @@ public class StageManager : MonoBehaviour
                 TapPads.Clear();
             }
 
-            for (var index = 0; index < level.tapPads.OrderBy(t => t.clickOrder).ToArray().Length; index++)
+            var list = level.tapPads.OrderBy(t => t.clickOrder).ToArray();
+            for (var index = 0; index < list.Length; index++)
             {
-                var tapPadCfg = level.tapPads[index];
+                var tapPadCfg = list[index];
                 // 创建TapHop对象并应用配置
                 var prefabView = Instantiate(view_prefab, transform); // 从某处获取或实例化
                 layout.Rects[index].Apply(prefabView.RectTransform);
@@ -142,7 +150,7 @@ public class StageManager : MonoBehaviour
 
     public void ApplyOrder(int order)
     {
-        if (order == currentOrder)
+        if (GamePlay.IsWin(order))
         {
             GamePlay.NextOrder();
             if (currentOrder >= totalAreas)

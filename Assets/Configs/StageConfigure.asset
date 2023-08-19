@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: StageConfigure
   m_EditorClassIdentifier: 
   "\u5927\u5173\u5361":
-  - "\u5173\u5361\u540D": "\u6D4B\u8BD5\u5173\u5361"
+  - "\u5173\u5361\u540D": Test
     "\u5C0F\u5173\u5361":
-    - {fileID: 4900000, guid: 3a551764b7f806f4f99ecd6ab015f227, type: 3}
-    - {fileID: 4900000, guid: 6b6d8b9d9b6a42f49a84a8abba977c6a, type: 3}
-    - {fileID: 4900000, guid: 6b6d8b9d9b6a42f49a84a8abba977c6a, type: 3}
+    - {fileID: 4900000, guid: e09383441494bbd45903a023a01189c5, type: 3}
   "\u5E03\u5C40":
-  - "\u6309\u952E\u6570": 9
-    "\u5E03\u5C40":
-    - {fileID: 4900000, guid: 1a02296cddd8b3b4181fa7ae9e021c6d, type: 3}
   - "\u6309\u952E\u6570": 3
     "\u5E03\u5C40":
     - {fileID: 4900000, guid: 88779581ed3adda4683a01b8353b456a, type: 3}
+  - "\u6309\u952E\u6570": 4
+    "\u5E03\u5C40":
+    - {fileID: 4900000, guid: 9363d7a45285b8d4ba731433c0ca4091, type: 3}
+  - "\u6309\u952E\u6570": 9
+    "\u5E03\u5C40":
+    - {fileID: 4900000, guid: 1a02296cddd8b3b4181fa7ae9e021c6d, type: 3}

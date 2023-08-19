@@ -10,10 +10,11 @@ public class Game : MonoBehaviour
     [SerializeField]private SpriteContainerSo spriteContainer;
     [SerializeField]private StageConfigSo stageConfig;
     [SerializeField]private StageManager stageManager;
+    [SerializeField]private WordConfigSo wordConfigSo;
 
     void Start()
     {
         ResLoader = new ResLoader(spriteContainer);
-        stageManager.Init(stageConfig);
+        stageManager.Init(stageConfig,wordConfigSo);
     }
 }
