@@ -8,6 +8,7 @@ using UnityEngine;
 namespace EnhancedHierarchy.Icons {
     public sealed class MonoBehaviourIcon : IconBase {
         private const string UnityEngineUiNamespace = "UnityEngine.UI";
+        private const string TextMeshProNamespace = "TMPro";
 
         private static readonly Dictionary<Type, string> monoBehaviourNames = new Dictionary<Type, string>();
         private static readonly StringBuilder goComponents = new StringBuilder(500);
@@ -42,7 +43,8 @@ namespace EnhancedHierarchy.Icons {
         {
             return EnhancedHierarchy.Components
                 .Select(c => (c.GetType(), c))
-                .Where(t => t.Item1.Namespace != null && !t.Item1.Namespace.StartsWith(UnityEngineUiNamespace));
+                .Where(t => t.Item1.Namespace != null && (!t.Item1.Namespace.StartsWith(UnityEngineUiNamespace)))
+                .Where(t => !t.Item1.Namespace.StartsWith(TextMeshProNamespace));
         }
 
         public override void DoGUI(Rect rect) {

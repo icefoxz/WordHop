@@ -16,12 +16,16 @@ public class StageManager : MonoBehaviour
     [SerializeField]private View winView;
     [SerializeField]private View loseView;
     [SerializeField]private View completeView;
-    [SerializeField] private View startView;
+    [SerializeField]private View startView;
+    [SerializeField]private Transform _tapPadParent;
     private WindowButtonUi WinWindow { get; set; }
     private WindowButtonUi LoseWindow { get; set; }
     private WindowButtonUi CompleteWindow { get; set; }
     private WindowButtonUi StartWindow { get; set; }
+
+    private Transform TapPadParent => _tapPadParent;
     private List<TapPad> TapPads { get; } = new List<TapPad>();
+
     private GamePlayField GamePlay { get; set; } 
     private StageConfigSo StageConfig { get; set; }
     private WordConfigSo WordConfig { get; set; }
@@ -123,7 +127,7 @@ public class StageManager : MonoBehaviour
             {
                 var tapPadCfg = list[index];
                 // 创建TapHop对象并应用配置
-                var prefabView = Instantiate(view_prefab, transform); // 从某处获取或实例化
+                var prefabView = Instantiate(view_prefab, TapPadParent); // 从某处获取或实例化
                 layout.Rects[index].Apply(prefabView.RectTransform);
                 var pad = new TapPad(
                     prefabView: prefabView,
