@@ -15,14 +15,8 @@ MonoBehaviour:
   "\u5927\u5173\u5361":
   - "\u5173\u5361\u540D": Test
     "\u5C0F\u5173\u5361":
+    - {fileID: 4900000, guid: 02ca2215430967142ba1da1adea69a9c, type: 3}
     - {fileID: 4900000, guid: e09383441494bbd45903a023a01189c5, type: 3}
-  "\u5E03\u5C40":
-  - "\u6309\u952E\u6570": 3
-    "\u5E03\u5C40":
-    - {fileID: 4900000, guid: 88779581ed3adda4683a01b8353b456a, type: 3}
-  - "\u6309\u952E\u6570": 4
-    "\u5E03\u5C40":
-    - {fileID: 4900000, guid: 9363d7a45285b8d4ba731433c0ca4091, type: 3}
-  - "\u6309\u952E\u6570": 9
-    "\u5E03\u5C40":
-    - {fileID: 4900000, guid: 1a02296cddd8b3b4181fa7ae9e021c6d, type: 3}
+    - {fileID: 4900000, guid: 5b1147157b1ab12479aa95242ebc0fe7, type: 3}
+    - {fileID: 4900000, guid: e671e2d6ab6ad524a8d897f89a749252, type: 3}
+    - {fileID: 4900000, guid: 854a20fdb801fbf40b0c863e5744538b, type: 3}

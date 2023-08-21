@@ -15,9 +15,9 @@ public record TapPadConfig
     public float outlineRatio; // 外线比率
     public int clickOrder; // 点击顺序
 
-    public static TapPadConfig Create(View view)
+    public static TapPadConfig Create(IView view)
     {
-        var rect = view.GetComponent<RectTransform>();
+        var rect = view.GameObject.GetComponent<RectTransform>();
         var baseButton = view.Get<Button>("btn_base");
         var outlineButton = view.Get<Button>("btn_outline");
         var itemButton = view.Get<Button>("btn_item");
@@ -41,16 +41,16 @@ public record TapPadConfig
         return config;
     }
 
-    public static void Apply(IView view, TapPadConfig config, IReadOnlyDictionary<string, Sprite> spriteMapper)
+    public void Apply(IView view, IReadOnlyDictionary<string, Sprite> spriteMapper)
     {
         var baseButton = view.Get<Button>("btn_base");
         var outlineButton = view.Get<Button>("btn_outline");
         var itemButton = view.Get<Button>("btn_item");
         var orderText = view.Get<TMP_Text>("tmp_order");
-        config.tapPad.Apply(itemButton, spriteMapper);
-        config.outline.Apply(outlineButton, spriteMapper);
-        config.trap.Apply(baseButton, spriteMapper);
-        orderText.text = config.clickOrder.ToString();
+        tapPad.Apply(itemButton, spriteMapper);
+        outline.Apply(outlineButton, spriteMapper);
+        trap.Apply(baseButton, spriteMapper);
+        orderText.text = clickOrder.ToString();
         //SetInlineRatio(view.RectTransform, baseRect, config.outlineRatio);
     }
 
@@ -74,8 +74,6 @@ public record TapPadConfig
         var outlineButton = view.Get<Button>("btn_base");
         return outlineButton.GetComponent<RectTransform>().localScale.x;
     }
-
-    public void Apply(IView view, IReadOnlyDictionary<string,Sprite> mapper) => Apply(view, this, mapper);
 
     public static void SetInlineRatio(RectTransform rectTransform, RectTransform baseRect, float ratio)
     {

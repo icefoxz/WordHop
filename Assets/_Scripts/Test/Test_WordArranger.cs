@@ -11,7 +11,7 @@ public class Test_WordArranger : MonoBehaviour
 {
     [Button]public void ConvertWordsToGroup(TextAsset asset)
     {
-        var text = asset.text.Split('\n').Where(s=>!s.IsNullOrWhitespace()).ToArray();
+        var text = asset.text.Split('\n').Where(s=>!s.IsNullOrWhitespace()).Select(w=>w.Trim('\r')).ToArray();
         var group = text.Select(s => new{key=new string(s.OrderBy(c=>c).ToArray()), text= s}).GroupBy(a=>a.key,a=>a.text).ToList();
 
         var wordGroup = new List<WordGroup>();

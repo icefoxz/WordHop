@@ -24,7 +24,6 @@ public class Prefab_TapHop : UiBase
         UnityAction onBaseAction,
         UnityAction onOutlineAction,
         UnityAction itemAction,
-        TapPadConfig config,
         bool display = true)
         : base(v, display)
     {
@@ -44,14 +43,12 @@ public class Prefab_TapHop : UiBase
         btn_base.onClick.AddListener(onBaseAction);
         btn_outline.onClick.AddListener(onOutlineAction);
         btn_item.onClick.AddListener(itemAction);
-
-        config.Apply(v,Game.ResLoader.ButtonSprites);
     }
 
     // 设置文字
-    private void SetText(TapPadConfig config)
+    public void SetText(string text)
     {
-        tmp_order.text = config.clickOrder.ToString();
+        tmp_order.text = text;
     }
 
     // 设置文字是否显示

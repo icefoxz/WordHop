@@ -6,15 +6,12 @@ public class Game : MonoBehaviour
 {
     public static MessagingManager MessagingManager { get; private set; } = new MessagingManager();
     public static ResLoader ResLoader { get; private set; }
-    public static StageConfigSo StageConfig { get; private set; }
     [SerializeField]private SpriteContainerSo spriteContainer;
-    [SerializeField]private StageConfigSo stageConfig;
     [SerializeField]private StageManager stageManager;
-    [SerializeField]private WordConfigSo wordConfigSo;
-
+    [SerializeField]private ConfigureSo configureSo;
     void Start()
     {
         ResLoader = new ResLoader(spriteContainer);
-        stageManager.Init(stageConfig,wordConfigSo);
+        stageManager.Init(configureSo);
     }
 }
