@@ -735,7 +735,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1479185490}
-  - {fileID: 1329182832}
   - {fileID: 1476590798}
   m_Father: {fileID: 1551894130}
   m_RootOrder: -1
@@ -10153,7 +10152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1329182832}
   m_Layer: 5
-  m_Name: AbsoluteLayout
+  m_Name: UiManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10172,7 +10171,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1506444341}
-  m_Father: {fileID: 200816741}
+  m_Father: {fileID: 1551894130}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -11286,6 +11285,7 @@ RectTransform:
   m_Children:
   - {fileID: 1391374599}
   - {fileID: 200816741}
+  - {fileID: 1329182832}
   - {fileID: 2135402798}
   - {fileID: 746487808}
   - {fileID: 1503982892}
@@ -27384,7 +27384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1917922790
 Transform:
   m_ObjectHideFlags: 0
