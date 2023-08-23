@@ -52,20 +52,20 @@ public readonly struct WordDifficulty
 
 public readonly struct LevelDifficultyWeight
 {
-    public float Word { get; }
-    public float Time { get; }
-    public float Total => Word + Time;
-    public float WordWeight => Word / Total;
-    public float TimeWeight => Time / Total;
+    public float MaxWord { get; }
+    public float MaxTime { get; }
+    public float Total => MaxWord + MaxTime;
+    public float WordWeight => MaxWord / Total;
+    public float TimeWeight => MaxTime / Total;
 
-    public LevelDifficultyWeight(float word, float time)
+    public LevelDifficultyWeight(float maxWord, float time)
     {
-        Word = word;
-        Time = time;
+        MaxWord = maxWord;
+        MaxTime = time;
     }
 
-    public float GetWordDifficulty(float difficultyValue) => Word * difficultyValue;
-    public float GetTimeDifficulty(float difficultyValue) => Time * difficultyValue;
+    public float GetWordDifficulty(float difficultyValue) => WordWeight * difficultyValue;
+    public float GetTimeDifficulty(float difficultyValue) => TimeWeight * difficultyValue;
 
-    public override string ToString() => $"{{ Word = {Word}, Time = {Time} }}";
+    public override string ToString() => $"{{ MaxWord = {MaxWord}, MaxTime = {MaxTime} }}";
 }

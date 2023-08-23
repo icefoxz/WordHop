@@ -16,7 +16,7 @@ public class GamePlayRule
         Words = words;
     }
 
-    public bool CheckIfApply(char character)
+    public bool CheckIfApply(string character)
     {
         CompletedWord += character;
         var array = Words.Where(o => o.StartsWith(CompletedWord)).ToArray();

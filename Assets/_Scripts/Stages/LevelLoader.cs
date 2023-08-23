@@ -18,7 +18,9 @@ public class LevelLoader
     public (WordDifficulty[]words, int countdown) GetChallengeStageLevelConfig(float difficulty, int word = 0)
     {
         var levelDiff = GetDifficultyWeight(LevelDifficultySo, TapPadDifficultySo); // 获取难度权重
-        var totalDiff = levelDiff.Total + difficulty; // 计算总难度
+        var totalDiff = difficulty +
+                        //levelDiff.Total / 7; // 计算总难度
+                        Random.Range(0, 3);
         var timeDiff = levelDiff.GetTimeDifficulty(totalDiff); // 分配时间难度
         var wordDiff = levelDiff.GetWordDifficulty(totalDiff); // 分配文字难度
         var secSet = LevelDifficultySo.GetCountdownSecsByDifficulty(timeDiff); // 获取倒计时配置

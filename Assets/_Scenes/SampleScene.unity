@@ -1479,7 +1479,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1479185490}
-  - {fileID: 1476590798}
   m_Father: {fileID: 1551894130}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3748,8 +3747,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteContainer: {fileID: 11400000, guid: ac268b422923b2d49bad3be50e6bd67e, type: 2}
-  stageManager: {fileID: 1391374600}
   configureSo: {fileID: 11400000, guid: 5164a87ab9be91c47a65499b5c6dbc11, type: 2}
+  _uiManager: {fileID: 1329182833}
+  Controllers: {fileID: 1391374598}
 --- !u!4 &561956610
 Transform:
   m_ObjectHideFlags: 0
@@ -3762,6 +3762,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1391374599}
   - {fileID: 1551894130}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -15539,6 +15540,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1329182832}
+  - component: {fileID: 1329182833}
   m_Layer: 5
   m_Name: UiManager
   m_TagString: Untagged
@@ -15559,6 +15561,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1506444341}
+  - {fileID: 1476590798}
   m_Father: {fileID: 1551894130}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15567,6 +15570,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1329182833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1329182831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ed6abc6797518740a01c73f1c6cea86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  view_prefab: {fileID: 6599287427861967131, guid: c861fc5fab86bcf4ca3dd095262a6088,
+    type: 3}
+  winView: {fileID: 2135402799}
+  loseView: {fileID: 746487809}
+  completeView: {fileID: 1503982893}
+  startView: {fileID: 1462917493}
+  _tapPadParent: {fileID: 1476590798}
 --- !u!1 &1330345374
 GameObject:
   m_ObjectHideFlags: 0
@@ -15998,9 +16020,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1391374599}
-  - component: {fileID: 1391374600}
   m_Layer: 5
-  m_Name: StageManager
+  m_Name: Controllers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16013,38 +16034,19 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1391374598}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1551894130}
+  m_Father: {fileID: 561956610}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 0, y: -300}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1080, y: 2100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1391374600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1391374598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fcacfc67d3662240a160023165fd26b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  view_prefab: {fileID: 6599287427861967131, guid: c861fc5fab86bcf4ca3dd095262a6088,
-    type: 3}
-  winView: {fileID: 2135402799}
-  loseView: {fileID: 746487809}
-  completeView: {fileID: 1503982893}
-  startView: {fileID: 1462917493}
-  _tapPadParent: {fileID: 1476590798}
 --- !u!1 &1406364419
 GameObject:
   m_ObjectHideFlags: 0
@@ -16826,7 +16828,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 200816741}
+  m_Father: {fileID: 1329182832}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
@@ -17295,7 +17297,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1391374599}
   - {fileID: 200816741}
   - {fileID: 1329182832}
   - {fileID: 2135402798}

@@ -12,7 +12,6 @@ public class WindowButtonUi : UiBase
     {
         btn_click = v.Get<Button>("btn_click");
         text_message = v.Get<Text>("text_message");
-        btn_click.onClick.AddListener(onButtonClick);
         btn_click.onClick.AddListener(() =>
         {
             Hide();
