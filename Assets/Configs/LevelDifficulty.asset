@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d698e19003899247b530d0cab66cc21, type: 3}
+  m_Name: LevelDifficulty
+  m_EditorClassIdentifier: 
+  "\u5B57\u6570\u914D\u7F6E":
+  - DifficultyValue: 1
+    WordLength: 3
+  - DifficultyValue: 2
+    WordLength: 4
+  - DifficultyValue: 3
+    WordLength: 5
+  - DifficultyValue: 4
+    WordLength: 6
+  - DifficultyValue: 5
+    WordLength: 7
+  "\u6311\u6218\u65F6\u957F\u914D\u7F6E":
+  - DifficultyValue: 1
+    ExtraSecs: 5
+  - DifficultyValue: 2
+    ExtraSecs: 4
+  - DifficultyValue: 3
+    ExtraSecs: 3
+  - DifficultyValue: 4
+    ExtraSecs: 2
+  - DifficultyValue: 5
+    ExtraSecs: 1
+  - DifficultyValue: 6
+    ExtraSecs: 0

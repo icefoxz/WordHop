@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 [Serializable]
 public record TapPadConfig
 {
@@ -15,6 +16,7 @@ public record TapPadConfig
     public float outlineRatio; // 外线比率
     public int clickOrder; // 点击顺序
 
+    // 创建TapHop配置
     public static TapPadConfig Create(IView view)
     {
         var rect = view.GameObject.GetComponent<RectTransform>();
@@ -41,6 +43,7 @@ public record TapPadConfig
         return config;
     }
 
+    // 应用TapHop配置
     public void Apply(IView view, IReadOnlyDictionary<string, Sprite> spriteMapper)
     {
         var baseButton = view.Get<Button>("btn_base");
@@ -54,6 +57,7 @@ public record TapPadConfig
         //SetInlineRatio(view.RectTransform, baseRect, config.outlineRatio);
     }
 
+    // 验证TapHop是否设置了所需的按钮等
     public static bool ValidateTapHops(View view)
     {
         var hasTapPad = view.Get<Button>("btn_base");
@@ -69,25 +73,35 @@ public record TapPadConfig
         return isValid;
     }
 
+    // 设置外线的大小
     public static float GetOutlineRatio(View view)
     {
         var outlineButton = view.Get<Button>("btn_base");
         return outlineButton.GetComponent<RectTransform>().localScale.x;
     }
 
+    // 设置内线的大小
     public static void SetInlineRatio(RectTransform rectTransform, RectTransform baseRect, float ratio)
     {
         var size = rectTransform.sizeDelta;
-        var inlineSize = new Vector2(size.x * (1 - ratio), size.y * (1 - ratio));
+        var inlineSize = GetInlineSize(ratio, size);
         baseRect.sizeDelta = inlineSize;
+    }
+
+    // 获取内线的大小
+    public static Vector2 GetInlineSize(float ratio, Vector2 size)
+    {
+        var inlineSize = new Vector2(size.x * (1 - ratio), size.y * (1 - ratio));
+        return inlineSize;
     }
 }
 
-public record ButtonConfig
+[Serializable]public record ButtonConfig
 {
     public string SpriteName;
     public RectConfig RectTransform;
 
+    // 创建按钮配置
     public static ButtonConfig Create(Button button)
     {
         return new ButtonConfig
@@ -97,6 +111,7 @@ public record ButtonConfig
         };
     }
 
+    // 应用按钮配置
     public void Apply(Button button,IReadOnlyDictionary<string,Sprite> mapper)
     {
         button.image.sprite = mapper[SpriteName];

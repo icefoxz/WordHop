@@ -5,18 +5,37 @@ using UnityEngine.Events;
 public class TapPad
 {
     public int _order; // 此点击区域的顺序
-    private Prefab_TapHop _tapHop;
+    private Prefab_TapPad _tapPad;
 
-    public TapPad(IView prefabView, UnityAction onTapAction, UnityAction onOutlineAction, UnityAction onItemAction, int clickOrder)
+    public TapPad(IView prefabView, 
+        UnityAction onTapAction, 
+        UnityAction onOutlineAction, 
+        UnityAction onItemAction,
+        int clickOrder)
     {
-        _tapHop = new Prefab_TapHop(prefabView, () =>
+        _tapPad = new Prefab_TapPad(prefabView, () =>
         {
             onTapAction?.Invoke();
-            _tapHop.SetBaseColor(Color.yellow);
+            _tapPad.SetBaseColor(Color.yellow);
         }, onOutlineAction, onItemAction);
         _order = clickOrder;
+    }   
+    public TapPad(IView prefabView, 
+        UnityAction<TapPad> onTapAction, 
+        UnityAction<TapPad> onOutlineAction, 
+        UnityAction<TapPad> onItemAction,
+        int clickOrder)
+    {
+        _tapPad = new Prefab_TapPad(prefabView, () =>
+        {
+            onTapAction?.Invoke(this);
+            _tapPad.SetBaseColor(Color.yellow);
+        }, ()=>onOutlineAction(this), ()=>onItemAction(this));
+        _order = clickOrder;
     }
-    public void SetText(string text)=> _tapHop.SetText(text);
-    public void Destroy()=> _tapHop.Destroy();
 
+    public void SetText(string text)=> _tapPad.SetText(text);
+    public void Destroy()=> _tapPad.Destroy();
+
+    public void Apply(WordDifficulty difficulty) => _tapPad.ApplyDifficulty(difficulty.Outline, difficulty.Item);
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AOT.Utl;
 using UnityEngine;
-using Unity.VisualScripting.FullSerializer;
 
 public class StageManager : MonoBehaviour
 {
@@ -26,14 +25,22 @@ public class StageManager : MonoBehaviour
     private StageConfigSo StageConfig { get; set; }
     private WordConfigSo WordConfig { get; set; }
     private LayoutConfigSo LayoutConfig { get; set; }
+    private LevelDifficultySo LevelDifficulty { get; set; }
+    private TapPadDifficultySo TapPadDifficulty { get; set; }
 
+    public LevelLoader ChallengeLoader { get; set; }
     private StageRecorder Recorder { get; set; }
+    private List<TapPad> SelectedPads { get; } = new List<TapPad>();
+
 
     public void Init(ConfigureSo config)
     {
         StageConfig = config.StageConfig;
         WordConfig = config.WordConfig;
         LayoutConfig = config.LayoutConfig;
+        LevelDifficulty = config.LevelDifficulty;
+        TapPadDifficulty = config.TapPadDifficulty;
+        ChallengeLoader = new LevelLoader(LevelDifficulty, TapPadDifficulty);
         Recorder = new StageRecorder();
         StartWindow = new WindowButtonUi(startView, StartGame, true);
         WinWindow = new WindowButtonUi(winView, StartLevel);
@@ -52,64 +59,108 @@ public class StageManager : MonoBehaviour
 
     private void StartLevel()
     {
-        var (padCfg, layoutCfg) = GetLevelConfig(0, Recorder.LevelIndex);
-        LoadLevel(padCfg, layoutCfg);
         StopAllCoroutines();
+        //LoadNormalStageLevel();
+        LoadChallengeStage();
         Game.MessagingManager.SendParams(GameEvents.Stage_Timer_Update, _timer);
         StartCoroutine(StartCountdown());
+    }
 
-        void LoadLevel(LevelConfig level, LayoutConfig layout)
+    private void LoadChallengeStage()
+    {
+        var levelIndex = Recorder.LevelIndex;
+        var words = levelIndex > 0 && levelIndex % 10 == 0 ? 7 : 0; // 每10关，第一关为7个字母，其余为随机(0)字母
+        var (wds, exSecs) = ChallengeLoader.GetChallengeStageLevelConfig(levelIndex, words);
+        var wg = WordConfig.GetRandomWords(wds.Length);
+        var secs = exSecs + wg.Key.Length + 10;//暂时秒数这样设定
+        var layout = GetLayout(wds.Length);
+        ClearTapPads();
+        for (int index = 0; index < wg.Key.Length; index++)
         {
-            if (TapPads.Any())
-            {
-                TapPads.ForEach(t => t.Destroy());
-                TapPads.Clear();
-            }
+            var alphabet = wg.Key[index];
+            var prefabView = Instantiate(view_prefab, TapPadParent);
+            var wordDifficulty = wds[index];
+            var pad = new TapPad(
+                prefabView: prefabView,
+                onTapAction: pad => ApplyOrder(alphabet,pad),
+                onOutlineAction: _=>Lose(),
+                onItemAction: _=>Lose(),
+                0);
+            pad.Apply(wordDifficulty);
+            pad.SetText(alphabet.ToString());
+            layout.Rects[index].Apply(prefabView.RectTransform);
+            TapPads.Add(pad);
+        }
+        GamePlay = new GamePlayRule(wg.Words);
+        _countdownTime = secs;
+    }
 
-            var wg = WordConfig.GetRandomWords(level.tapPads.Count);
-            var list = level.tapPads.OrderBy(t => t.clickOrder).ToArray();
-            for (var index = 0; index < list.Length; index++)
-            {
-                var tapPadCfg = list[index];
-                var alphabet = wg.Key[index];
-                // 创建TapHop对象并应用配置
-                var prefabView = Instantiate(view_prefab, TapPadParent); // 从某处获取或实例化
-                layout.Rects[index].Apply(prefabView.RectTransform);
-                var pad = new TapPad(
-                    prefabView: prefabView,
-                    onTapAction: () => ApplyOrder(alphabet),
-                    onOutlineAction: Lose,
-                    onItemAction: Lose,
-                    tapPadCfg.clickOrder);
-                tapPadCfg.Apply(prefabView,Game.ResLoader.ButtonSprites);
-                pad.SetText(alphabet.ToString());
-                TapPads.Add(pad);
-            }
+    void LoadNormalStageLevel()
+    {
+        var level = GetNormalStageLevelConfig(0, Recorder.LevelIndex);
+        var layout = GetLayout(level.tapPads.Count);
+        var wg = WordConfig.GetRandomWords(level.tapPads.Count);
+        var list = level.tapPads.OrderBy(t => t.clickOrder).ToArray();
+        ClearTapPads();
+        for (var index = 0; index < wg.Words.Length; index++)
+        {
+            var tapPadCfg = list[index];
+            var alphabet = wg.Key[index];
+            // 创建TapHop对象并应用配置
+            var prefabView = Instantiate(view_prefab, TapPadParent); // 从某处获取或实例化
+            layout.Rects[index].Apply(prefabView.RectTransform);
+            var pad = new TapPad(
+                prefabView: prefabView,
+                onTapAction: () => ApplyOrder(alphabet,null),
+                onOutlineAction: Lose,
+                onItemAction: Lose,
+                tapPadCfg.clickOrder);
+            tapPadCfg.Apply(prefabView, Game.ResLoader.ButtonSprites);
+            pad.SetText(alphabet.ToString());
+            TapPads.Add(pad);
+        }
+        GamePlay = new GamePlayRule(wg.Words);
+        _countdownTime = level.countdownTime;
+    }
 
-            GamePlay = new GamePlayRule(wg.Words);
-            _countdownTime = level.countdownTime;
+    private void ClearTapPads()
+    {
+        if (TapPads.Any())
+        {
+            TapPads.ForEach(t => t.Destroy());
+            TapPads.Clear();
         }
     }
 
-    private (LevelConfig levelCfg,LayoutConfig layoutCfg) GetLevelConfig(int stage,int levelIndex)
+    private LevelConfig GetNormalStageLevelConfig(int stage,int levelIndex)
     {
         var padAsset = StageConfig.GetAllLevels(stage)[levelIndex];
         var padConfig = Json.Deserialize<LevelConfig>(padAsset.text);
-        var layoutAsset = LayoutConfig.GetRandomLayout(padConfig.tapPads.Count);
-        var layoutConfig = Json.Deserialize<LayoutConfig>(layoutAsset.text);
-        return (padConfig, layoutConfig);
+        return padConfig;
     }
 
-    public void ApplyOrder(char alphabet)
+    private LayoutConfig GetLayout(int words)
     {
+        var layoutAsset = LayoutConfig.GetRandomLayout(words);
+        var layoutConfig = Json.Deserialize<LayoutConfig>(layoutAsset.text);
+        return layoutConfig;
+    }
+
+    public void ApplyOrder(char alphabet, TapPad tapPad = null)
+    {
+        if (SelectedPads.Contains(tapPad)) return;
         if(GamePlay.CheckIfApply(alphabet))
         {
+            if (tapPad != null) 
+                SelectedPads.Add(tapPad);
             if (!GamePlay.IsComplete) return;
             // 玩家完成了所有点击，视为过关
+            SelectedPads.Clear();
             Win();
             return;
         }
         // 点击的顺序不对，视为失败
+        SelectedPads.Clear();
         Lose();
     }
 

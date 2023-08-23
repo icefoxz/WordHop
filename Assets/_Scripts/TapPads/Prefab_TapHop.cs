@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class Prefab_TapHop : UiBase
+public class Prefab_TapPad : UiBase
 {
     private Button btn_outline { get; }
     private Button btn_base { get; }
@@ -20,7 +20,7 @@ public class Prefab_TapHop : UiBase
     private Image baseImage { get; }
     private Image itemImage { get; }
 
-    public Prefab_TapHop(IView v,
+    public Prefab_TapPad(IView v,
         UnityAction onBaseAction,
         UnityAction onOutlineAction,
         UnityAction itemAction,
@@ -86,5 +86,11 @@ public class Prefab_TapHop : UiBase
     public void SetOutlineRatio(float ratio)
     {
         TapPadConfig.SetInlineRatio(RectTransform, baseRect, ratio);
+    }
+
+    public void ApplyDifficulty(float outline, float item)
+    {
+        SetOutlineRatio(outline);
+        SetItemVisible(item > 0);
     }
 }

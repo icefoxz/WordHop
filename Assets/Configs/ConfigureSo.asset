@@ -18,3 +18,7 @@ MonoBehaviour:
     type: 2}
   "\u8BCD\u8BED\u914D\u7F6E": {fileID: 11400000, guid: 87462ceb3c956a6458dfc2d5234ebe90,
     type: 2}
+  "\u5173\u5361\u96BE\u5EA6": {fileID: 11400000, guid: 38aedc902f0f605489516025e934848a,
+    type: 2}
+  "\u6309\u952E\u96BE\u5EA6": {fileID: 11400000, guid: 2f10c33ca5e62504098d15998de08a1d,
+    type: 2}

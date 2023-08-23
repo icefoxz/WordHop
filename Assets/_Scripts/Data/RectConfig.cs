@@ -1,13 +1,14 @@
+using System;
 using UnityEngine;
 
-public record RectConfig
+[Serializable]public record RectConfig
 {
-    public Vector2 Position;
-    public Vector2 SizeDelta;
-    public Vector2 AnchorMin;
-    public Vector2 AnchorMax;
-    public Vector2 AnchoredPosition;
-    public bool IsItemVisible;
+    public Vector2 Position; // 位置
+    public Vector2 SizeDelta; // 大小
+    public Vector2 AnchorMin; // 锚点min
+    public Vector2 AnchorMax; // 锚点max 
+    public Vector2 AnchoredPosition; // 锚点位置
+    public bool IsItemVisible; // 是否可见
 
     public static RectConfig Create(RectTransform rect)
     {
