@@ -1,5 +1,4 @@
 using AOT.Views;
-using System.Collections.Generic;
 using AOT.BaseUis;
 using UnityEngine;
 
@@ -10,11 +9,15 @@ public class UiManager : MonoBehaviour
     [SerializeField] private View loseView;
     [SerializeField] private View completeView;
     [SerializeField] private View startView;
+    [SerializeField] private View wordSlotView;
     [SerializeField] private Transform _tapPadParent;
+    
     private WindowButtonUi WinWindow { get; set; }
     private WindowButtonUi LoseWindow { get; set; }
     private WindowButtonUi CompleteWindow { get; set; }
     private WindowButtonUi StartWindow { get; set; }
+
+    private View_WordSlotMgr WordSlotMgr { get; set; }
 
     private Transform TapPadParent => _tapPadParent;
     private GamePlayController GamePlayController => Game.Controller.Get<GamePlayController>();
@@ -26,6 +29,7 @@ public class UiManager : MonoBehaviour
         WindowsInit();
         RegGamePlayEvent();
         TapPadList = new PrefabsViewUi<TapPad>(view_prefab, TapPadParent);
+        WordSlotMgr = new View_WordSlotMgr(wordSlotView);
     }
 
     private void RegGamePlayEvent()

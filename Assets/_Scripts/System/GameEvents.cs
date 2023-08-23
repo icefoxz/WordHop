@@ -7,5 +7,6 @@ public static class GameEvents
     public const string Stage_Point_Update = "Stage_point_update";
 
     public const string Level_Alphabet_Add = "Level_Alphabet_Add";
+    public const string Level_Word_Clear = "Level_Word_Clear";
     public const string Level_Init = "Level_Init";
 }

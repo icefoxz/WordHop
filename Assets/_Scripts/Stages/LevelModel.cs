@@ -25,10 +25,13 @@ public class LevelModel : ModelBase
     public void SelectedAlphabet_Add(Alphabet alphabet)
     {
         _selectedList.Add(alphabet);
+        SendEvent(GameEvents.Level_Alphabet_Add);
     }
 
     public void SelectedAlphabet_Clear()
     {
         _selectedList.Clear();
+        SendEvent(GameEvents.Level_Word_Clear);
     }
+
 }

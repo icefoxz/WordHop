@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class WindowButtonUi : UiBase
+public class WindowButtonUi : UiBase // view
 {
     [SerializeField]private Button btn_click { get; }
     [SerializeField]private Text text_message { get; }

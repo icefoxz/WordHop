@@ -1,14 +1,24 @@
 using AOT.BaseUis;
 using AOT.Views;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
-public class View_WordSlotMgr
+public class View_WordSlotMgr // viewModel
 {
-    private View_WordSlot View_wordSlot { get;set; }
+    private View_WordSlot View_wordSlot { get;set; }// view
+
+    public View_WordSlotMgr(IView view)
+    {
+        View_wordSlot = new View_WordSlot(view);
+        Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Add, b => WordSlot_AddAlphabet());
+    }
+
+    private void WordSlot_AddAlphabet()
+    {
+        var level = Game.Model.Level;
+        var lastAlphabet = level.SelectedAlphabets[^1];
+        //View_wordSlot.AddAlphabet(lastAlphabet.Text);
+    }
 
     private class View_WordSlot : UiBase
     {
