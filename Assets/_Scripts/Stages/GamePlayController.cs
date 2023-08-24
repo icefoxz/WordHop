@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class GamePlayController : MonoBehaviour, IController 
 {
-    private GamePlayRule Rule { get; set; }
     private ConfigureSo Config => Game.ConfigureSo;
     private StageModel Stage => Game.Model.Stage;
     private LevelModel Level => Game.Model.Level;
@@ -30,6 +29,7 @@ public class GamePlayController : MonoBehaviour, IController
     public void StartGame()
     {
         Stage.Reset();
+        Level.Reset();
         StartLevel();
     }
 
@@ -38,7 +38,6 @@ public class GamePlayController : MonoBehaviour, IController
         StopAllCoroutines();
         //LoadNormalStageLevel();
         LoadChallengeStage();
-        Game.MessagingManager.SendParams(GameEvents.Stage_Timer_Update, _timer);
         StartCoroutine(StartCountdown());
     }
 
@@ -52,7 +51,6 @@ public class GamePlayController : MonoBehaviour, IController
         var secs = exSecs + wg.Key.Length + 10; //暂时秒数这样设定
         var layout = GetLayout(wds.Length);
         Level.InitLevel(wds, wg, secs, layout);
-        Rule = new GamePlayRule(wg.Words);
         _countdownTime = secs;
     }
 
@@ -118,23 +116,19 @@ public class GamePlayController : MonoBehaviour, IController
 
     private void ApplyOrder(Alphabet alphabet)
     {
-        if (Level.SelectedAlphabets.Any(alphabet.Equals)) return;
-        if (Rule.CheckIfApply(alphabet.Text))
+        if (Level.CheckIfApply(alphabet))
         {
-            Level.SelectedAlphabet_Add(alphabet);
-            if (!Rule.IsComplete) return;
+            if (!Level.IsComplete) return;
             // 玩家完成了所有点击，视为过关
-            Level.SelectedAlphabet_Clear();
             Win();
             return;
         }
 
         // 点击的顺序不对，视为失败
         Level.SelectedAlphabet_Clear();
-        Lose();
     }
 
-    public void Lose()
+    private void Lose()
     {
         // 游戏失败的逻辑
         StopAllCoroutines(); // 停止倒计时
@@ -143,7 +137,7 @@ public class GamePlayController : MonoBehaviour, IController
         Stage.Reset();
     }
 
-    public void Win()
+    private void Win()
     {
         // 游戏胜利的逻辑
         StopAllCoroutines(); // 停止倒计时
@@ -165,12 +159,13 @@ public class GamePlayController : MonoBehaviour, IController
     IEnumerator StartCountdown()
     {
         _timer = _countdownTime;
+        Level.Update(_timer);
         while (_timer > 0)
         {
             yield return new WaitForSeconds(1f);
             _timer -= 1;
             // 更新UI显示倒计时，如果有的话
-            Game.MessagingManager.SendParams(GameEvents.Stage_Timer_Update, _timer);
+            Level.Update(_timer);
             if (_timer <= 0)
                 break;
         }
