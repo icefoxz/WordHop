@@ -12,6 +12,7 @@ public class Prefab_TapPad : UiBase
     private Button btn_base { get; }
     private Button btn_item { get; }
     private TMP_Text tmp_order { get; }
+    private Animation anim_stars { get; }
 
     private RectTransform baseRect { get; }
     private RectTransform outlineRect { get; }
@@ -31,6 +32,7 @@ public class Prefab_TapPad : UiBase
         btn_base = v.Get<Button>("btn_base");
         btn_item = v.Get<Button>("btn_item");
         tmp_order = v.Get<TMP_Text>("tmp_order");
+        anim_stars = v.Get<Animation>("anim_stars");
 
         baseRect = btn_base.GetComponent<RectTransform>();
         outlineRect = btn_outline.GetComponent<RectTransform>();
@@ -93,4 +95,6 @@ public class Prefab_TapPad : UiBase
         SetOutlineRatio(outline);
         SetItemVisible(item > 0);
     }
+
+    public void PlayItemAnimation() => anim_stars.gameObject.SetActive(true);
 }

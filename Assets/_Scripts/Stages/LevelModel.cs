@@ -5,12 +5,14 @@ using System.Linq;
 public class LevelModel : ModelBase
 {
     private readonly List<Alphabet> _selectedList = new List<Alphabet>();
+    private readonly List<Alphabet> _hints = new List<Alphabet>();
     public WordGroup WordGroup { get; private set; }
     public LayoutConfig Layout { get; set; }
     public int Seconds { get; set; }
     public WordDifficulty[] WordDifficulties { get; set; }
 
     public IReadOnlyList<Alphabet> SelectedAlphabets => _selectedList;
+    public IReadOnlyList<Alphabet> Hints => _hints;
 
     public void InitLevel(WordDifficulty[] wds, WordGroup wg, int secs, LayoutConfig layout)
     {
@@ -20,6 +22,12 @@ public class LevelModel : ModelBase
         Layout = layout;
         _selectedList.Clear();
         SendEvent(GameEvents.Level_Init);
+    }
+
+    public void Hints_add(Alphabet alphabet)
+    {
+        _selectedList.Remove(alphabet);
+        SendEvent(GameEvents.Level_Hints_add);
     }
 
     public void SelectedAlphabet_Add(Alphabet alphabet)

@@ -25,20 +25,27 @@ public class TapPad
     public TapPad(IView prefabView, 
         UnityAction<TapPad> onTapAction, 
         UnityAction<TapPad> onOutlineAction, 
-        UnityAction<TapPad> onItemAction,
+        //UnityAction<TapPad> onItemAction,
         int clickOrder)
     {
         _tapPad = new Prefab_TapPad(prefabView, () =>
         {
             onTapAction?.Invoke(this);
             _tapPad.SetBaseColor(Color.yellow);
-        }, ()=>onOutlineAction(this), ()=>onItemAction(this));
+        }, ()=>onOutlineAction(this), OnItemClick);
         _order = clickOrder;
     }
+
+    private void OnItemClick()
+    {
+        _tapPad.SetItemVisible(false);
+        _tapPad.PlayItemAnimation();
+    }
+
     public TapPad(IView prefabView, 
         UnityAction<TapPad> onTapAction, 
         UnityAction<TapPad> onOutlineAction, 
-        UnityAction<TapPad> onItemAction,
+        //UnityAction<TapPad> onItemAction,
         int index,char alphabet)
     {
         Alphabet = new Alphabet(index, alphabet.ToString());
@@ -46,7 +53,7 @@ public class TapPad
         {
             onTapAction?.Invoke(this);
             _tapPad.SetBaseColor(Color.yellow);
-        }, ()=>onOutlineAction(this), ()=>onItemAction(this));
+        }, ()=>onOutlineAction(this), OnItemClick);
         _tapPad.SetText(Alphabet.UpperText);
         _order = index;
     }
@@ -66,14 +73,23 @@ public class TapPad
 
 public record Alphabet
 {
+    public enum States
+    {
+        None,
+        Fair,
+        Great,
+        Excellent,
+    }
     public int Index { get;  }
     public string Text { get; private set; }
     public string UpperText => Text.ToUpper();
+    public States State { get; set; }
 
     public Alphabet(int index, string text)
     {
         Index = index;
         Text = text;
+        State = States.None;
     }
     public void SetText(string text) => Text = text;
     public override string ToString() => $"{Text}[{Index}]";

@@ -53,9 +53,8 @@ public class UiManager : MonoBehaviour
             {
                 var p = new TapPad(
                     prefabView: view,
-                    onTapAction: pad => GamePlayController.ApplyOrder(pad.Alphabet),
-                    onOutlineAction: _ => GamePlayController.Lose(),
-                    onItemAction: _ => GamePlayController.Lose(),
+                    onTapAction: pad => GamePlayController.OnAlphabetSelected(pad.Alphabet, false),
+                    onOutlineAction: pad => GamePlayController.OnAlphabetSelected(pad.Alphabet, true),
                     index, alphabet);
                 p.Apply(wordDifficulty);
                 return p;

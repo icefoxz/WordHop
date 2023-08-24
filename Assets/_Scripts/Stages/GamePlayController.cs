@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using AOT.Core;
@@ -98,9 +99,26 @@ public class GamePlayController : MonoBehaviour, IController
         return layoutConfig;
     }
 
-    public void ApplyOrder(Alphabet alphabet)
+    public void OnAlphabetSelected(Alphabet alphabet, bool isOutline)
     {
-        if (Level.SelectedAlphabets.Contains(alphabet)) return;
+        var isHinted = Level.Hints.Any(a => a.Equals(alphabet));
+        var stateNum = 3;
+        if (isHinted) stateNum--;
+        if (isOutline) stateNum--;
+        var state = stateNum switch
+        {
+            1 => Alphabet.States.Fair,
+            2 => Alphabet.States.Great,
+            3 => Alphabet.States.Excellent,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        var a = alphabet with { State = state };
+        ApplyOrder(a);
+    }
+
+    private void ApplyOrder(Alphabet alphabet)
+    {
+        if (Level.SelectedAlphabets.Any(alphabet.Equals)) return;
         if (Rule.CheckIfApply(alphabet.Text))
         {
             Level.SelectedAlphabet_Add(alphabet);
