@@ -43,6 +43,7 @@ public class UiManager : MonoBehaviour
         var wds = Game.Model.Level.WordDifficulties;
         var layout = Game.Model.Level.Layout;
         TapPadList.ClearList(p => p.Destroy());
+        WordSlotMgr.SetDisplay(wg.Key.Length);
         for (var i = 0; i < wg.Key.Length; i++)
         {
             var alphabet = wg.Key[i];
