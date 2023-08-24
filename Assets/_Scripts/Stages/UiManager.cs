@@ -1,3 +1,4 @@
+using System.Linq;
 using AOT.Views;
 using AOT.BaseUis;
 using UnityEngine;
@@ -34,19 +35,20 @@ public class UiManager : MonoBehaviour
 
     private void RegGamePlayEvent()
     {
-        Game.MessagingManager.RegEvent(GameEvents.Level_Init, bag => InstanceUis());
+        Game.MessagingManager.RegEvent(GameEvents.Level_Init, bag => LoadLevel());
     }
 
-    private void InstanceUis()
+    private void LoadLevel()
     {
         var wg = Game.Model.Level.WordGroup;
         var wds = Game.Model.Level.WordDifficulties;
         var layout = Game.Model.Level.Layout;
+        var alphabets = wg.Key.ToCharArray().OrderBy(_=>Random.Range(0,1f)).ToArray(); // 随机排序
         TapPadList.ClearList(p => p.Destroy());
-        WordSlotMgr.SetDisplay(wg.Key.Length);
-        for (var i = 0; i < wg.Key.Length; i++)
+        WordSlotMgr.SetDisplay(alphabets.Length);
+        for (var i = 0; i < alphabets.Length; i++)
         {
-            var alphabet = wg.Key[i];
+            var alphabet = alphabets[i];
             var wordDifficulty = wds[i];
             var index = i;
             var pad = TapPadList.Instance(view =>
