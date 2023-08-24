@@ -25,7 +25,7 @@ public class View_WordSlotMgr // viewModel
         var lastAlphabet = level.SelectedAlphabets[^1];
         var lastAlphabetCount = level.SelectedAlphabets.Count - 1;
         var wordCount = level.WordGroup.Key.Length;
-        View_wordSlot.AddAlphabet(lastAlphabetCount, lastAlphabet.Text);
+        View_wordSlot.AddAlphabet(lastAlphabetCount, lastAlphabet.UpperText);
     }
 
     internal void SetDisplay(int count)

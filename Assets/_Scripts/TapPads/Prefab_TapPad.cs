@@ -46,10 +46,8 @@ public class Prefab_TapPad : UiBase
     }
 
     // 设置文字
-    public void SetText(string text,bool upperCap = true)
+    public void SetText(string text)
     {
-        if(upperCap)
-            text = text.ToUpper();
         tmp_order.text = text;
     }
 

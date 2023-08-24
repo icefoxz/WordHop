@@ -47,7 +47,7 @@ public class TapPad
             onTapAction?.Invoke(this);
             _tapPad.SetBaseColor(Color.yellow);
         }, ()=>onOutlineAction(this), ()=>onItemAction(this));
-        _tapPad.SetText(Alphabet.Text);
+        _tapPad.SetText(Alphabet.UpperText);
         _order = index;
     }
 
@@ -68,6 +68,7 @@ public record Alphabet
 {
     public int Index { get;  }
     public string Text { get; private set; }
+    public string UpperText => Text.ToUpper();
 
     public Alphabet(int index, string text)
     {
