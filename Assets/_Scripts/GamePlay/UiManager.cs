@@ -36,6 +36,7 @@ public class UiManager : MonoBehaviour
     private void RegGamePlayEvent()
     {
         Game.MessagingManager.RegEvent(GameEvents.Level_Init, bag => LoadLevel());
+        Game.MessagingManager.RegEvent(GameEvents.Level_Word_Clear, _ => ResetTapPads());
     }
 
     private void LoadLevel()
@@ -43,21 +44,21 @@ public class UiManager : MonoBehaviour
         var wg = Game.Model.Level.WordGroup;
         var wds = Game.Model.Level.WordDifficulties;
         var layout = Game.Model.Level.Layout;
-        var alphabets = wg.Key.ToCharArray().OrderBy(_=>Random.Range(0,1f)).ToArray(); // 随机排序
+        var letters = wg.Key.OrderBy(_ => Random.Range(0, 1f)).ToArray(); // 随机排序
         TapPadList.ClearList(p => p.Destroy());
-        WordSlotMgr.SetDisplay(alphabets.Length);
-        for (var i = 0; i < alphabets.Length; i++)
+        WordSlotMgr.SetDisplay(letters.Length);
+        for (var i = 0; i < letters.Length; i++)
         {
-            var alphabet = alphabets[i];
+            var alphabet = letters[i];
             var wordDifficulty = wds[i];
-            var index = i;
+            var id = i;
             var pad = TapPadList.Instance(view =>
             {
                 var p = new TapPad(
                     prefabView: view,
                     onTapAction: pad => GamePlayController.OnAlphabetSelected(pad.Alphabet, false),
                     onOutlineAction: pad => GamePlayController.OnAlphabetSelected(pad.Alphabet, true),
-                    index, alphabet);
+                    id, alphabet);
                 p.Apply(wordDifficulty);
                 return p;
             });
@@ -74,6 +75,11 @@ public class UiManager : MonoBehaviour
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => LoseWindow.Show());
         CompleteWindow = new WindowButtonUi(completeView, StartWindow.Show);
         Game.MessagingManager.RegEvent(GameEvents.Stage_Game_Win, bag => CompleteWindow.Set(bag.GetString(0)));
+    }
+
+    private void ResetTapPads()
+    {
+        foreach (var pad in TapPadList.List) pad.ResetColor();
     }
 }
 

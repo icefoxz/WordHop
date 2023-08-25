@@ -29,12 +29,12 @@ public class GamePlayController : MonoBehaviour, IController
     public void StartGame()
     {
         Stage.Reset();
-        Level.Reset();
         StartLevel();
     }
 
     public void StartLevel()
     {
+        Level.Reset();
         StopAllCoroutines();
         //LoadNormalStageLevel();
         LoadChallengeStage();

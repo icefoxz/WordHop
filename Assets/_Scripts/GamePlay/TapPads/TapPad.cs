@@ -22,40 +22,40 @@ public class TapPad
         }, onOutlineAction, onItemAction);
         _order = clickOrder;
     }   
+    //public TapPad(IView prefabView, 
+    //    UnityAction<TapPad> onTapAction, 
+    //    UnityAction<TapPad> onOutlineAction, 
+    //    //UnityAction<TapPad> onItemAction,
+    //    int clickOrder)
+    //{
+    //    _tapPad = new Prefab_TapPad(prefabView, () =>
+    //    {
+    //        _tapPad.SetBaseColor(Color.yellow);
+    //        onTapAction?.Invoke(this);
+    //    }, ()=>onOutlineAction(this), OnItemClick);
+    //    _order = clickOrder;
+    //}
+
     public TapPad(IView prefabView, 
         UnityAction<TapPad> onTapAction, 
         UnityAction<TapPad> onOutlineAction, 
         //UnityAction<TapPad> onItemAction,
-        int clickOrder)
+        int id, char alphabet)
     {
+        Alphabet = new Alphabet(id,alphabet.ToString());
         _tapPad = new Prefab_TapPad(prefabView, () =>
         {
-            onTapAction?.Invoke(this);
             _tapPad.SetBaseColor(Color.yellow);
+            onTapAction?.Invoke(this);
         }, ()=>onOutlineAction(this), OnItemClick);
-        _order = clickOrder;
+        _tapPad.SetText(Alphabet.UpperText);
+        _order = -1;
     }
 
     private void OnItemClick()
     {
         _tapPad.SetItemVisible(false);
         _tapPad.PlayItemAnimation();
-    }
-
-    public TapPad(IView prefabView, 
-        UnityAction<TapPad> onTapAction, 
-        UnityAction<TapPad> onOutlineAction, 
-        //UnityAction<TapPad> onItemAction,
-        int index,char alphabet)
-    {
-        Alphabet = new Alphabet(index, alphabet.ToString());
-        _tapPad = new Prefab_TapPad(prefabView, () =>
-        {
-            onTapAction?.Invoke(this);
-            _tapPad.SetBaseColor(Color.yellow);
-        }, ()=>onOutlineAction(this), OnItemClick);
-        _tapPad.SetText(Alphabet.UpperText);
-        _order = index;
     }
 
     public void SetText(string text)
@@ -69,6 +69,8 @@ public class TapPad
     public void Apply(WordDifficulty difficulty) => _tapPad.ApplyDifficulty(difficulty.Outline, difficulty.Item);
 
     public override string ToString() => Alphabet.ToString();
+
+    public void ResetColor() => _tapPad.SetBaseColor(Color.white);
 }
 
 public record Alphabet
@@ -80,29 +82,29 @@ public record Alphabet
         Great,
         Excellent,
     }
-    public int Index { get;  }
+    /// <summary>
+    /// 这个仅仅是作为Id, 用于区分相同的字母
+    /// </summary>
+    public int Id { get; }
     public string Text { get; private set; }
     public string UpperText => Text.ToUpper();
     public States State { get; set; }
 
-    public Alphabet(int index, string text)
+    public Alphabet(int id, string text)
     {
-        Index = index;
+        Id = id;
         Text = text;
         State = States.None;
     }
     public void SetText(string text) => Text = text;
-    public override string ToString() => $"{Text}[{Index}]";
-    public virtual bool Equals(Alphabet other)
-    {
-        return Index == other?.Index && Text == other.Text;
-    }
+    public override string ToString() => $"{Text}[{Id}]";
+    public virtual bool Equals(Alphabet other) => Id == other?.Id && Text == other.Text;
 
     public override int GetHashCode()
     {
         unchecked
         {
-            return (Index * 397) ^ (Text != null ? Text.GetHashCode() : 0);
+            return (Id * 397) ^ (Text != null ? Text.GetHashCode() : 0);
         }
     }
 }

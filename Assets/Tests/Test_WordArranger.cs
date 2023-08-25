@@ -39,21 +39,22 @@ public class Test_WordArranger : MonoBehaviour
     public void SplitWords(TextAsset asset, string filePrefix = "common")
     {
         var text = asset.text.Split('\n').Where(s => !s.IsNullOrWhitespace()).Select(w => w.Trim('\r')).ToArray();
-        var letterGroup = text.GroupBy(w => w.Length, w => w).ToArray();
-        foreach (var g in letterGroup)
+        var lettersGroup = text.GroupBy(w => w.Length, w => w).ToArray();
+        foreach (var letters in lettersGroup)
         {
             var wgList = new List<WordGroup>();
-            g.ForEach(w =>
+            foreach (var w in letters.GroupBy(l=>new string(l.OrderBy(c=>c).ToArray()), l=>l))
             {
                 var wg = new WordGroup
                 {
-                    Key = w,
-                    Words = new[] {w}
+                    Key = w.Key,
+                    Words = w.ToArray()
                 };
                 wgList.Add(wg);
-            });
+            }
+            //print(string.Join('\n', wgList));
             var json = Json.Serialize(wgList);
-            var path = Application.dataPath + "/Configs/Words/" + filePrefix + "_" + g.Key + ".txt";
+            var path = Application.dataPath + "/Configs/Words/" + filePrefix + "_" + letters.Key + ".txt";
             File.WriteAllText(path, json);
         }
         AssetDatabase.Refresh();

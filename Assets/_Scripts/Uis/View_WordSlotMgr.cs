@@ -19,13 +19,21 @@ public class View_WordSlotMgr // viewModel
     {
         var level = Game.Model.Level;
         var lastHint = level.Hints[^1];
-        var lastHintCount = level.Hints.Count -1;
-        View_wordSlot.AddHint(lastHintCount, lastHint.UpperText);
+        var lastHintIndex = level.Hints.Count -1;
+        View_wordSlot.AddHint(lastHintIndex,lastHint);
     }
 
     private void WordSlot_ClearSlot()
     {
         View_wordSlot.ClearSlot();
+        //玩家按键失败也会导致清除slot, 而这时候就不仅仅是清除, 并且需要把hints加进来.
+        var level = Game.Model.Level;
+        var hints = level.Hints;
+        for (var i = 0; i < hints.Count; i++)
+        {
+            var hint = hints[i];
+            View_wordSlot.AddHint(i, hint);
+        }
     }
 
     private void WordSlot_AddAlphabet()
@@ -33,9 +41,7 @@ public class View_WordSlotMgr // viewModel
         var level = Game.Model.Level;
         var lastAlphabet = level.SelectedAlphabets[^1];
         var lastAlphabetCount = level.SelectedAlphabets.Count - 1;
-        var wordCount = level.WordGroup.Key.Length;
-        var state = lastAlphabet.State;
-        View_wordSlot.AddAlphabet(lastAlphabetCount, lastAlphabet.UpperText, state);
+        View_wordSlot.AddAlphabet(lastAlphabetCount, lastAlphabet);
     }
 
     internal void SetDisplay(int count)
@@ -65,8 +71,10 @@ public class View_WordSlotMgr // viewModel
             char_7 = new Element_Slot_Char(v.Get<View>("element_slot_char_6"));
             chars = new Element_Slot_Char[] { char_1, char_2, char_3, char_4, char_5, char_6, char_7 };
         }
-        internal void AddAlphabet(int index, string text, Alphabet.States state)
+        internal void AddAlphabet(int index, Alphabet alphabet)
         {
+            var text = alphabet.UpperText;
+            var state = alphabet.State;
             chars[index].SetText(text);
             chars[index].SetLabel(state);
         }
@@ -89,13 +97,17 @@ public class View_WordSlotMgr // viewModel
             foreach (var c in chars)
             {
                 c.SetText(string.Empty);
-                c.SetHintText(string.Empty);
+                c.SetPlaceholder(string.Empty);
+                c.SetLabel(Alphabet.States.None);
             }
         }
 
-        internal void AddHint(int slot, string character)
+        internal void AddHint(int lastHintIndex, Alphabet hint)
         {
-            chars[slot].SetHintText(character);
+            var level = Game.Model.Level;
+            if (level.SelectedAlphabets.Count > lastHintIndex) // 避免hint覆盖了玩家输入的字母
+                return;
+            chars[lastHintIndex].SetPlaceholder(hint.UpperText);
         }
 
         private class Element_Slot_Char : UiBase
@@ -135,7 +147,7 @@ public class View_WordSlotMgr // viewModel
                 tmp_placeholder.gameObject.SetActive(false);
             }
 
-            internal void SetHintText(string character)
+            internal void SetPlaceholder(string character)
             {
                 tmp_placeholder.text = character;
                 tmp_placeholder.gameObject.SetActive(true);

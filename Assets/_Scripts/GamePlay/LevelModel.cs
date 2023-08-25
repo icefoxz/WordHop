@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AOT.Utls;
 using UnityEngine;
 
 // 等级管理器, 主要管理点击块
@@ -69,15 +70,17 @@ public class LevelModel : ModelBase
         var letters = WordGroup.Words[0];
         var alphabetLength = letters.Length;
         var elapsed = Seconds - secs;
-        var hintIndex =
+        var hints =
             WordHintProvider.CalculateHints(elapsedSeconds: elapsed, totalSeconds: Seconds, totalHints: alphabetLength);
 
         // 使用hintIndex来决定添加哪一个提示，例如，如果hintIndex是1，则添加第二个字母的提示。
-        if (hintIndex > _hints.Count -1 && hintIndex < alphabetLength)
+        for (var index = 0; index < hints; index++)
         {
-            var alphabet = new Alphabet(hintIndex, letters[hintIndex].ToString());
+            if (index >= letters.Length) break;
+            if (index < _hints.Count) continue;
+            var alphabet = new Alphabet(index, letters[index].ToString());
             _hints.Add(alphabet);
-            Debug.Log($"Add hint: {alphabet.Text}");
+            XDebug.Log($"Add hint: {alphabet.Text}");
             SendEvent(GameEvents.Level_Hints_add, alphabet.Text);
         }
 
