@@ -12,6 +12,15 @@ public class View_WordSlotMgr // viewModel
         View_wordSlot = new View_WordSlot(view);
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Add, b => WordSlot_AddAlphabet());
         Game.MessagingManager.RegEvent(GameEvents.Level_Word_Clear, b => WordSlot_ClearSlot());
+        Game.MessagingManager.RegEvent(GameEvents.Level_Hints_add, b => Wordslot_AddHint());
+    }
+
+    private void Wordslot_AddHint()
+    {
+        var level = Game.Model.Level;
+        var lastHint = level.Hints[^1];
+        var lastHintCount = level.Hints.Count -1;
+        View_wordSlot.AddHint(lastHintCount, lastHint.UpperText);
     }
 
     private void WordSlot_ClearSlot()
@@ -25,7 +34,8 @@ public class View_WordSlotMgr // viewModel
         var lastAlphabet = level.SelectedAlphabets[^1];
         var lastAlphabetCount = level.SelectedAlphabets.Count - 1;
         var wordCount = level.WordGroup.Key.Length;
-        View_wordSlot.AddAlphabet(lastAlphabetCount, lastAlphabet.UpperText);
+        var state = lastAlphabet.State;
+        View_wordSlot.AddAlphabet(lastAlphabetCount, lastAlphabet.UpperText, state);
     }
 
     internal void SetDisplay(int count)
@@ -55,9 +65,10 @@ public class View_WordSlotMgr // viewModel
             char_7 = new Element_Slot_Char(v.Get<View>("element_slot_char_6"));
             chars = new Element_Slot_Char[] { char_1, char_2, char_3, char_4, char_5, char_6, char_7 };
         }
-        internal void AddAlphabet(int index, string text)
+        internal void AddAlphabet(int index, string text, Alphabet.States state)
         {
             chars[index].SetText(text);
+            chars[index].SetLabel(state);
         }
 
         internal void Set(int count)
@@ -67,33 +78,35 @@ public class View_WordSlotMgr // viewModel
                 chars[i].ShowDisplay();
             }
             foreach (var c in chars)
+            {
                 c.SetText(string.Empty);
+                c.SetLabel(Alphabet.States.None);
+            }
         }
 
         internal void ClearSlot()
         {
             foreach (var c in chars)
             {
-                c.HideDisplay();
                 c.SetText(string.Empty);
+                c.SetHintText(string.Empty);
             }
+        }
+
+        internal void AddHint(int slot, string character)
+        {
+            chars[slot].SetHintText(character);
         }
 
         private class Element_Slot_Char : UiBase
         {
-            public enum LabelState
-            {
-                None,
-                Excellent,
-                Great,
-                Fair
-            }
             private Image img_focus { get; set; }
             private Image img_labelExcellent { get; set; }
             private Image img_labelGreat { get; set; }
             private Image img_labelFair { get; set; }
             private TMP_Text tmp_word { get; set; }
             private Button btn_click { get; set; }
+            private TMP_Text tmp_placeholder { get; set; }
             public Element_Slot_Char(IView v) : base(v, false)
             {
                 img_focus = v.Get<Image>("img_forcus");
@@ -102,19 +115,32 @@ public class View_WordSlotMgr // viewModel
                 img_labelFair = v.Get<Image>("img_labelFair");
                 tmp_word = v.Get<TMP_Text>("tmp_word");
                 btn_click = v.Get<Button>("btn_click");
+                tmp_placeholder = v.Get<TMP_Text>("tmp_placeholder");
                 //btn_click.onClick.AddListener(onClickAction);
             }
             public void ShowDisplay() => Show();
             public void HideDisplay() => Hide();
 
             public void SetFocus(bool focused) => img_focus.gameObject.SetActive(focused);
-            public void SetLabel(LabelState state)
+            public void SetLabel(Alphabet.States state)
             {
-                img_labelExcellent.gameObject.SetActive(state == LabelState.Excellent);
-                img_labelGreat.gameObject.SetActive(state == LabelState.Great);
-                img_labelFair.gameObject.SetActive(state == LabelState.Fair);
+                img_labelFair.gameObject.SetActive(state == Alphabet.States.Fair);
+                img_labelGreat.gameObject.SetActive(state == Alphabet.States.Great);
+                img_labelExcellent.gameObject.SetActive(state == Alphabet.States.Excellent);
             }
-            public void SetText(string character) => tmp_word.text = character;
+            public void SetText(string character)
+            {
+                tmp_word.text = character;
+                tmp_word.gameObject.SetActive(true);
+                tmp_placeholder.gameObject.SetActive(false);
+            }
+
+            internal void SetHintText(string character)
+            {
+                tmp_placeholder.text = character;
+                tmp_placeholder.gameObject.SetActive(true);
+                tmp_word.gameObject.SetActive(false);
+            }
         }
     }
 }

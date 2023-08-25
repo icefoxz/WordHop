@@ -92,6 +92,7 @@ public class LevelModel : ModelBase
         Seconds = 0;
         _selectedList.Clear();
         _hints.Clear();
+        SendEvent(GameEvents.Level_Reset);
     }
 }
 

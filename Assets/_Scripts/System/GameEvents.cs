@@ -10,4 +10,5 @@ public static class GameEvents
     public const string Level_Word_Clear = "Level_Word_Clear";
     public const string Level_Alphabet_Add = "Level_Alphabet_Add";
     public const string Level_Hints_add = "Level_Hints_add";
+    public const string Level_Reset = "Level_Reset";
 }
