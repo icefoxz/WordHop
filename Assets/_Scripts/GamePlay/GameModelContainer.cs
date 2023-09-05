@@ -1,5 +1,5 @@
 public class GameModelContainer
 {
     public StageModel Stage { get; } = new StageModel();
-    public LevelModel Level { get; } = new LevelModel();
+    public WordLevelModel WordLevel { get; } = new WordLevelModel();
 }

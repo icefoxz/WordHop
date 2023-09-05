@@ -17,7 +17,7 @@ public class View_WordSlotMgr // viewModel
 
     private void Wordslot_AddHint()
     {
-        var level = Game.Model.Level;
+        var level = Game.Model.WordLevel;
         var lastHint = level.Hints[^1];
         var lastHintIndex = level.Hints.Count -1;
         View_wordSlot.AddHint(lastHintIndex,lastHint);
@@ -27,7 +27,7 @@ public class View_WordSlotMgr // viewModel
     {
         View_wordSlot.ClearSlot();
         //玩家按键失败也会导致清除slot, 而这时候就不仅仅是清除, 并且需要把hints加进来.
-        var level = Game.Model.Level;
+        var level = Game.Model.WordLevel;
         var hints = level.Hints;
         for (var i = 0; i < hints.Count; i++)
         {
@@ -38,7 +38,7 @@ public class View_WordSlotMgr // viewModel
 
     private void WordSlot_AddAlphabet()
     {
-        var level = Game.Model.Level;
+        var level = Game.Model.WordLevel;
         var lastAlphabet = level.SelectedAlphabets[^1];
         var lastAlphabetCount = level.SelectedAlphabets.Count - 1;
         View_wordSlot.AddAlphabet(lastAlphabetCount, lastAlphabet);
@@ -81,14 +81,18 @@ public class View_WordSlotMgr // viewModel
 
         internal void Set(int count)
         {
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < chars.Length; i++)
             {
-                chars[i].ShowDisplay();
-            }
-            foreach (var c in chars)
-            {
+                var c = chars[i];
+                var display = i < count;
+                if(!display)
+                {
+                    c.Hide();
+                    continue;
+                }
                 c.SetText(string.Empty);
                 c.SetLabel(Alphabet.States.None);
+                c.Show();
             }
         }
 
@@ -104,7 +108,7 @@ public class View_WordSlotMgr // viewModel
 
         internal void AddHint(int lastHintIndex, Alphabet hint)
         {
-            var level = Game.Model.Level;
+            var level = Game.Model.WordLevel;
             if (level.SelectedAlphabets.Count > lastHintIndex) // 避免hint覆盖了玩家输入的字母
                 return;
             chars[lastHintIndex].SetPlaceholder(hint.UpperText);
@@ -130,8 +134,6 @@ public class View_WordSlotMgr // viewModel
                 tmp_placeholder = v.Get<TMP_Text>("tmp_placeholder");
                 //btn_click.onClick.AddListener(onClickAction);
             }
-            public void ShowDisplay() => Show();
-            public void HideDisplay() => Hide();
 
             public void SetFocus(bool focused) => img_focus.gameObject.SetActive(focused);
             public void SetLabel(Alphabet.States state)

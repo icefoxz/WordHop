@@ -9,7 +9,7 @@ public class GamePlayController : MonoBehaviour, IController
 {
     private ConfigureSo Config => Game.ConfigureSo;
     private StageModel Stage => Game.Model.Stage;
-    private LevelModel Level => Game.Model.Level;
+    private WordLevelModel WordLevel => Game.Model.WordLevel;
     private StageConfigSo StageConfig => Config.StageConfig;
     private WordConfigSo WordConfig => Config.WordConfig;
     private LayoutConfigSo LayoutConfig => Config.LayoutConfig;
@@ -34,7 +34,7 @@ public class GamePlayController : MonoBehaviour, IController
 
     public void StartLevel()
     {
-        Level.Reset();
+        WordLevel.Reset();
         StopAllCoroutines();
         //LoadNormalStageLevel();
         LoadChallengeStage();
@@ -50,7 +50,7 @@ public class GamePlayController : MonoBehaviour, IController
         var wg = WordConfig.GetRandomWords(wds.Length);
         var secs = exSecs + wg.Key.Length + 10; //暂时秒数这样设定
         var layout = GetLayout(wds.Length);
-        Level.InitLevel(wds, wg, secs, layout);
+        WordLevel.InitLevel(wds, wg, secs, layout);
         _countdownTime = secs;
     }
 
@@ -99,7 +99,7 @@ public class GamePlayController : MonoBehaviour, IController
 
     public void OnAlphabetSelected(Alphabet alphabet, bool isOutline)
     {
-        var isHinted = Level.Hints.Any(a => a.Equals(alphabet));
+        var isHinted = WordLevel.Hints.Any(a => a.Equals(alphabet));
         var stateNum = 3;
         if (isHinted) stateNum--;
         if (isOutline) stateNum--;
@@ -116,16 +116,16 @@ public class GamePlayController : MonoBehaviour, IController
 
     private void ApplyOrder(Alphabet alphabet)
     {
-        if (Level.CheckIfApply(alphabet))
+        if (WordLevel.CheckIfApply(alphabet))
         {
-            if (!Level.IsComplete) return;
+            if (!WordLevel.IsComplete) return;
             // 玩家完成了所有点击，视为过关
             Win();
             return;
         }
 
         // 点击的顺序不对，视为失败
-        Level.SelectedAlphabet_Clear();
+        WordLevel.SelectedAlphabet_Clear();
     }
 
     private void Lose()
@@ -159,13 +159,13 @@ public class GamePlayController : MonoBehaviour, IController
     IEnumerator StartCountdown()
     {
         _timer = _countdownTime;
-        Level.Update(_timer);
+        WordLevel.Update(_timer);
         while (_timer > 0)
         {
             yield return new WaitForSeconds(1f);
             _timer -= 1;
             // 更新UI显示倒计时，如果有的话
-            Level.Update(_timer);
+            WordLevel.Update(_timer);
             if (_timer <= 0)
                 break;
         }

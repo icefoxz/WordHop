@@ -5,7 +5,7 @@ using AOT.Utls;
 using UnityEngine;
 
 // 等级管理器, 主要管理点击块
-public class LevelModel : ModelBase
+public class WordLevelModel : ModelBase
 {
     private readonly List<Alphabet> _selectedList = new List<Alphabet>();
     private readonly List<Alphabet> _hints = new List<Alphabet>();

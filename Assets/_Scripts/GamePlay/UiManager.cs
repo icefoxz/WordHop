@@ -1,6 +1,7 @@
 using System.Linq;
 using AOT.Views;
 using AOT.BaseUis;
+using AOT.Utls;
 using UnityEngine;
 
 public class UiManager : MonoBehaviour
@@ -13,12 +14,14 @@ public class UiManager : MonoBehaviour
     [SerializeField] private View wordSlotView;
     [SerializeField] private Transform _tapPadParent;
     
-    private WindowButtonUi WinWindow { get; set; }
-    private WindowButtonUi LoseWindow { get; set; }
+    //private WindowButtonUi WinWindow { get; set; }
+    //private WindowButtonUi LoseWindow { get; set; }
     private WindowButtonUi CompleteWindow { get; set; }
     private WindowButtonUi StartWindow { get; set; }
 
     private View_WordSlotMgr WordSlotMgr { get; set; }
+    private View_StageClearMgr StageClearMgr { get; set; }
+    private View_GameOverMgr GameOverMgr { get; set; }
 
     private Transform TapPadParent => _tapPadParent;
     private GamePlayController GamePlayController => Game.Controller.Get<GamePlayController>();
@@ -41,9 +44,9 @@ public class UiManager : MonoBehaviour
 
     private void LoadLevel()
     {
-        var wg = Game.Model.Level.WordGroup;
-        var wds = Game.Model.Level.WordDifficulties;
-        var layout = Game.Model.Level.Layout;
+        var wg = Game.Model.WordLevel.WordGroup;
+        var wds = Game.Model.WordLevel.WordDifficulties;
+        var layout = Game.Model.WordLevel.Layout;
         var letters = wg.Key.OrderBy(_ => Random.Range(0, 1f)).ToArray(); // 随机排序
         TapPadList.ClearList(p => p.Destroy());
         WordSlotMgr.SetDisplay(letters.Length);
@@ -68,11 +71,13 @@ public class UiManager : MonoBehaviour
 
     private void WindowsInit()
     {
-        StartWindow = new WindowButtonUi(startView, () => { GamePlayController.StartGame(); }, true);
-        WinWindow = new WindowButtonUi(winView, () => { GamePlayController.StartLevel(); });
-        Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, bag => WinWindow.Show());
-        LoseWindow = new WindowButtonUi(loseView, StartWindow.Show);
-        Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => LoseWindow.Show());
+        StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
+        //WinWindow = new WindowButtonUi(winView, () => { GamePlayController.StartLevel(); });
+        //Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, bag => WinWindow.Show());
+        //LoseWindow = new WindowButtonUi(loseView, StartWindow.Show);
+        //Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => LoseWindow.Show());
+        GameOverMgr = new View_GameOverMgr(loseView, StartWindow.Show, () => XDebug.LogWarning("暂时不支持复活功能!"));
+        StageClearMgr = new View_StageClearMgr(winView,()=> GamePlayController.StartLevel());
         CompleteWindow = new WindowButtonUi(completeView, StartWindow.Show);
         Game.MessagingManager.RegEvent(GameEvents.Stage_Game_Win, bag => CompleteWindow.Set(bag.GetString(0)));
     }
