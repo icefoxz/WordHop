@@ -1,26 +1,33 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerConfigure", menuName = "����/���ְҵ")]
+[CreateAssetMenu(fileName = "PlayerConfigure", menuName = "配置/玩家职业/职业树")]
 public class JobTreeSo : ScriptableObject
 {
-    [SerializeField] private string[] ְҵ����;
-    [SerializeField] private JobTypeSo[] ְҵ;
-    private string[] JobName => ְҵ����;
-    private JobTypeSo[] JobType => ְҵ;
-    private JobTypeSo CurrentJob { get; set; }
-  
-    public string GetJobType(int job)
+    [SerializeField]private JobTypeField[] 职业;
+    private JobTypeField[] Fields => 职业;
+
+    private JobTypeSo GetJobType(string jobName)
     {
-        if(job < 0 || job >= JobName.Length) return null;
-        var job_name = JobName[job];
-        CurrentJob = JobType[job];
-        return job_name;
+        var job = Fields.FirstOrDefault(j => jobName.Equals(j.JobName));
+        if (job != null) return job.JobSo;
+        Debug.LogError($"没有找到职业{jobName}");
+        return null;
     }
-    public string GetJobLevelTitle(int level)
+    public string GetJobLevelTitle(string jobName,int level)
     {
-        var job = CurrentJob;
-        if (level < 0 || level > job.LevelSets.Length - 1) return null;
-        return job.LevelSets[level].Title;
+        var job = GetJobType(jobName).LevelSets.FirstOrDefault(j => j.Level == level);
+        if (job != null) return job.Title;
+        Debug.LogError($"没有找到职业{jobName}的{level}级称号");
+        return null;
+    }
+
+    [Serializable]private class JobTypeField
+    {
+        [SerializeField] private string 职业名称;
+        [SerializeField] private JobTypeSo 职业;
+        public string JobName => 职业名称;
+        public JobTypeSo JobSo => 职业;
     }
 }
