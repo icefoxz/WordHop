@@ -25,6 +25,7 @@ namespace AOT.Views
         [Obsolete("Use Get<T>")]T GetObject<T>(int index);
         T Get<T>(string objName);
         T Get<T>(int index);
+        Color32 GetColor(int index);
         Coroutine StartCo(IEnumerator enumerator);
         void StopCo(IEnumerator enumerator);
         void StopAllCo();

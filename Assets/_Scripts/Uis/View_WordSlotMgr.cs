@@ -1,10 +1,13 @@
+using System.Collections;
 using AOT.BaseUis;
 using AOT.Views;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class View_WordSlotMgr // viewModel
 {
+    private bool _isBusy;
     private View_WordSlot View_wordSlot { get;set; }// view
 
     public View_WordSlotMgr(IView view)
@@ -12,10 +15,10 @@ public class View_WordSlotMgr // viewModel
         View_wordSlot = new View_WordSlot(view);
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Add, b => WordSlot_AddAlphabet());
         Game.MessagingManager.RegEvent(GameEvents.Level_Word_Clear, b => WordSlot_ClearSlot());
-        Game.MessagingManager.RegEvent(GameEvents.Level_Hints_add, b => Wordslot_AddHint());
+        Game.MessagingManager.RegEvent(GameEvents.Level_Hints_add, b => WordSlot_AddHint());
     }
 
-    private void Wordslot_AddHint()
+    private void WordSlot_AddHint()
     {
         var level = Game.Model.WordLevel;
         var lastHint = level.Hints[^1];
@@ -49,6 +52,18 @@ public class View_WordSlotMgr // viewModel
         View_wordSlot.Set(count);
     }
 
+    public IEnumerator LightUpAll()
+    {
+        if (_isBusy) yield break;
+        _isBusy = true;
+        for (var i = 0; i < View_wordSlot.Actives; i++)
+        {
+            View_wordSlot.SetFocus(i, true);
+            yield return new WaitForSeconds(0.2f);
+        }
+        _isBusy = false;
+    }
+
     private class View_WordSlot : UiBase
     {
         private Element_Slot_Char char_1 { get; }
@@ -59,7 +74,7 @@ public class View_WordSlotMgr // viewModel
         private Element_Slot_Char char_6 { get; }
         private Element_Slot_Char char_7 { get; }
         private Element_Slot_Char[] chars { get; set; }
-
+        public int Actives { get; private set; }
         public View_WordSlot(IView v) : base(v, true)
         {
             char_1 = new Element_Slot_Char(v.Get<View>("element_slot_char_0"));
@@ -81,19 +96,28 @@ public class View_WordSlotMgr // viewModel
 
         internal void Set(int count)
         {
+            Actives = count;
             for (var i = 0; i < chars.Length; i++)
             {
                 var c = chars[i];
                 var display = i < count;
                 if(!display)
                 {
+                    c.SetFocus(false);
                     c.Hide();
                     continue;
                 }
                 c.SetText(string.Empty);
                 c.SetLabel(Alphabet.States.None);
+                c.SetFocus(false);
                 c.Show();
             }
+        }
+
+        internal void SetFocus(int index,bool focus)
+        {
+            var c = chars[index];
+            c.SetFocus(focus);
         }
 
         internal void ClearSlot()

@@ -30,6 +30,7 @@ namespace AOT.Views
         public Object GetRes(string resName) => Resources.GetRes(resName);
         public T GetRes<T>(int index) where T : Object => Resources.GetRes<T>(index);
         public T GetRes<T>(string resName) where T : Object => Resources.GetRes<T>(resName);
+        public Color32 GetColor(int index) => Resources.GetColor(index);
 
         public IReadOnlyDictionary<string, GameObject> GetMap() => _components.ToDictionary(c => c.name, c => c);
         public GameObject GameObject => gameObject;
@@ -77,10 +78,12 @@ namespace AOT.Views
         [Serializable]private class ResObj
         {
             public Object[] Objs;
+            public Color32[] Colors;
 
             public T GetRes<T>(int index) where T : Object => Objs[index] as T;
             public Object GetRes(string resName) => Objs.FirstOrDefault(o => o.name == resName);
             public T GetRes<T>(string resName) where T : Object => GetRes(resName) as T;
+            public Color32 GetColor(int index) => Colors[index];
         }
     }
 }

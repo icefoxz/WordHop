@@ -12,8 +12,18 @@ public class View_GameOverMgr
     public View_GameOverMgr(IView view, UnityAction onOkAction, UnityAction onReviveAction)
     {
         View_gameOver = new View_GameOver(view, onOkAction, onReviveAction);
-        Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => View_gameOver.Show());
     }
+
+    public void Show(bool displayRevive)
+    {
+        View_gameOver.DisplayRevive(displayRevive);
+        View_gameOver.Show();
+    }
+    public void Set(string title, int score)
+    {
+        View_gameOver.Set(title, score);
+    }
+
     private class View_GameOver : UiBase
     {
         private TMP_Text tmp_score { get; set; }
@@ -32,6 +42,14 @@ public class View_GameOverMgr
                 Hide();
             });
             btn_revive.onClick.AddListener(onReviveAction);
+        }
+
+        public void DisplayRevive(bool display) => btn_revive.gameObject.SetActive(display);
+
+        public void Set(string title, int score)
+        {
+            tmp_title.text = title;
+            tmp_score.text = score.ToString();
         }
     }
 }

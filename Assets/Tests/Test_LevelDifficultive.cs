@@ -11,7 +11,7 @@ public class Test_LevelDifficultive : MonoBehaviour
     [Button]
     public void TestSetting(float difficultyValue)
     {
-        var w = LevelLoader.GetDifficultyWeight(LevelDifficultySo, TapPadDifficultySo);
+        var w = DifficultyLoader.GetDifficultyWeight(LevelDifficultySo, TapPadDifficultySo);
 
         var totalD = w.Total + difficultyValue;
         var timeD = w.GetTimeDifficulty(totalD);
@@ -30,7 +30,7 @@ public class Test_LevelDifficultive : MonoBehaviour
     [Button]
     public void TestSettingByDifficultyWeight(float difficulty,int words)
     {
-        var sets = LevelLoader.GetTapPadSettings(LevelDifficultySo, TapPadDifficultySo, difficulty, words);
+        var sets = DifficultyLoader.GetTapPadSettings(LevelDifficultySo, TapPadDifficultySo, difficulty, words);
         //打印设定
         print(string.Join(',',GetStrings(sets)));
     }

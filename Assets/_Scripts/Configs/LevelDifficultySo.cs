@@ -49,7 +49,7 @@ public class LevelDifficultySo : ScriptableObject
     {
         foreach (var set in WordSet
                      .Where(w => w.DifficultyValue <= difficulty)
-                     .OrderByDescending(_ => Random.Range(0, 1f)))
+                     .OrderByDescending(_ => Random.Range(0, WordSet.Length)))
             return set;
         return WordSet[0]; // 如果没有合适的配置，返回默认的配置
     }

@@ -15,13 +15,13 @@ MonoBehaviour:
   "\u5B57\u6570\u914D\u7F6E":
   - DifficultyValue: 1
     WordLength: 3
-  - DifficultyValue: 2
+  - DifficultyValue: 10
     WordLength: 4
-  - DifficultyValue: 3
+  - DifficultyValue: 20
     WordLength: 5
-  - DifficultyValue: 4
+  - DifficultyValue: 30
     WordLength: 6
-  - DifficultyValue: 5
+  - DifficultyValue: 40
     WordLength: 7
   "\u6311\u6218\u65F6\u957F\u914D\u7F6E":
   - DifficultyValue: 1

@@ -13,6 +13,8 @@ public class Prefab_TapPad : UiBase
     private Button btn_item { get; }
     private TMP_Text tmp_order { get; }
     private Animation anim_stars { get; }
+    private Image img_highlight { get; }
+    private Image img_aura { get; }
 
     private RectTransform baseRect { get; }
     private RectTransform outlineRect { get; }
@@ -21,6 +23,10 @@ public class Prefab_TapPad : UiBase
     private Image baseImage { get; }
     private Image itemImage { get; }
 
+    private IView view { get; }
+    public Color32 GreyColor() => view.GetColor(0);
+    public Color32 YellowColor() => view.GetColor(1);
+
     public Prefab_TapPad(IView v,
         UnityAction onBaseAction,
         UnityAction onOutlineAction,
@@ -28,11 +34,14 @@ public class Prefab_TapPad : UiBase
         bool display = true)
         : base(v, display)
     {
+        view = v;
         btn_outline = v.Get<Button>("btn_outline");
         btn_base = v.Get<Button>("btn_base");
         btn_item = v.Get<Button>("btn_item");
         tmp_order = v.Get<TMP_Text>("tmp_order");
         anim_stars = v.Get<Animation>("anim_stars");
+        img_highlight = v.Get<Image>("img_highlight");
+        img_aura = v.Get<Image>("img_aura");
 
         baseRect = btn_base.GetComponent<RectTransform>();
         outlineRect = btn_outline.GetComponent<RectTransform>();
@@ -53,6 +62,9 @@ public class Prefab_TapPad : UiBase
         tmp_order.text = text;
     }
 
+    // 设置文字颜色
+    public void SetTextColor(Color color) => tmp_order.color = color;
+
     // 设置文字是否显示
     public void SetTextVisible(bool visible) => tmp_order.gameObject.SetActive(visible);
 
@@ -68,6 +80,10 @@ public class Prefab_TapPad : UiBase
         if (outlineRatio >= 0)
             SetOutlineRatio(outlineRatio);
     }
+
+    public void DisplayHighlight(bool display)=> img_highlight.gameObject.SetActive(display);
+
+    public void DisplayAura(bool display) => img_aura.gameObject.SetActive(display);
 
     // 设置物件按钮大小
     public void SetItemSize(Vector2 size) => itemRect.sizeDelta = size;
