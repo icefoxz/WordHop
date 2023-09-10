@@ -15,7 +15,10 @@ public class UiManager : MonoBehaviour
     [SerializeField] private View loseView;
     [SerializeField] private View startView;
     [SerializeField] private View wordSlotView;
+    [SerializeField] private View topSectionView;
+    [SerializeField] private View settingsView;
     [SerializeField] private View underAttackView;
+
     [SerializeField] private Transform _tapPadParent;
     [SerializeField] private Image _blockingPanel;
     private bool _isBusy;//用于Call这个内部方法, 为了避免有多次阻塞的操作
