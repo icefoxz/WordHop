@@ -1,16 +1,18 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
+using AOT.Utl;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BadgeConfigure", menuName = "配置/玩家职业/徽章")]
+[CreateAssetMenu(fileName = "Badge_", menuName = "配置/玩家职业/徽章")]
 public class BadgeConfiguration : ScriptableObject
 {
-    public List<BadgeItemState> badgeItems = new List<BadgeItemState>();
+    public int Level;
+    public TextAsset JsonFile;
+    public GoStruct[] GetData() => Json.Deserialize<GoStruct[]>(JsonFile.text);
 
-    [Serializable]
-    public class BadgeItemState
+    public struct GoStruct
     {
-        public string itemName;
+        public string name;
         public bool isVisible;
     }
 }

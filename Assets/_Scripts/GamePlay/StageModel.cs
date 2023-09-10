@@ -74,31 +74,32 @@ public class StageModel : ModelBase
 
     public string GetPlayerTitle()
     {
-        var titles = new string[]
-        {
-            "Novice Warrior", //初级战士 
-            "Brawler", //徒手格斗者 
-            "Ironclad Fighter", //铁甲战士 
-            "Sword Dancer", //剑舞者 
-            "Advanced Warrior", //高级战士 
-            "Gladiator", //斗士 
-            "Knight", //骑士 
-            "Swordmaster", //剑圣 
-            "Combat Mentor", //战斗导师 
-            "Battlefield Commander", //战场统帅 
-            "Elite Knight", //精英骑士 
-            "Steel Warrior", //钢铁战士 
-            "Guardian of Honor", //荣誉守护者 
-            "War Hero", //战争英雄 
-            "Master Warrior", //勇士大师 
-            "Chosen of the War God", //战神选民 
-            "Divine Swordsman", //神剑使者 
-            "Great Warlord", //大战领袖 
-            "Legendary Warrior", //传奇勇士 
-            "Undefeated War King", //不败战王 
-        };
+        //var titles = new string[]
+        //{
+        //    "Novice Warrior", //初级战士 
+        //    "Brawler", //徒手格斗者 
+        //    "Ironclad Fighter", //铁甲战士 
+        //    "Sword Dancer", //剑舞者 
+        //    "Advanced Warrior", //高级战士 
+        //    "Gladiator", //斗士 
+        //    "Knight", //骑士 
+        //    "Swordmaster", //剑圣 
+        //    "Combat Mentor", //战斗导师 
+        //    "Battlefield Commander", //战场统帅 
+        //    "Elite Knight", //精英骑士 
+        //    "Steel Warrior", //钢铁战士 
+        //    "Guardian of Honor", //荣誉守护者 
+        //    "War Hero", //战争英雄 
+        //    "Master Warrior", //勇士大师 
+        //    "Chosen of the War God", //战神选民 
+        //    "Divine Swordsman", //神剑使者 
+        //    "Great Warlord", //大战领袖 
+        //    "Legendary Warrior", //传奇勇士 
+        //    "Undefeated War King", //不败战王 
+        //};
         var playerLevel = GetPlayerLevel();
-        var title = titles[playerLevel - 1];
+
+        var title = Game.ConfigureSo.JobTree.GetJobLevelTitle(JobTreeSo.JobTypes.Warriors, playerLevel);//titles[playerLevel - 1];
         return title;
     }
 }

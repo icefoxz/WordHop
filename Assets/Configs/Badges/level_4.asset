@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ce2576c8755c645b0f930cea42c55c, type: 3}
   m_Name: level_4
   m_EditorClassIdentifier: 
-  badgeItems: []
+  Level: 4
+  JsonFile: {fileID: 4900000, guid: a031366129d8e9c44b7a1cc178d6054c, type: 3}

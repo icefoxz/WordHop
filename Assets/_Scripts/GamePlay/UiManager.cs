@@ -7,6 +7,7 @@ using AOT.Utls;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using log4net.Core;
 
 public class UiManager : MonoBehaviour
 {
@@ -65,9 +66,11 @@ public class UiManager : MonoBehaviour
 
     private void LoadLevel()
     {
-        var wg = Game.Model.WordLevel.WordGroup;
-        var wds = Game.Model.WordLevel.WordDifficulties;
-        var layout = Game.Model.WordLevel.Layout;
+        var wordLevel = Game.Model.WordLevel;
+        var stage = Game.Model.Stage;
+        var wg = wordLevel.WordGroup;
+        var wds = wordLevel.WordDifficulties;
+        var layout = wordLevel.Layout;
         var letters = wg.Key.OrderBy(_ => Random.Range(0, 1f)).ToArray(); // 随机排序
         TapPadList.ClearList(p => p.Destroy());
         WordSlotMgr.SetDisplay(letters.Length);
@@ -89,6 +92,15 @@ public class UiManager : MonoBehaviour
             });
             layout.Rects[i].Apply(pad.RectTransform);
         }
+
+        var badgeCfg = GetBadgeCfgForCurrentLevel();
+        StageClearMgr.SetBadge(badgeCfg);
+    }
+
+    private static BadgeConfiguration GetBadgeCfgForCurrentLevel()
+    {
+        var playerLevel = Game.Model.Stage.GetPlayerLevel();
+        return Game.ConfigureSo.BadgeLevelSo.GetBadgeConfig(playerLevel);
     }
 
     private void WindowsInit()
@@ -142,7 +154,10 @@ public class UiManager : MonoBehaviour
             var wordLevel = Game.Model.WordLevel;
             var max = wordLevel.GetCurrentMaxScore();
             var current = stage.UpgradeRecord.UpgradeExp;
-            yield return StageClearMgr.PlayUpgrade(CalculateStar(current, max), upgradeRec);
+            var title = stage.GetPlayerTitle();
+            var badgeCfg = GetBadgeCfgForCurrentLevel();
+            yield return StageClearMgr.PlayUpgrade(title, CalculateStar(current, max), upgradeRec,
+                prefab => BadgeConfigLoader.LoadPrefab(badgeCfg, prefab));
         }
     }
 

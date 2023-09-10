@@ -12,4 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c97c9cbc1297824eb22e005aa45fcc7, type: 3}
   m_Name: Mages
   m_EditorClassIdentifier: 
-  "\u804C\u4E1A\u7B49\u7EA7": []
+  "\u804C\u4E1A\u7B49\u7EA7":
+  - "\u7B49\u7EA7": 1
+    "\u79F0\u53F7": Magic Novice
+  - "\u7B49\u7EA7": 2
+    "\u79F0\u53F7": Spell Apprentice
+  - "\u7B49\u7EA7": 3
+    "\u79F0\u53F7": Elemental Caller
+  - "\u7B49\u7EA7": 4
+    "\u79F0\u53F7": Magic Adept
+  - "\u7B49\u7EA7": 5
+    "\u79F0\u53F7": Mage
+  - "\u7B49\u7EA7": 6
+    "\u79F0\u53F7": Spellweaver
+  - "\u7B49\u7EA7": 7
+    "\u79F0\u53F7": Sorcerer
+  - "\u7B49\u7EA7": 8
+    "\u79F0\u53F7": Arcane Expert
+  - "\u7B49\u7EA7": 9
+    "\u79F0\u53F7": Flame Caller
+  - "\u7B49\u7EA7": 10
+    "\u79F0\u53F7": Ancient Magus
+  - "\u7B49\u7EA7": 11
+    "\u79F0\u53F7": Spellmaster
+  - "\u7B49\u7EA7": 12
+    "\u79F0\u53F7": High Mage
+  - "\u7B49\u7EA7": 13
+    "\u79F0\u53F7": Arcane Mentor
+  - "\u7B49\u7EA7": 14
+    "\u79F0\u53F7": Magic Elder
+  - "\u7B49\u7EA7": 15
+    "\u79F0\u53F7": Spell Leader
+  - "\u7B49\u7EA7": 16
+    "\u79F0\u53F7": Guardian of the Grimoires
+  - "\u7B49\u7EA7": 17
+    "\u79F0\u53F7": Mystic Sorcerer
+  - "\u7B49\u7EA7": 18
+    "\u79F0\u53F7": Grand Sorcerer
+  - "\u7B49\u7EA7": 19
+    "\u79F0\u53F7": Archmage
+  - "\u7B49\u7EA7": 20
+    "\u79F0\u53F7": King of Spells

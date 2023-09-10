@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c97c9cbc1297824eb22e005aa45fcc7, type: 3}
+  m_Name: Rogues
+  m_EditorClassIdentifier: 
+  "\u804C\u4E1A\u7B49\u7EA7":
+  - "\u7B49\u7EA7": 1
+    "\u79F0\u53F7": Novice Pickpocket
+  - "\u7B49\u7EA7": 2
+    "\u79F0\u53F7": Rogue Apprentice
+  - "\u7B49\u7EA7": 3
+    "\u79F0\u53F7": Shadow Hider
+  - "\u7B49\u7EA7": 4
+    "\u79F0\u53F7": Slick Fingers
+  - "\u7B49\u7EA7": 5
+    "\u79F0\u53F7": Urban Rat
+  - "\u7B49\u7EA7": 6
+    "\u79F0\u53F7": Night Prowler
+  - "\u7B49\u7EA7": 7
+    "\u79F0\u53F7": Locksmith
+  - "\u7B49\u7EA7": 8
+    "\u79F0\u53F7": Stealthwalker
+  - "\u7B49\u7EA7": 9
+    "\u79F0\u53F7": Vault Breaker
+  - "\u7B49\u7EA7": 10
+    "\u79F0\u53F7": Advanced Thief
+  - "\u7B49\u7EA7": 11
+    "\u79F0\u53F7": Infiltration Expert
+  - "\u7B49\u7EA7": 12
+    "\u79F0\u53F7": Wraith
+  - "\u7B49\u7EA7": 13
+    "\u79F0\u53F7": Viper
+  - "\u7B49\u7EA7": 14
+    "\u79F0\u53F7": Black Market Trader
+  - "\u7B49\u7EA7": 15
+    "\u79F0\u53F7": Master Thief
+  - "\u7B49\u7EA7": 16
+    "\u79F0\u53F7": Golden Hand
+  - "\u7B49\u7EA7": 17
+    "\u79F0\u53F7": Spy Leader
+  - "\u7B49\u7EA7": 18
+    "\u79F0\u53F7": Shadow Dancer
+  - "\u7B49\u7EA7": 19
+    "\u79F0\u53F7": King of Thieves
+  - "\u7B49\u7EA7": 20
+    "\u79F0\u53F7": Legendary Larcenist

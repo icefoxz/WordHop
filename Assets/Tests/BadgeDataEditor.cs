@@ -1,38 +1,32 @@
-using UnityEngine;
+#if UNITY_EDITOR
 using System.Collections.Generic;
+using System.IO;
+using AOT.Utl;
 using Sirenix.OdinInspector;
+using UnityEditor;
+using UnityEngine;
 
-public class BadgeManager : MonoBehaviour
+public class BadgeDataEditor : MonoBehaviour
 {
     public BadgeConfiguration badgeConfiguration;
 
-    [Button,GUIColor("cyan")] public void ApplyBadgeState(GameObject badgePrefab)
-    {
-        foreach (var itemState in badgeConfiguration.badgeItems)
-        {
-            Transform[] allChildren = badgePrefab.GetComponentsInChildren<Transform>(true); // include inactive
-            foreach (Transform child in allChildren)
-            {
-                if (child.name == itemState.itemName)
-                {
-                    child.gameObject.SetActive(itemState.isVisible);
-                    break; // Assuming unique names, so break out once found
-                }
-            }
-        }
-    }
-
-    [Button,GUIColor("red")] public void SaveBadgeState(GameObject badgePrefab)
+    [Button, GUIColor("red")]
+    public void SaveBadgeState(GameObject badgePrefab)
     {
         // First resolve any duplicate names
         Dictionary<string, int> nameCount = new Dictionary<string, int>();
         ResolveDuplicateNames(badgePrefab.transform, nameCount);
 
+        var list = new List<BadgeConfiguration.GoStruct>();
         // Then save the state as before
-        badgeConfiguration.badgeItems.Clear();
-        RecursivelySaveState(badgePrefab.transform);
+        RecursivelySaveState(list, badgePrefab.transform);
+        // 保存更改到磁盘
+        var paths =AssetDatabase.GetAssetPath(badgeConfiguration).Split('.');
+        var path = Path.Combine($"{paths[0]}.bytes");
+        var jsonData = Json.Serialize(list);
+        File.WriteAllText(path, jsonData);
+        AssetDatabase.Refresh(); // 保存所有修改
     }
-
     private void ResolveDuplicateNames(Transform currentTransform, Dictionary<string, int> nameCount)
     {
         // Check if the name exists in the dictionary
@@ -53,23 +47,23 @@ public class BadgeManager : MonoBehaviour
         }
     }
 
-    private void RecursivelySaveState(Transform currentTransform)
+    private void RecursivelySaveState(List<BadgeConfiguration.GoStruct> list, Transform currentTransform)
     {
         Debug.Log($"currentTransform.name: {currentTransform.name}");
         int count = 0;
-        BadgeConfiguration.BadgeItemState newItemState = new BadgeConfiguration.BadgeItemState
+        var newItemState = new BadgeConfiguration.GoStruct()
         {
-            itemName = currentTransform.name,
+            name = currentTransform.name,
             isVisible = currentTransform.gameObject.activeSelf
         };
-        badgeConfiguration.badgeItems.Add(newItemState);
+        list.Add(newItemState);
 
         foreach (Transform child in currentTransform)
         {
             count++;
-            RecursivelySaveState(child);
+            RecursivelySaveState(list, child);
         }
         Debug.Log($"count: {count}");
     }
-
 }
+#endif

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Linq;
 using AOT.BaseUis;
 using AOT.Views;
 using DG.Tweening;
@@ -22,7 +21,7 @@ public class View_StageClearMgr
     private void Show() => View_stageClear.Show();
     private void SetExpBar(int exp, int max) => View_stageClear.SetExpBar(exp, max);
     private void SetExpValue(int exp) => View_stageClear.SetExpValue(exp);
-    private void SetLevel(int level) => View_stageClear.SetLevel(level);
+    private void SetLevel(string title,int level) => View_stageClear.SetLevel(title, level);
 
     /// <summary>
     /// 播放升级记录
@@ -31,7 +30,7 @@ public class View_StageClearMgr
     /// <param name="upgrade"></param>
     /// <param name="seconds"></param>
     /// <returns></returns>
-    public IEnumerator PlayUpgrade(int stars,UpgradingRecord upgrade, float seconds = 1f)
+    public IEnumerator PlayUpgrade(string title,int stars, UpgradingRecord upgrade, UnityAction<GameObject> transformAction ,float seconds = 1f)
     {
         var firstRec = upgrade.Levels[0];
         Show();
@@ -47,7 +46,6 @@ public class View_StageClearMgr
         }
 
         var half = seconds / 2;
-
         //升级演示
         for (var i = 0; i < upgrade.Levels.Count - 1; i++) //留下最后一个level记录各别演示
         {
@@ -58,7 +56,7 @@ public class View_StageClearMgr
             View_stageClear.PlayLevelAura();
             var nextRec = upgrade.Levels[i + 1];
             View_stageClear.SetExpBar(0, nextRec.MaxExp);
-            yield return View_stageClear.PlayToLevel(nextRec.Level, 1, 1, half);
+            yield return View_stageClear.PlayToLevel(title, nextRec.Level, transformAction, half);
             yield return new WaitForSeconds(0.5f);
             yield return View_stageClear.PlayToValue(nextRec.ToExp, nextRec.MaxExp, half)
                 .WaitForCompletion();
@@ -67,11 +65,12 @@ public class View_StageClearMgr
         //预设UI
         void Preset(int exp, UpgradingRecord.LevelRecord re)
         {
-            SetLevel(re.Level);
+            SetLevel(title, re.Level);
             SetExpBar(re.FromExp, re.MaxExp);
             SetExpValue(exp);
         }
     }
+    public void SetBadge(BadgeConfiguration badgeCfg)=> View_stageClear.SetBadge(badgeCfg);
 
 
     private class View_StageClear : UiBase
@@ -108,13 +107,15 @@ public class View_StageClearMgr
             view_userLevel.SetExp(exp, max);
         }
 
-        public void SetLevel(int level) => view_userLevel.SetLevel(level);
+        public void SetBadge(BadgeConfiguration badgeCfg) => view_userLevel.SetBadge(badgeCfg);
+
+        public void SetLevel(string title, int level) => view_userLevel.SetLevel(title, level);
 
         public Tween PlayToValue(int toValue, float max, float seconds) =>
             view_userLevel.PlayToValue(toValue, max, seconds);
 
-        public Tween PlayToLevel(int level, int frameIndex, int wingsIndex, float sec) =>
-            view_userLevel.PlayToLevel(level, frameIndex, wingsIndex, sec);
+        public IEnumerator PlayToLevel(string title, int level, UnityAction<GameObject> transformAction, float sec) =>
+            view_userLevel.PlayToLevel(title, level, transformAction,sec);
 
         public Tween PlayStars(int stars)
         {
@@ -135,14 +136,16 @@ public class View_StageClearMgr
         {
             private Slider slider_exp { get; set; }
             private TMP_Text tmp_exp { get; set; }
-            private View_level view_level { get; set; }
+            //private View_level view_level { get; set; }
             private Animation anim_levelAura { get; set; }
+            private View_Badge view_badge { get; }
             public View_userLevel(IView v) : base(v, true)
             {
                 slider_exp = v.Get<Slider>("slider_exp");
                 tmp_exp = v.Get<TMP_Text>("tmp_exp");
-                view_level = new View_level(v.Get<View>("view_level"));
+                //view_level = new View_level(v.Get<View>("view_level"));
                 anim_levelAura = v.Get<Animation>("anim_levelAura");
+                view_badge = new View_Badge(v.Get<View>("view_badge"));
             }
 
             public void PlayLevelAura()
@@ -157,7 +160,7 @@ public class View_StageClearMgr
                 UpdateExpText(exp, (int)max);
             }
 
-            public void SetLevel(int level) => view_level.SetLevel(level);
+            public void SetLevel(string title, int level) => view_badge.Set(title, level);
 
             public Tween PlayToValue(int toValue, float max, float seconds)
             {
@@ -166,91 +169,22 @@ public class View_StageClearMgr
                     .OnComplete(() => UpdateExpText(toValue, (int)max));
             }
 
-            public Tween PlayToLevel(int level, int frameIndex, int wingsIndex, float sec)=>
-                view_level.PlayToLevel(level, frameIndex, wingsIndex, sec);
+            public IEnumerator PlayToLevel(string title, int level, UnityAction<GameObject> transformAction, float sec)
+            {
+                var half = sec / 2;
+                yield return view_badge.PlayFadeIn(half);
+                transformAction(view_badge.GameObject);
+                SetLevel(title, level);
+                yield return view_badge.PlayFadeOut(half);
+            }
 
             private void UpdateExpText(int value, int max)
             {
                 tmp_exp.text = value + "/" + max; // 格式化为 "current/max"
             }
 
-            private class View_level : UiBase
-            {
-                private Element_wings element_wings_0 { get; set; }
-                private Element_wings element_wings_1 { get; set; }
-                private Element_wings element_wings_2 { get; set; }
-                private Image img_frame_0 { get; set; }
-                private Image img_frame_1 { get; set; }
-                private Image img_frame_2 { get; set; }
-                private TMP_Text tmp_level { get; set; }
-
-                private Image[] img_frames { get; }
-                private Element_wings[] element_wings { get; }
-                public View_level(IView v) : base(v, true)
-                {
-                    element_wings_0 = new Element_wings(v.Get<View>("element_wings_0"));
-                    element_wings_1 = new Element_wings(v.Get<View>("element_wings_1"));
-                    element_wings_2 = new Element_wings(v.Get<View>("element_wings_2"));
-                    element_wings = new Element_wings[] { element_wings_0, element_wings_1, element_wings_2 };
-                    img_frame_0 = v.Get<Image>("img_frame_0");
-                    img_frame_1 = v.Get<Image>("img_frame_1");
-                    img_frame_2 = v.Get<Image>("img_frame_2");
-                    tmp_level = v.Get<TMP_Text>("tmp_level");
-                    img_frames = new Image[] { img_frame_0, img_frame_1, img_frame_2 };
-                }
-                public void SetLevel(int level) => tmp_level.text = level.ToString();
-
-                public Tween PlayToLevel(int level, int frameIndex, int wingsIndex, float sec)
-                {
-                    var (lastWings, lastFrame) = (element_wings.FirstOrDefault(o => o.IsActive()),
-                        img_frames.FirstOrDefault(f => f.IsActive()));
-                    var (wings, frame) = (element_wings[wingsIndex], img_frames[frameIndex]);
-                    var half = sec / 2;
-                    return DOTween.Sequence().Append(lastFrame.DOFade(0, half))
-                        .Join(lastWings.PlayFadeAll(0, half))
-                        .Join(tmp_level.DOFade(0, half))
-                        .AppendCallback(() =>
-                        {
-                            foreach (var wing in element_wings) wing.Display(false);
-                            wings.Display(true);
-                            lastFrame.gameObject.SetActive(false);
-                            lastFrame.DOFade(1, 0);
-                            frame.DOFade(0, 0);
-                            frame.gameObject.SetActive(true);
-                            SetLevel(level);
-                        })
-                        .Append(frame.DOFade(1, half))
-                        .Join(tmp_level.DOFade(1, half))
-                        .Join(wings.PlayFadeAll(1, half));
-                }
-
-                private class Element_wings : UiBase
-                {
-                    private Image img_wing_1 { get; }
-                    private Image img_wing_2 { get; }
-                    public bool IsActive()=> img_wing_1.IsActive() || img_wing_2.IsActive();
-                    public Element_wings(IView v, bool display = true) : base(v, display)
-                    {
-                        img_wing_1 = v.Get<Image>("img_wing_1");
-                        img_wing_2 = v.Get<Image>("img_wing_2");
-                    }
-
-                    public Tween PlayFadeAll(float value, float secs)
-                    {
-                        return DOTween.Sequence()
-                            .Append(img_wing_1.DOFade(value, secs))
-                            .Join(img_wing_2.DOFade(value, secs))
-                            .AppendCallback(() => img_wing_1.DOFade(1, 0));
-                    }
-
-                    public void Display(bool display)
-                    {
-                        img_wing_1.gameObject.SetActive(display);
-                        img_wing_2.gameObject.SetActive(display);
-                    }
-                }
-            }
+            public void SetBadge(BadgeConfiguration badgeCfg) =>
+                BadgeConfigLoader.LoadPrefab(badgeCfg, view_badge.GameObject);
         }
     }
-
 }

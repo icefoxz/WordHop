@@ -12,4 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c97c9cbc1297824eb22e005aa45fcc7, type: 3}
   m_Name: Elves
   m_EditorClassIdentifier: 
-  "\u804C\u4E1A\u7B49\u7EA7": []
+  "\u804C\u4E1A\u7B49\u7EA7":
+  - "\u7B49\u7EA7": 1
+    "\u79F0\u53F7": Elf Sprout
+  - "\u7B49\u7EA7": 2
+    "\u79F0\u53F7": Forest Apprentice
+  - "\u7B49\u7EA7": 3
+    "\u79F0\u53F7": Elven Emissary
+  - "\u7B49\u7EA7": 4
+    "\u79F0\u53F7": Nature's Guard
+  - "\u7B49\u7EA7": 5
+    "\u79F0\u53F7": Forest Dancer
+  - "\u7B49\u7EA7": 6
+    "\u79F0\u53F7": Moonlight Singer
+  - "\u7B49\u7EA7": 7
+    "\u79F0\u53F7": Superior Elf
+  - "\u7B49\u7EA7": 8
+    "\u79F0\u53F7": Elven Mage
+  - "\u7B49\u7EA7": 9
+    "\u79F0\u53F7": Child of Nature
+  - "\u7B49\u7EA7": 10
+    "\u79F0\u53F7": Forest Guide
+  - "\u7B49\u7EA7": 11
+    "\u79F0\u53F7": Elven Noble
+  - "\u7B49\u7EA7": 12
+    "\u79F0\u53F7": Nightshade Hunter
+  - "\u7B49\u7EA7": 13
+    "\u79F0\u53F7": Starlight Messenger
+  - "\u7B49\u7EA7": 14
+    "\u79F0\u53F7": Forest Guardian
+  - "\u7B49\u7EA7": 15
+    "\u79F0\u53F7": Leader of Nature
+  - "\u7B49\u7EA7": 16
+    "\u79F0\u53F7": Moon Elf
+  - "\u7B49\u7EA7": 17
+    "\u79F0\u53F7": Star Dancer
+  - "\u7B49\u7EA7": 18
+    "\u79F0\u53F7": Ancient Elf
+  - "\u7B49\u7EA7": 19
+    "\u79F0\u53F7": Elven King
+  - "\u7B49\u7EA7": 20
+    "\u79F0\u53F7": Lord of the Forest

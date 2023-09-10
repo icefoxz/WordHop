@@ -12,4 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c97c9cbc1297824eb22e005aa45fcc7, type: 3}
   m_Name: Warriors
   m_EditorClassIdentifier: 
-  "\u804C\u4E1A\u7B49\u7EA7": []
+  "\u804C\u4E1A\u7B49\u7EA7":
+  - "\u7B49\u7EA7": 1
+    "\u79F0\u53F7": Novice Warrior
+  - "\u7B49\u7EA7": 2
+    "\u79F0\u53F7": Brawler
+  - "\u7B49\u7EA7": 3
+    "\u79F0\u53F7": Ironclad Fighter
+  - "\u7B49\u7EA7": 4
+    "\u79F0\u53F7": Sword Dancer
+  - "\u7B49\u7EA7": 5
+    "\u79F0\u53F7": Advanced Warrior
+  - "\u7B49\u7EA7": 6
+    "\u79F0\u53F7": Gladiator
+  - "\u7B49\u7EA7": 7
+    "\u79F0\u53F7": Knight
+  - "\u7B49\u7EA7": 8
+    "\u79F0\u53F7": Swordmaster
+  - "\u7B49\u7EA7": 9
+    "\u79F0\u53F7": Combat Mentor
+  - "\u7B49\u7EA7": 10
+    "\u79F0\u53F7": Battlefield Commander
+  - "\u7B49\u7EA7": 11
+    "\u79F0\u53F7": Elite Knight
+  - "\u7B49\u7EA7": 12
+    "\u79F0\u53F7": Steel Warrior
+  - "\u7B49\u7EA7": 13
+    "\u79F0\u53F7": Guardian of Honor
+  - "\u7B49\u7EA7": 14
+    "\u79F0\u53F7": War Hero
+  - "\u7B49\u7EA7": 15
+    "\u79F0\u53F7": Master Warrior
+  - "\u7B49\u7EA7": 16
+    "\u79F0\u53F7": Chosen of the War God
+  - "\u7B49\u7EA7": 17
+    "\u79F0\u53F7": Divine Swordsman
+  - "\u7B49\u7EA7": 18
+    "\u79F0\u53F7": Great Warlord
+  - "\u7B49\u7EA7": 19
+    "\u79F0\u53F7": Legendary Warrior
+  - "\u7B49\u7EA7": 20
+    "\u79F0\u53F7": Undefeated War King

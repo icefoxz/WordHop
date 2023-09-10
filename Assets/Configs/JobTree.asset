@@ -19,3 +19,5 @@ MonoBehaviour:
     "\u804C\u4E1A": {fileID: 11400000, guid: 86169661b8b9d5b41a8993176644dd2d, type: 2}
   - "\u804C\u4E1A\u540D\u79F0": Elves
     "\u804C\u4E1A": {fileID: 11400000, guid: 8f54a54f293c26a43ac2ecffc8a8dd72, type: 2}
+  - "\u804C\u4E1A\u540D\u79F0": Rouges
+    "\u804C\u4E1A": {fileID: 11400000, guid: 9c102a7372d227e4e8d00e9c6074df51, type: 2}
