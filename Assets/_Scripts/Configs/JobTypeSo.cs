@@ -12,6 +12,8 @@ public class JobField
 {
     [SerializeField] private int 等级;
     [SerializeField] private string 称号;
+    [SerializeField] private Sprite 图标;
     public int Level => 等级;
     public string Title => 称号;
+    public Sprite Icon => 图标;
 }
