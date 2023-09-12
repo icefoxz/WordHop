@@ -92,6 +92,7 @@ public class View_StageClearMgr
         private View_Card view_card { get; }
         private CanvasGroup canvas_card { get; }
         private Transform trans_win { get; }
+        private View_options optionView { get; }
         public View_StageClear(IView v, UnityAction onClickNextAction, UnityAction onClickAdAction) : base(v, false)
         {
             view_card = new View_Card(v.Get<View>("view_card"));
@@ -215,6 +216,58 @@ public class View_StageClearMgr
 
             public void SetBadge(BadgeConfiguration badgeCfg) =>
                 BadgeConfigLoader.LoadPrefab(badgeCfg, view_badge.GameObject);
+        }
+
+        private class View_options : UiBase
+        {
+            private Button btn_continue { get; set; }
+            private Element_option element_option_1 { get; set; }
+            private Element_option element_option_2 { get; set; }
+            private Element_option element_option_3 { get; set; }
+            private Element_option element_option_4 { get; set; }
+            private Element_option element_option_5 { get; set; }
+            private Element_option element_option_6 { get; set; }
+            private Element_option[] ElementOptions { get; set; }
+            private Image img_optionPanel { get; set; }
+            public View_options(IView v, UnityAction onClickContinueAction, UnityAction onClickAction) : base(v, false)
+            {
+                btn_continue = v.Get<Button>("btn_continue");
+                btn_continue.onClick.AddListener(() =>
+                {
+                    onClickContinueAction();
+                    Hide();
+                });
+                element_option_1 = new Element_option(v.Get<View>("element_option_1"), onClickAction);
+                element_option_2 = new Element_option(v.Get<View>("element_option_2"), onClickAction);
+                element_option_3 = new Element_option(v.Get<View>("element_option_3"), onClickAction);
+                element_option_4 = new Element_option(v.Get<View>("element_option_4"), onClickAction);
+                element_option_5 = new Element_option(v.Get<View>("element_option_5"), onClickAction);
+                element_option_6 = new Element_option(v.Get<View>("element_option_6"), onClickAction);
+                ElementOptions = new Element_option[] { element_option_1, element_option_2, element_option_3, element_option_4, element_option_5, element_option_6 };
+                img_optionPanel = v.Get<Image>("img_optionalPanel");
+            }
+
+            private class Element_option : UiBase
+            {
+                private Image img_icon { get; set; }
+                private TMP_Text tmp_title { get; set; }
+                private TMP_Text tmp_message { get; set; }
+                private Button btn_click { get; set; }
+                public Element_option(IView v, UnityAction onClickAction) : base(v, true)
+                {
+                    img_icon = v.Get<Image>("img_icon");
+                    tmp_title = v.Get<TMP_Text>("tmp_title");
+                    tmp_message = v.Get<TMP_Text>("tmp_message");
+                    btn_click = v.Get<Button>("btn_click");
+                    btn_click.onClick.AddListener(onClickAction);
+                }
+                public void SetIcon(Sprite icon) => img_icon.sprite = icon;
+                public void Set(string title, string message)
+                {
+                    tmp_title.text = title;
+                    tmp_message.text = message;
+                }
+            }
         }
     }
 }
