@@ -3,12 +3,13 @@ using System.Linq;
 using AOT.Core.Systems.Coroutines;
 using AOT.Utl;
 using AOT.Utls;
+using GamePlay;
 using UnityEngine;
 
 //无限关卡执行器
 public class InfinityStageHandler 
 {
-    public StageModel Stage { get; } 
+    public PlayerModel Player { get; } 
     public WordLevelModel WordLevel { get; } 
     public WordConfigSo WordConfig { get; }
     public DifficultyLoader DifficultyLoader { get; }
@@ -18,13 +19,13 @@ public class InfinityStageHandler
     private int _countdownTime;
     private CoroutineInstance _countdownCoroutine;
 
-    public InfinityStageHandler(StageModel stage,
+    public InfinityStageHandler(PlayerModel player,
         WordLevelModel wordLevel,
         WordConfigSo wordConfig,
         DifficultyLoader difficultyLoader, 
         LayoutConfigSo layoutConfig)
     {
-        Stage = stage;
+        Player = player;
         WordLevel = wordLevel;
         WordConfig = wordConfig;
         DifficultyLoader = difficultyLoader;
@@ -33,7 +34,7 @@ public class InfinityStageHandler
 
     public void StartGame()
     {
-        Stage.Reset();
+        Player.Reset();
         StartLevel();
     }
 
@@ -48,7 +49,7 @@ public class InfinityStageHandler
     // 挑战模式, 无限关卡, 动态生成, 难度递增
     private void LoadChallengeStage()
     {
-        var levelIndex = Stage.StageLevelIndex;
+        var levelIndex = Player.StageLevelDifficultyIndex;
         var words = levelIndex > 0 && levelIndex % 10 == 0 ? 7 : 0; // 每10关，第一关为7个字母，其余为随机(0)字母
         var (wds, exSecs) = DifficultyLoader.GetChallengeStageLevelConfig(levelIndex, words);
         var wg = WordConfig.GetRandomWords(wds.Length);
@@ -96,7 +97,9 @@ public class InfinityStageHandler
         var missAve = WordLevel.SelectedAlphabets.Average(a => a.MissCount);
         var multiplier = WordLevel.SelectedAlphabets.Count - missAve - 1;//最后-1是因为最小字数是3, 而3个字母最多2倍分数
         var score = (int)(_timer * multiplier);
-        Stage.StageLevelPass(score);
+        Player.StageLevelPass(score);
+        Pref.SetHighestLevel(Player.HighestLevel);
+        Pref.SetPlayerLevel(Player.Level);
         XDebug.Log("You Win!");
         Game.MessagingManager.SendParams(GameEvents.Stage_Level_Win);
     }

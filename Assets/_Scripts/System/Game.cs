@@ -29,6 +29,7 @@ public class Game : MonoBehaviour
         RegControllers(Controllers.AddComponent<GamePlayController>());
         _uiManager.Init();
         _audioManager.Init();
+        Model.Init();
         MessagingManager.SendParams(GameEvents.Game_Start);
     }
 

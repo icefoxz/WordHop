@@ -2,17 +2,9 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerConfigure", menuName = "配置/玩家/职业树")]
+[CreateAssetMenu(fileName = "JobTreeSo", menuName = "配置/玩家/职业树")]
 public class JobTreeSo : ScriptableObject
 {
-    public enum JobTypes
-    {
-        Warriors,
-        Mages,
-        Elves,
-        Rouges
-    }
-
     [SerializeField]private JobTypeField[] 职业;
     private JobTypeField[] Fields => 职业;
 
@@ -24,23 +16,51 @@ public class JobTreeSo : ScriptableObject
         return null;
     }
 
-    public (string title, Sprite sprite)? GetJobInfo(JobTypes type, int level)
+    public PlayerJob GetPlayerJob(JobTypes type, int level)
+    {
+        var job = GetField(type);
+        var levelSet = job.JobSo.LevelSets.FirstOrDefault(j => j.Level == level);
+        if(levelSet == null)
+            throw new ArgumentOutOfRangeException(nameof(level), level, null);
+        return new PlayerJob(levelSet.Title, level, type);
+    }
+
+    private JobTypeField GetField(JobTypes jobTypes)
+    {
+        var jobName =GetJobName(jobTypes);
+        var job = Fields.FirstOrDefault(j => jobName.Equals(j.JobName));
+        if (job != null) return job;
+        Debug.LogError($"没有找到职业{jobName}");
+        return null;
+    }
+
+    private string GetJobName(JobTypes type)
     {
         return type switch
         {
-            JobTypes.Warriors => GetJobInfo("Warriors", level),
-            JobTypes.Mages => GetJobInfo("Mages", level),
-            JobTypes.Elves => GetJobInfo("Elves", level),
-            JobTypes.Rouges => GetJobInfo("Rouges", level),
+            JobTypes.Warriors => "Warriors",
+            JobTypes.Mages => "Mages",
+            JobTypes.Elves => "Elves",
+            JobTypes.Rouges => "Rouges",
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
+    }
+
+    public (string title, Sprite sprite)? GetJobInfo(JobTypes type, int level) => GetJobInfo(GetJobName(type), level);
+
+    public Sprite GetJobIcon(JobTypes type, int level)
+    {
+        var job = GetJobType(GetJobName(type)).LevelSets.FirstOrDefault(j => j.Level == level);
+        if (job != null) return job.Icon;
+        Debug.LogError($"没有找到职业{type}的{level}级设定");
+        return null;
     }
 
     public (string title, Sprite sprite)? GetJobInfo(string jobName,int level)
     {
         var job = GetJobType(jobName).LevelSets.FirstOrDefault(j => j.Level == level);
         if (job != null) return (job.Title, job.Icon);
-        Debug.LogError($"没有找到职业{jobName}的{level}级称号");
+        Debug.LogError($"没有找到职业{jobName}的{level}级设定");
         return null;
     }
 

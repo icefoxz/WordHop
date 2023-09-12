@@ -20,7 +20,7 @@ public class GamePlayController : MonoBehaviour, IController
 
     public void StartGame()
     {
-        StageHandler = new InfinityStageHandler(Game.Model.Stage, 
+        StageHandler = new InfinityStageHandler(Game.Model.Player, 
             Game.Model.WordLevel, 
             WordConfig, 
             ChallengeLoader,

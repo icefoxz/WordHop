@@ -26,3 +26,5 @@ MonoBehaviour:
     type: 2}
   "\u5FBD\u7AE0\u914D\u7F6E": {fileID: 11400000, guid: cd198c4271119434a86e431a8710b2a9,
     type: 2}
+  "\u5347\u7B49\u914D\u7F6E": {fileID: 11400000, guid: c280bb11aa0f7264c8cfada545e248ed,
+    type: 2}

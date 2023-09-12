@@ -52,6 +52,12 @@ public class PlayerUpgradeHandler
         Exp = 0;
         CurrentLevel = Levels[0];
     }
+
+    public void SetLevel(int level,int exp)
+    {
+        Exp = exp;
+        CurrentLevel = Levels.First(l => l.Level == level);
+    }
 }
 /// <summary>
 /// 玩家等级的基本记录

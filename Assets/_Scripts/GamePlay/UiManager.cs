@@ -68,7 +68,7 @@ public class UiManager : MonoBehaviour
     private void LoadLevel()
     {
         var wordLevel = Game.Model.WordLevel;
-        var stage = Game.Model.Stage;
+        var stage = Game.Model.Player;
         var wg = wordLevel.WordGroup;
         var wds = wordLevel.WordDifficulties;
         var layout = wordLevel.Layout;
@@ -100,7 +100,7 @@ public class UiManager : MonoBehaviour
 
     private static BadgeConfiguration GetBadgeCfgForCurrentLevel()
     {
-        var playerLevel = Game.Model.Stage.GetPlayerLevel();
+        var playerLevel = Game.Model.Player.GetPlayerLevel();
         return Game.ConfigureSo.BadgeLevelSo.GetBadgeConfig(playerLevel);
     }
 
@@ -133,8 +133,8 @@ public class UiManager : MonoBehaviour
 
     private void SetGameOver()
     {
-        var score = Game.Model.Stage.GetScore();
-        var info = Game.Model.Stage.GetPlayerLevelInfo();
+        var score = Game.Model.Player.GetScore();
+        var info = Game.Model.Player.GetPlayerLevelInfo();
         
         GameOverMgr.Set(info?.title, score);
         GameOverMgr.Show(displayRevive: false);
@@ -147,7 +147,7 @@ public class UiManager : MonoBehaviour
         {
             yield return WordSlotMgr.LightUpAll();
             yield return new WaitForSeconds(1f);
-            var stage = Game.Model.Stage;
+            var stage = Game.Model.Player;
             var upgradeRec = stage.UpgradeRecord;
             var wordLevel = Game.Model.WordLevel;
             var max = wordLevel.GetCurrentMaxScore();
