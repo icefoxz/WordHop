@@ -24,10 +24,8 @@ public record PlayerLevel
     public void AddCoin(int coin) => Coin += coin;
     public void SetScore(int score) => Score = score;
     public void SetCoin(int coin) => Coin = coin;
-    public void SetJob(PlayerJob job, int level, int exp)
+    public void UpdateJob(PlayerJob job)
     {
         Job = job;
-        Level = level;
-        Exp = exp;
     }
 }

@@ -16,60 +16,80 @@ MonoBehaviour:
   - "\u7B49\u7EA7": 1
     "\u79F0\u53F7": Novice Warrior
     "\u56FE\u6807": {fileID: 21300000, guid: 98c039cb1a51e2d4ea4fa41170cd17f4, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 2
     "\u79F0\u53F7": Brawler
     "\u56FE\u6807": {fileID: 21300000, guid: 16103713efb6f644e8ca203a6037ace1, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 3
     "\u79F0\u53F7": Ironclad Fighter
     "\u56FE\u6807": {fileID: 21300000, guid: 07ad85a0029e6d7498aa8156b50e8b9d, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 4
     "\u79F0\u53F7": Sword Dancer
     "\u56FE\u6807": {fileID: 21300000, guid: 4ce21439d5f892341800379988148f3b, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 5
     "\u79F0\u53F7": Advanced Warrior
     "\u56FE\u6807": {fileID: 21300000, guid: 95fee767cf3fbf147a7ae417cb12bf96, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 6
     "\u79F0\u53F7": Gladiator
     "\u56FE\u6807": {fileID: 21300000, guid: afef1e90880add4428b1dd21f0ab1a04, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 7
     "\u79F0\u53F7": Knight
     "\u56FE\u6807": {fileID: 21300000, guid: 7691f4a635e38ad4e8bd52f738a7be6c, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 8
     "\u79F0\u53F7": Swordmaster
     "\u56FE\u6807": {fileID: 21300000, guid: f33c0e821662bf24594638a7b69d0f97, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 9
     "\u79F0\u53F7": Combat Mentor
     "\u56FE\u6807": {fileID: 21300000, guid: d05a2af188dc672459e49f7cd6abcf11, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 10
     "\u79F0\u53F7": Battlefield Commander
     "\u56FE\u6807": {fileID: 21300000, guid: 6981b92c22ee2964ca8b51213e4ad866, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 11
     "\u79F0\u53F7": Elite Knight
     "\u56FE\u6807": {fileID: 21300000, guid: 15d6e72fc252cdd46929c4c81d2f0bef, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 12
     "\u79F0\u53F7": Steel Warrior
     "\u56FE\u6807": {fileID: 21300000, guid: 39b8097253c69a04bb93d4ea2f219925, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 13
     "\u79F0\u53F7": Guardian of Honor
     "\u56FE\u6807": {fileID: 21300000, guid: 02bd952972a2e3043a0424dfe7a175c2, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 14
     "\u79F0\u53F7": War Hero
     "\u56FE\u6807": {fileID: 21300000, guid: 507e2dd1fad7edd4db551901c9ea561d, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 15
     "\u79F0\u53F7": Master Warrior
     "\u56FE\u6807": {fileID: 21300000, guid: 2841044161c600e44b8a78327580cf03, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 16
     "\u79F0\u53F7": Chosen of the War God
     "\u56FE\u6807": {fileID: 21300000, guid: f5122803f5739ad46908bc8fe56f6e1d, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 17
     "\u79F0\u53F7": Divine Swordsman
     "\u56FE\u6807": {fileID: 21300000, guid: 37bbd5ce9e593f342adfc30d5ee35e40, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 18
     "\u79F0\u53F7": Great Warlord
     "\u56FE\u6807": {fileID: 21300000, guid: c9e3f3e810f2506418e83adbd0f5504f, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 19
     "\u79F0\u53F7": Legendary Warrior
     "\u56FE\u6807": {fileID: 21300000, guid: 6bd901bf824292141bfea752271b2e82, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 20
     "\u79F0\u53F7": Undefeated War King
     "\u56FE\u6807": {fileID: 21300000, guid: f37225a95f2ef454d9123ed17b6be2aa, type: 3}
+    "\u8F6C\u804C": []

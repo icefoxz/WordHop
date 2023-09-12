@@ -1,4 +1,5 @@
 using AOT.Core;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GamePlayController : MonoBehaviour, IController 
@@ -52,4 +53,8 @@ public class GamePlayController : MonoBehaviour, IController
     {
         Game.MessagingManager.SendParams(GameEvents.Level_Item_Clear);
     }
+
+#if UNITY_EDITOR
+    [Button(ButtonSizes.Medium),GUIColor("red")]private void Hack_Level_Win() => StageHandler.HackWin();
+#endif
 }

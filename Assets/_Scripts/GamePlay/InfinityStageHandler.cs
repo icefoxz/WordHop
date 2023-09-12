@@ -90,7 +90,13 @@ public class InfinityStageHandler
         Game.MessagingManager.SendParams(GameEvents.Stage_Level_Lose);
     }
 
-    private void Win()
+    public void HackWin()
+    {
+        WordLevel.SetAllAlphabetSelected();
+        Win();
+    }
+
+    private void Win()//public for hack
     {
         // 游戏胜利的逻辑
         if(_countdownCoroutine) _countdownCoroutine.StopCo(); // 停止倒计时

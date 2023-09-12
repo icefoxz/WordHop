@@ -98,4 +98,15 @@ public class WordLevelModel : ModelBase
         _hints.Clear();
         SendEvent(GameEvents.Level_Reset);
     }
+
+    //hack
+    public void SetAllAlphabetSelected()
+    {
+        _selectedList.Clear();
+        foreach (var letter in WordGroup.Words[0])
+        {
+            var alphabet = new Alphabet(_selectedList.Count, letter.ToString());
+            _selectedList.Add(alphabet);
+        }
+    }
 }

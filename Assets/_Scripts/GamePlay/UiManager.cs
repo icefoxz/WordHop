@@ -133,10 +133,13 @@ public class UiManager : MonoBehaviour
 
     private void SetGameOver()
     {
-        var score = Game.Model.Player.GetScore();
-        var info = Game.Model.Player.GetPlayerLevelInfo();
-        
-        GameOverMgr.Set(info?.title, score);
+        var player = Game.Model.Player;
+        var playerLevel = player.Level;
+        var job = playerLevel.Job;
+        var badgeCfg = GetBadgeCfgForCurrentLevel();
+        BadgeConfigLoader.LoadPrefab(badgeCfg, GameOverMgr.Badge);
+        GameOverMgr.Set(job.Title, job.Level, playerLevel.Score);
+        GameOverMgr.SetCard(player.GetCardArg());
         GameOverMgr.Show(displayRevive: false);
     }
 
@@ -147,20 +150,18 @@ public class UiManager : MonoBehaviour
         {
             yield return WordSlotMgr.LightUpAll();
             yield return new WaitForSeconds(1f);
-            var stage = Game.Model.Player;
-            var upgradeRec = stage.UpgradeRecord;
+            var player = Game.Model.Player;
+            var upgradeRec = player.UpgradeRecord;
             var wordLevel = Game.Model.WordLevel;
             var max = wordLevel.GetCurrentMaxScore();
-            var current = stage.UpgradeRecord.UpgradeExp;
-            var levelInfo = stage.GetPlayerLevelInfo();
+            var current = player.UpgradeRecord.UpgradeExp;
+            var levelInfo = player.GetPlayerLevelInfo();
             var badgeCfg = GetBadgeCfgForCurrentLevel();
             yield return StageClearMgr.PlayUpgrade(levelInfo?.title, CalculateStar(current, max), upgradeRec,
                 prefab => BadgeConfigLoader.LoadPrefab(badgeCfg, prefab));
             if (upgradeRec.Levels.Count > 1)
             {
-                var playerLevel = stage.GetPlayerLevel();
-                var stars = stage.GetLevelStars(playerLevel);
-                var arg = new CardArg(levelInfo?.title, playerLevel, stars, levelInfo?.sprite);
+                var arg = player.GetCardArg();
                 StageClearMgr.SetCardAlpha(0);
                 StageClearMgr.SetCardActive(true);
                 StageClearMgr.SetCard(arg);

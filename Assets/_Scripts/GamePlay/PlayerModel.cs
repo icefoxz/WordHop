@@ -38,9 +38,13 @@ namespace GamePlay
         private void Upgrade(int score)
         {
             UpgradeRecord = UpgradeHandler.Upgrade(score);
+            var level = UpgradeHandler.CurrentLevel.Level;
+            var exp = UpgradeHandler.Exp;
             Level.AddScore(score);
             Level.AddCoin(score);
-            Level.SetLevel(UpgradeHandler.CurrentLevel.Level, UpgradeHandler.Exp);
+            Level.SetLevel(level, exp);
+            var job = Game.ConfigureSo.JobTree.GetPlayerJob(Level.Job.JobType, level);
+            Level.UpdateJob(job);
             SendEvent(GameEvents.Stage_Point_Update, score);
             CompareAndReplaceHighest();
         }
@@ -115,10 +119,17 @@ namespace GamePlay
             return Game.ConfigureSo.JobTree.GetJobInfo(Level.Job.JobType, playerLevel);
         }
 
-        public int GetLevelStars(int playerLevel)
+        private int GetLevelStars(int playerLevel)
         {
             var value = playerLevel / 2;
             return value < 1 ? 1 : value;
+        }
+
+        public CardArg GetCardArg()
+        {
+            var stars = GetLevelStars(Level.Level);
+            var icon = Game.ConfigureSo.JobTree.GetJobIcon(Level.Job.JobType, Level.Level);
+            return new CardArg(Level.Job.Title, Level.Level, stars, icon);
         }
     }
 }

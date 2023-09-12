@@ -27,4 +27,5 @@ public class JobSwitch
     public int Level;
     public int Cost;
     public string Message;
+    public Sprite Icon;
 }
