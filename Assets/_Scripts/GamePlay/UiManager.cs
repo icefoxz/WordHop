@@ -7,7 +7,6 @@ using AOT.Utls;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
-using log4net.Core;
 
 public class UiManager : MonoBehaviour
 {
@@ -43,6 +42,8 @@ public class UiManager : MonoBehaviour
     private View_WordSlotMgr WordSlotMgr { get; set; }
     private View_StageClearMgr StageClearMgr { get; set; }
     private View_GameOverMgr GameOverMgr { get; set; }
+    private View_SettingsMgr SettingsMgr { get; set; }
+    public View_TopSection TopSection { get; set; }
 
     private Transform TapPadParent => _tapPadParent;
     private GamePlayController GamePlayController => Game.Controller.Get<GamePlayController>();
@@ -105,16 +106,13 @@ public class UiManager : MonoBehaviour
 
     private void WindowsInit()
     {
-        //WinWindow = new WindowButtonUi(winView, () => { GamePlayController.StartLevel(); });
-        //Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, bag => WinWindow.Show());
-        //LoseWindow = new WindowButtonUi(loseView, StartWindow.Show);
-        //Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => LoseWindow.Show());
-        //CompleteWindow = new WindowButtonUi(completeView, StartWindow.Show);
-        //Game.MessagingManager.RegEvent(GameEvents.Stage_Game_Win, bag => CompleteWindow.Set(bag.GetString(0)));
+        SettingsMgr = new View_SettingsMgr(settingsView);
+        SettingsMgr.LoadPref();
+        TopSection = new View_TopSection(topSectionView, SettingsMgr.Show);
         StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
         GameOverMgr = new View_GameOverMgr(loseView, StartWindow.Show, () => XDebug.LogWarning("暂时不支持复活功能!"));
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => SetGameOver());
-        StageClearMgr = new View_StageClearMgr(winView,()=> GamePlayController.StartLevel());
+        StageClearMgr = new View_StageClearMgr(winView, () => GamePlayController.StartLevel());
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, b => OnLevelClear());
         underAttackView.GameObject.SetActive(false);
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Failed, b => PlayUnderAttack());
@@ -136,9 +134,9 @@ public class UiManager : MonoBehaviour
     private void SetGameOver()
     {
         var score = Game.Model.Stage.GetScore();
-        var title = Game.Model.Stage.GetPlayerTitle();
+        var info = Game.Model.Stage.GetPlayerLevelInfo();
         
-        GameOverMgr.Set(title, score);
+        GameOverMgr.Set(info?.title, score);
         GameOverMgr.Show(displayRevive: false);
     }
 
@@ -154,10 +152,21 @@ public class UiManager : MonoBehaviour
             var wordLevel = Game.Model.WordLevel;
             var max = wordLevel.GetCurrentMaxScore();
             var current = stage.UpgradeRecord.UpgradeExp;
-            var title = stage.GetPlayerTitle();
+            var levelInfo = stage.GetPlayerLevelInfo();
             var badgeCfg = GetBadgeCfgForCurrentLevel();
-            yield return StageClearMgr.PlayUpgrade(title, CalculateStar(current, max), upgradeRec,
+            yield return StageClearMgr.PlayUpgrade(levelInfo?.title, CalculateStar(current, max), upgradeRec,
                 prefab => BadgeConfigLoader.LoadPrefab(badgeCfg, prefab));
+            if (upgradeRec.Levels.Count > 1)
+            {
+                var playerLevel = stage.GetPlayerLevel();
+                var stars = stage.GetLevelStars(playerLevel);
+                var arg = new CardArg(levelInfo?.title, playerLevel, stars, levelInfo?.sprite);
+                StageClearMgr.SetCardAlpha(0);
+                StageClearMgr.SetCardActive(true);
+                StageClearMgr.SetCard(arg);
+                yield return StageClearMgr.PlayWindowToY(300, 0.5f);
+                yield return StageClearMgr.FadeOutCard(1.5f);
+            }
         }
     }
 

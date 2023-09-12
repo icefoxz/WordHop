@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -8,7 +9,7 @@ public class AssignSFXToMixer : MonoBehaviour
     public string sfxTag = "SFX";
     public AudioMixerGroup sfxGroup;
 
-    [Button(ButtonSizes.Large)]private void TagAllAudioSources(string tag = "SFX")
+    [Button(ButtonSizes.Large)]private void TagAllAudioSources()
     {
         // 获取场景中所有的 AudioSource 组件
         AudioSource[] audioSources = GameObject.FindObjectsOfType<AudioSource>(includeInactive: true);
@@ -20,8 +21,8 @@ public class AssignSFXToMixer : MonoBehaviour
                 Debug.Log($"Skipping[{source.gameObject.name}] AudioSource on BGM",source);
                 continue;
             }
-            source.gameObject.tag = tag;
-            Debug.Log($"Tagged[{source.gameObject.name}] AudioSource as {tag}",source);
+            source.gameObject.tag = sfxTag;
+            Debug.Log($"Tagged[{source.gameObject.name}] AudioSource as {sfxTag}",source);
         }
 
         Debug.Log($"Tagged {audioSources.Length} AudioSources as 'SFX'");
@@ -33,10 +34,11 @@ public class AssignSFXToMixer : MonoBehaviour
             Debug.LogError("No SFX Mixer Group assigned!");
             return;
         }
-        var sfxSources = GameObject.FindGameObjectsWithTag(sfxTag);
-        foreach (var src in sfxSources)
+        // 获取场景中所有的 AudioSource 组件
+        AudioSource[] audioSources = GameObject.FindObjectsOfType<AudioSource>(includeInactive: true);
+        var sfxSources = audioSources.Where(a=>a.tag == sfxTag).ToArray();
+        foreach (var audioSource in sfxSources)
         {
-            var audioSource = src.GetComponent<AudioSource>();
             if (audioSource)
             {
                 audioSource.outputAudioMixerGroup = sfxGroup;

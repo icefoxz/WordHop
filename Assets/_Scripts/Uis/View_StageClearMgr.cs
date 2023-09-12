@@ -30,9 +30,11 @@ public class View_StageClearMgr
     /// <param name="upgrade"></param>
     /// <param name="seconds"></param>
     /// <returns></returns>
-    public IEnumerator PlayUpgrade(string title,int stars, UpgradingRecord upgrade, UnityAction<GameObject> transformAction ,float seconds = 1f)
+    public IEnumerator PlayUpgrade(string title,int stars, UpgradingRecord upgrade, 
+        UnityAction<GameObject> transformAction , float seconds = 1f)
     {
         var firstRec = upgrade.Levels[0];
+        View_stageClear.ResetWindowPos();
         Show();
         View_stageClear.PlayStars(stars);
         //如果不是升级,仅增加经验的演示
@@ -71,7 +73,11 @@ public class View_StageClearMgr
         }
     }
     public void SetBadge(BadgeConfiguration badgeCfg)=> View_stageClear.SetBadge(badgeCfg);
-
+    public void SetCard(CardArg arg) => View_stageClear.SetCard(arg);
+    public void SetCardAlpha(float alpha) => View_stageClear.SetAlpha(alpha);
+    public IEnumerator FadeOutCard(float seconds) => View_stageClear.FadeOutCard(seconds);
+    public void SetCardActive(bool active) => View_stageClear.SetCardActive(active);
+    public IEnumerator PlayWindowToY(float localY, float seconds) => View_stageClear.PlayWindowToY(localY, seconds);
 
     private class View_StageClear : UiBase
     {
@@ -82,9 +88,15 @@ public class View_StageClearMgr
         private Image img_star_1 { get; }
         private Image img_star_2 { get; }
         private Image[] Stars { get; }
-        private View_userLevel view_userLevel { get; set; }
+        private View_userLevel view_userLevel { get; }
+        private View_Card view_card { get; }
+        private CanvasGroup canvas_card { get; }
+        private Transform trans_win { get; }
         public View_StageClear(IView v, UnityAction onClickNextAction, UnityAction onClickAdAction) : base(v, false)
         {
+            view_card = new View_Card(v.Get<View>("view_card"));
+            canvas_card = v.Get<CanvasGroup>("canvas_card");
+            trans_win = v.Get<Transform>("trans_win");
             img_star_0 = v.Get<Image>("img_star_0");
             img_star_1 = v.Get<Image>("img_star_1");
             img_star_2 = v.Get<Image>("img_star_2");
@@ -100,6 +112,15 @@ public class View_StageClearMgr
             btn_ad.onClick.AddListener(onClickAdAction);
             view_userLevel = new View_userLevel(v.Get<View>("view_userLevel"));
         }
+
+        public void SetCard(CardArg arg) => view_card.Set(arg);
+        public void SetAlpha(float alpha) => canvas_card.alpha = alpha;
+        public IEnumerator FadeOutCard(float seconds)
+        {
+            SetAlpha(0);
+            yield return canvas_card.DOFade(1, seconds).WaitForCompletion();
+        }
+
         public void PlayLevelAura() => view_userLevel.PlayLevelAura();
         public void SetExpValue(int exp) => text_exp.text = exp.ToString();
         public void SetExpBar(int exp, float max)
@@ -131,19 +152,28 @@ public class View_StageClearMgr
             return t.Play();
         }
 
+        public void ResetWindowPos()
+        {
+            trans_win.localPosition = Vector3.zero;
+            view_card.Hide();
+        }
+
+        public IEnumerator PlayWindowToY(float yPos, float secs)
+        {
+            yield return trans_win.DOLocalMoveY(yPos, secs).WaitForCompletion();
+        }
+        public void SetCardActive(bool active) => view_card.SetCardActive(active);
 
         private class View_userLevel : UiBase
         {
             private Slider slider_exp { get; set; }
             private TMP_Text tmp_exp { get; set; }
-            //private View_level view_level { get; set; }
             private Animation anim_levelAura { get; set; }
             private View_Badge view_badge { get; }
             public View_userLevel(IView v) : base(v, true)
             {
                 slider_exp = v.Get<Slider>("slider_exp");
                 tmp_exp = v.Get<TMP_Text>("tmp_exp");
-                //view_level = new View_level(v.Get<View>("view_level"));
                 anim_levelAura = v.Get<Animation>("anim_levelAura");
                 view_badge = new View_Badge(v.Get<View>("view_badge"));
             }

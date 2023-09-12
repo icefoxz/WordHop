@@ -2,7 +2,6 @@ using System;
 using AOT.BaseUis;
 using AOT.Views;
 using TMPro;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -31,7 +30,7 @@ public class View_GameOverMgr
         private TMP_Text tmp_title { get; set; }
         private Button btn_ok { get; set; }
         private Button btn_revive { get; set; }
-        private View_Level levelView { get; set; }
+
         public View_GameOver(IView v, UnityAction onOkAction,UnityAction onReviveAction) : base(v, false)
         {
             tmp_score = v.Get<TMP_Text>("tmp_score");
@@ -44,29 +43,6 @@ public class View_GameOverMgr
                 Hide();
             });
             btn_revive.onClick.AddListener(onReviveAction);
-            levelView = new View_Level(v.Get<View>("view_level"));
-        }
-
-        private class View_Level : UiBase
-        {
-            private GameObject obj_wings_0 { get; set; }
-            private GameObject obj_wings_1 { get; set; }
-            private GameObject obj_wings_2 { get; set; }
-            private Image img_frame_0 { get; set; }
-            private Image img_frame_1 { get; set; }
-            private Image img_frame_2 { get; set; }
-            private TMP_Text tmp_level { get; set; }
-            public View_Level(IView v) : base(v, true)
-            {
-                obj_wings_0 = v.Get<GameObject>("obj_wings_0");
-                obj_wings_1 = v.Get<GameObject>("obj_wings_1");
-                obj_wings_2 = v.Get<GameObject>("obj_wings_2");
-                img_frame_0 = v.Get<Image>("img_frame_0");
-                img_frame_1 = v.Get<Image>("img_frame_1");
-                img_frame_2 = v.Get<Image>("img_frame_2");
-                tmp_level = v.Get<TMP_Text>("tmp_level");
-            }
-            public void SetLevel(int level) => tmp_level.text = level.ToString();
         }
 
         public void DisplayRevive(bool display) => btn_revive.gameObject.SetActive(display);

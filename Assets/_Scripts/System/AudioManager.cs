@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using AOT.Utls;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -7,6 +8,8 @@ using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
 {
+    public const string SFXVolume = "SFXVolume";
+    public const string BGMVolume = "BGMVolume";
     public AudioSource bgmSource; // 用于背景音乐
     public AudioSource sfxSource; // 用于音效
 
@@ -25,6 +28,17 @@ public class AudioManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+
+#if UNITY_EDITOR
+    [Button]private void SetBgmsVolumeUp(float multiplier = 1.5f)
+    {
+        foreach (var a in bgmData)
+        {
+            a.volume *= multiplier;
+            XDebug.Log($"Bgm {a.clip.name} volume up to {a.volume}");
+        }
+    }
+#endif
 
     public void Init()
     {
@@ -54,6 +68,28 @@ public class AudioManager : MonoBehaviour
             randomPlayBgm = true;
             ResetBgmList();
         });
+    }
+
+    public void SetSfxVolume(float volume) => mixer.SetFloat(SFXVolume, LinearToDecibel(volume));
+    public void SetBgmVolume(float volume) => mixer.SetFloat(BGMVolume, LinearToDecibel(volume));
+
+    public void SetBgmMute(bool isMute)
+    {
+        if (isMute) mixer.SetFloat(BGMVolume, LinearToDecibel(-80));
+        else mixer.SetFloat(BGMVolume, 0);
+    }
+
+    public void SetSfxMute(bool isMute)
+    {
+        if (isMute) mixer.SetFloat(SFXVolume, LinearToDecibel(-80));
+        else mixer.SetFloat(SFXVolume, 0);
+    }
+
+    private float LinearToDecibel(float linear)
+    {
+        if (linear != 0)
+            return 20.0f * Mathf.Log10(linear);
+        return -80.0f;
     }
 
     public static void PlayBGM(int index)=> instance.PlayMusic(index);

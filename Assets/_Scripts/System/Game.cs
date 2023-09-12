@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     public static ControllerServiceContainer Controller { get; } = new ControllerServiceContainer();
     public static ConfigureSo ConfigureSo { get; private set; }
     public static CoroutineService CoroutineService { get; private set; }
+    public static AudioManager AudioManager { get; private set; }
     [SerializeField] private SpriteContainerSo spriteContainer;
     [SerializeField] private ConfigureSo configureSo;
     [SerializeField] private UiManager _uiManager;
@@ -21,6 +22,7 @@ public class Game : MonoBehaviour
 
     void Start()
     {
+        AudioManager = _audioManager;
         CoroutineService = _coroutineService;
         ResLoader = new ResLoader(spriteContainer);
         ConfigureSo = configureSo;

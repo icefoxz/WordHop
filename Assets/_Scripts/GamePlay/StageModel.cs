@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -72,7 +73,7 @@ public class StageModel : ModelBase
         public int MaxExp { get; set; }
     }
 
-    public string GetPlayerTitle()
+    public (string title, Sprite sprite)? GetPlayerLevelInfo()
     {
         //var titles = new string[]
         //{
@@ -98,8 +99,12 @@ public class StageModel : ModelBase
         //    "Undefeated War King", //不败战王 
         //};
         var playerLevel = GetPlayerLevel();
+        return Game.ConfigureSo.JobTree.GetJobInfo(JobTreeSo.JobTypes.Warriors, playerLevel);
+    }
 
-        var title = Game.ConfigureSo.JobTree.GetJobLevelTitle(JobTreeSo.JobTypes.Warriors, playerLevel);//titles[playerLevel - 1];
-        return title;
+    public int GetLevelStars(int playerLevel)
+    {
+        var value = playerLevel / 2;
+        return value < 1 ? 1 : value;
     }
 }

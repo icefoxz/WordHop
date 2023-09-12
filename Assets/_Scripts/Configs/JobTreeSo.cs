@@ -24,22 +24,22 @@ public class JobTreeSo : ScriptableObject
         return null;
     }
 
-    public string GetJobLevelTitle(JobTypes type, int level)
+    public (string title, Sprite sprite)? GetJobInfo(JobTypes type, int level)
     {
         return type switch
         {
-            JobTypes.Warriors => GetJobLevelTitle("Warriors", level),
-            JobTypes.Mages => GetJobLevelTitle("Mages", level),
-            JobTypes.Elves => GetJobLevelTitle("Elves", level),
-            JobTypes.Rouges => GetJobLevelTitle("Rouges", level),
+            JobTypes.Warriors => GetJobInfo("Warriors", level),
+            JobTypes.Mages => GetJobInfo("Mages", level),
+            JobTypes.Elves => GetJobInfo("Elves", level),
+            JobTypes.Rouges => GetJobInfo("Rouges", level),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
 
-    public string GetJobLevelTitle(string jobName,int level)
+    public (string title, Sprite sprite)? GetJobInfo(string jobName,int level)
     {
         var job = GetJobType(jobName).LevelSets.FirstOrDefault(j => j.Level == level);
-        if (job != null) return job.Title;
+        if (job != null) return (job.Title, job.Icon);
         Debug.LogError($"没有找到职业{jobName}的{level}级称号");
         return null;
     }
