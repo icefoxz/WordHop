@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class View_Card : UiBase
 {
+    public enum Modes
+    {
+        None,
+        Active,
+    }
     private TMP_Text tmp_level { get; set; }
     private TMP_Text tmp_title { get; set; }
     private Image img_icon { get; set; }
@@ -76,21 +81,24 @@ public class View_Card : UiBase
             obj.SetActive(i < stars);
         }
     }
-    public void SetCardActive(bool active) => SetNone(!active);
+    public void SetMode(Modes mode) => SetNone(mode == Modes.None);
 }
 
 public struct CardArg
 {
     public string title;
     public int level;
-    public int stars;
     public Sprite icon;
+    public int stars;
+    public JobSwitch[] options;
 
-    public CardArg(string title, int level, int stars, Sprite icon)
+    public CardArg(string title, int level, int stars, Sprite icon,
+        JobSwitch[] options)
     {
         this.title = title;
         this.level = level;
         this.stars = stars;
         this.icon = icon;
+        this.options = options;
     }
 }

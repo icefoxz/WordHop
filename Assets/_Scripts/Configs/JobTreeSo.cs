@@ -25,9 +25,22 @@ public class JobTreeSo : ScriptableObject
         return new PlayerJob(levelSet.Title, level, type);
     }
 
+    public CardArg GetCardArg(PlayerJob job)=> GetCardArg(job.JobType, job.Level);
+
+    public CardArg GetCardArg(JobTypes type, int level)
+    {
+        var job = GetField(type);
+        var levelSet = job.JobSo.LevelSets.FirstOrDefault(j => j.Level == level);
+        if(levelSet == null)
+            throw new ArgumentOutOfRangeException(nameof(level), level, null);
+        return new CardArg(levelSet.Title, level, GetStars(level), levelSet.Icon, levelSet.JobSwitches);
+    }
+
+    private int GetStars(int level) => level / 2;
+
     private JobTypeField GetField(JobTypes jobTypes)
     {
-        var jobName =GetJobName(jobTypes);
+        var jobName = GetJobName(jobTypes);
         var job = Fields.FirstOrDefault(j => jobName.Equals(j.JobName));
         if (job != null) return job;
         Debug.LogError($"没有找到职业{jobName}");

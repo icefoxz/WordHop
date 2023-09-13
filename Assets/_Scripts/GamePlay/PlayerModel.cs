@@ -1,3 +1,4 @@
+using log4net.Core;
 using System.Linq;
 using UnityEngine;
 
@@ -58,6 +59,16 @@ namespace GamePlay
             }
         }
 
+        public void SwitchJob(JobSwitch op)
+        {
+            UpgradeHandler.SetLevel(op.Level, 0);
+            Level.SetLevel(op.Level, 0);
+            var job = Game.ConfigureSo.JobTree.GetPlayerJob(op.JobType, op.Level);
+            Level.UpdateJob(job);
+            CompareAndReplaceHighest();
+            SendEvent(GameEvents.Stage_Job_Update);
+        }
+        
         public void AddCoin(int coin)
         {
             Level.AddCoin(coin);
@@ -68,14 +79,6 @@ namespace GamePlay
         {
             Level.SetCoin(coin);
             SendEvent(GameEvents.Stage_Coin_Update, coin);
-        }
-
-        public void SetLevel(PlayerLevel level)
-        {
-            Level = level;
-            UpgradeHandler.SetLevel(level: level.Level, exp: level.Exp);
-            SendEvent(GameEvents.Stage_Level_Update, level);
-            CompareAndReplaceHighest();
         }
 
         public void StageLevelPass(int point)
@@ -117,19 +120,6 @@ namespace GamePlay
             //};
             var playerLevel = GetPlayerLevel();
             return Game.ConfigureSo.JobTree.GetJobInfo(Level.Job.JobType, playerLevel);
-        }
-
-        private int GetLevelStars(int playerLevel)
-        {
-            var value = playerLevel / 2;
-            return value < 1 ? 1 : value;
-        }
-
-        public CardArg GetCardArg()
-        {
-            var stars = GetLevelStars(Level.Level);
-            var icon = Game.ConfigureSo.JobTree.GetJobIcon(Level.Job.JobType, Level.Level);
-            return new CardArg(Level.Job.Title, Level.Level, stars, icon);
         }
     }
 }

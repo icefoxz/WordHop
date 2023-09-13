@@ -9,8 +9,8 @@ public class GameModelContainer
     public void Init()
     {
         var job = Game.ConfigureSo.JobTree.GetPlayerJob(JobTypes.Warriors, 1);
-        var upgradeFields = Game.ConfigureSo.UpgradeConfigSo.GetLevels();
-        Player = new PlayerModel(new PlayerLevel(1, 0, 0, 0, job), upgradeFields);
+        var levelFields = Game.ConfigureSo.UpgradeConfigSo.GetLevels();
+        Player = new PlayerModel(new PlayerLevel(1, 0, 0, 0, job), levelFields);
         var highestLevel = Pref.GetHighestLevel();
         if (highestLevel != null) Player.SetHighestLevel(highestLevel);
     }

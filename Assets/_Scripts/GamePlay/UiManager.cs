@@ -4,6 +4,7 @@ using System.Linq;
 using AOT.Views;
 using AOT.BaseUis;
 using AOT.Utls;
+using GamePlay;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -112,7 +113,7 @@ public class UiManager : MonoBehaviour
         StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
         GameOverMgr = new View_GameOverMgr(loseView, StartWindow.Show, () => XDebug.LogWarning("暂时不支持复活功能!"));
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => SetGameOver());
-        StageClearMgr = new View_StageClearMgr(winView, () => GamePlayController.StartLevel());
+        StageClearMgr = new View_StageClearMgr(winView, StartLevel);
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, b => OnLevelClear());
         underAttackView.GameObject.SetActive(false);
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Failed, b => PlayUnderAttack());
@@ -130,16 +131,16 @@ public class UiManager : MonoBehaviour
         }
     }
 
-
     private void SetGameOver()
     {
         var player = Game.Model.Player;
         var playerLevel = player.Level;
         var job = playerLevel.Job;
         var badgeCfg = GetBadgeCfgForCurrentLevel();
+        var cardArg = GetCardArg();
         BadgeConfigLoader.LoadPrefab(badgeCfg, GameOverMgr.Badge);
         GameOverMgr.Set(job.Title, job.Level, playerLevel.Score);
-        GameOverMgr.SetCard(player.GetCardArg());
+        GameOverMgr.SetCard(cardArg);
         GameOverMgr.Show(displayRevive: false);
     }
 
@@ -148,6 +149,7 @@ public class UiManager : MonoBehaviour
         StartCoroutine(Call(PlaySlotAnim));
         IEnumerator PlaySlotAnim()
         {
+            StageClearMgr.DisplayCardSect(false);
             yield return WordSlotMgr.LightUpAll();
             yield return new WaitForSeconds(1f);
             var player = Game.Model.Player;
@@ -157,18 +159,64 @@ public class UiManager : MonoBehaviour
             var current = player.UpgradeRecord.UpgradeExp;
             var levelInfo = player.GetPlayerLevelInfo();
             var badgeCfg = GetBadgeCfgForCurrentLevel();
-            yield return StageClearMgr.PlayUpgrade(levelInfo?.title, CalculateStar(current, max), upgradeRec,
+            var isUpgrade = upgradeRec.Levels.Count > 1;
+            yield return StageClearMgr.PlayExpGrowing(levelInfo?.title, CalculateStar(current, max), upgradeRec,
                 prefab => BadgeConfigLoader.LoadPrefab(badgeCfg, prefab));
-            if (upgradeRec.Levels.Count > 1)
+            if (isUpgrade)
             {
-                var arg = player.GetCardArg();
-                StageClearMgr.SetCardAlpha(0);
-                StageClearMgr.SetCardActive(true);
-                StageClearMgr.SetCard(arg);
+                StageClearMgr.DisplayCardSect(true);
+                var arg = GetCardArg();
+                StageClearMgr.ClearCard();
+                StageClearMgr.SetCard(arg, true);
+                var options = arg.options.Where(o => player.Level.Coin >= o.Cost)
+                            .Select(ConvertJobArg).ToArray();
+                if (options.Length > 0)
+                {
+                    StageClearMgr.SetOptions(options,
+                        StartLevel, index => SwitchJob(arg.options[index]));
+                    StageClearMgr.SetCardAction(() => StartCoroutine(StageClearMgr.ShowOptions(1000, 1)));
+                }
                 yield return StageClearMgr.PlayWindowToY(300, 0.5f);
                 yield return StageClearMgr.FadeOutCard(1.5f);
             }
         }
+    }
+
+    private void SwitchJob(JobSwitch job)
+    {
+        var player = Game.Model.Player;
+        player.AddCoin(-job.Cost);
+        player.SwitchJob(job);
+        StageClearMgr.ClearCard();
+        var arg = GetCardArg();
+        StageClearMgr.SetCard(arg, false);
+        StageClearMgr.HideOptions();
+        StartCoroutine(PlayCardFadeout());
+
+        IEnumerator PlayCardFadeout()
+        {
+            yield return StageClearMgr.FadeOutCard(1);
+            yield return new WaitForSeconds(1f);
+            StartLevel();
+        }
+    }
+
+    private static CardArg GetCardArg()
+    {
+        var player = Game.Model.Player;
+        return Game.ConfigureSo.JobTree.GetCardArg(player.Level.Job);
+    }
+
+    private static (string title, string Message, Sprite Icon) ConvertJobArg(JobSwitch o)
+    {
+        var jobInfo = Game.ConfigureSo.JobTree.GetJobInfo(o.JobType, o.Level).Value;
+        return (jobInfo.title, o.Message, o.Icon);
+    }
+
+    private void StartLevel()
+    {
+        GamePlayController.StartLevel();
+        StageClearMgr.Hide();
     }
 
     public int CalculateStar(float currentScore, float maxScore)

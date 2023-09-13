@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 public enum JobTypes
 {
     Warriors,
@@ -6,6 +5,7 @@ public enum JobTypes
     Elves,
     Rouges
 }
+
 public record PlayerJob
 {
     public string Title { get; set; }

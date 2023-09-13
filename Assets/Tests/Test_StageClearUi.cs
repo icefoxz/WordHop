@@ -25,7 +25,7 @@ public class Test_StageClear : MonoBehaviour
         IEnumerator PlayUpgrade()
         {
             var r = Player.AddExp(exp);
-            yield return StageClearMgr.PlayUpgrade("test", 3, r, null);
+            yield return StageClearMgr.PlayExpGrowing("test", 3, r, null);
         }
     }
 

@@ -20,7 +20,12 @@ MonoBehaviour:
   - "\u7B49\u7EA7": 2
     "\u79F0\u53F7": Brawler
     "\u56FE\u6807": {fileID: 21300000, guid: 16103713efb6f644e8ca203a6037ace1, type: 3}
-    "\u8F6C\u804C": []
+    "\u8F6C\u804C":
+    - JobType: 1
+      Level: 1
+      Cost: 10
+      Message: There is a mage school offer...
+      Icon: {fileID: 21300000, guid: cfca08577a857449f9070ba922aa86df, type: 3}
   - "\u7B49\u7EA7": 3
     "\u79F0\u53F7": Ironclad Fighter
     "\u56FE\u6807": {fileID: 21300000, guid: 07ad85a0029e6d7498aa8156b50e8b9d, type: 3}
