@@ -48,27 +48,27 @@ public class Pref
     public static float GetSfxVolume() => CheckOrDefault(SFX_VOLUME, 1);
     public static void SetSfxVolume(float value) => PlayerPrefs.SetFloat(SFX_VOLUME, value);
 
-    public static PlayerLevel GetHighestLevel()
+    public static PlayerRec GetHighestLevel()
     {
         var json = CheckOrDefault(Highestlevel, string.Empty);
-        return Json.Deserialize<PlayerLevel>(json);
+        return Json.Deserialize<PlayerRec>(json);
     }
 
-    public static void SetHighestLevel(PlayerLevel highestLevel)
+    public static void SetHighestLevel(PlayerRec highestRec)
     {
-        var json = Json.Serialize(highestLevel);
+        var json = Json.Serialize(highestRec);
         PlayerPrefs.SetString(Highestlevel, json);
     }
 
-    public static PlayerLevel GetPlayerLevel()
+    public static PlayerRec GetPlayerLevel()
     {
         var json = CheckOrDefault(Playerlevel, string.Empty);
-        return Json.Deserialize<PlayerLevel>(json);
+        return Json.Deserialize<PlayerRec>(json);
     }
 
-    public static void SetPlayerLevel(PlayerLevel level)
+    public static void SetPlayerLevel(PlayerRec current)
     {
-        var json = Json.Serialize(level);
+        var json = Json.Serialize(current);
         PlayerPrefs.SetString(Playerlevel, json);
     }
 }

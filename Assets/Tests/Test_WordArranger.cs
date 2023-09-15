@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +13,7 @@ public class Test_WordArranger : MonoBehaviour
 {
     [Button]public void ConvertWordsToGroup(TextAsset asset)
     {
-        var text = asset.text.Split('\n').Where(s=>!s.IsNullOrWhitespace()).Select(w=>w.Trim('\r')).ToArray();
+        var text = TextAssetProcess(asset);
         var group = text.Select(s => new{key=new string(s.OrderBy(c=>c).ToArray()), text= s}).GroupBy(a=>a.key,a=>a.text).ToList();
 
         var wordGroup = new List<WordGroup>();
@@ -35,10 +37,29 @@ public class Test_WordArranger : MonoBehaviour
         AssetDatabase.Refresh();
     }
 
+    private static string[] TextAssetProcess(TextAsset asset)
+    {
+        return asset.text.Split('\n')
+            .Where(s=>!s.IsNullOrWhitespace())
+            .Select(w=>w.Trim('\r').ToLower())
+            .Distinct()
+            .Where(c=>!IsShortForm(c))
+            .ToArray();
+    }
+
+    static bool IsShortForm(string word)
+    {
+        // 创建一个元音集合
+        char[] vowels = { 'a', 'e', 'i', 'o', 'u', 'y' };
+
+        // 如果word中不存在任何元音，则判定为简写
+        return !word.ToLower().Any(c => vowels.Contains(c));
+    }
+
     [Button]
     public void SplitWords(TextAsset asset, string filePrefix = "common")
     {
-        var text = asset.text.Split('\n').Where(s => !s.IsNullOrWhitespace()).Select(w => w.Trim('\r')).ToArray();
+        var text = TextAssetProcess(asset);
         var lettersGroup = text.GroupBy(w => w.Length, w => w).ToArray();
         foreach (var letters in lettersGroup)
         {
@@ -58,5 +79,23 @@ public class Test_WordArranger : MonoBehaviour
             File.WriteAllText(path, json);
         }
         AssetDatabase.Refresh();
+    }    
+    
+    [Button]
+    public void GroupTexts(TextAsset asset, string filePrefix = "Filtered")
+    {
+        var text = TextAssetProcess(asset);
+        var lettersGroup = text.GroupBy(w => w.Length, w => w).ToArray();
+        foreach (var letters in lettersGroup)
+        {
+            //print(string.Join('\n', wgList));
+            var list = letters.Where(l=>!string.IsNullOrWhiteSpace(l)).ToArray();
+            var json = string.Join(" ", list);
+            var path = Application.dataPath + "/Configs/Words/" + filePrefix + "_" + letters.Key + ".txt";
+            File.WriteAllText(path, json);
+        }
+        AssetDatabase.Refresh();
     }
 }
+
+#endif

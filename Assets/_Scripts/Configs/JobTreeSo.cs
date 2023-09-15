@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 
 [CreateAssetMenu(fileName = "JobTreeSo", menuName = "配置/玩家/职业树")]
 public class JobTreeSo : ScriptableObject
@@ -25,6 +27,24 @@ public class JobTreeSo : ScriptableObject
         return new PlayerJob(levelSet.Title, level, type);
     }
 
+    public Dictionary<JobTypes, CardArg[]> Data()=>
+        new Dictionary<JobTypes, CardArg[]>
+        {
+            {JobTypes.Warriors, GetCardArgs(JobTypes.Warriors)},
+            {JobTypes.Mages, GetCardArgs(JobTypes.Mages)},
+            {JobTypes.Elves, GetCardArgs(JobTypes.Elves)},
+            {JobTypes.Villagers, GetCardArgs(JobTypes.Villagers)},
+            {JobTypes.Mysterious, GetCardArgs(JobTypes.Mysterious)},
+            {JobTypes.Necromancer, GetCardArgs(JobTypes.Necromancer)},
+        };
+
+    private CardArg[] GetCardArgs(JobTypes type)
+    {
+        var field = GetField(type);
+        return field.JobSo.LevelSets
+            .Select(s => new CardArg(s.Title, s.Level, GetStars(s.Level), s.Icon, s.JobSwitches)).ToArray();
+    }
+
     public CardArg GetCardArg(PlayerJob job)=> GetCardArg(job.JobType, job.Level);
 
     public CardArg GetCardArg(JobTypes type, int level)
@@ -36,7 +56,10 @@ public class JobTreeSo : ScriptableObject
         return new CardArg(levelSet.Title, level, GetStars(level), levelSet.Icon, levelSet.JobSwitches);
     }
 
-    private int GetStars(int level) => level / 2;
+    private int GetStars(int level)
+    {
+        return 1 + level / 3;
+    }
 
     private JobTypeField GetField(JobTypes jobTypes)
     {
@@ -47,14 +70,16 @@ public class JobTreeSo : ScriptableObject
         return null;
     }
 
-    private string GetJobName(JobTypes type)
+    private static string GetJobName(JobTypes type)
     {
         return type switch
         {
             JobTypes.Warriors => "Warriors",
             JobTypes.Mages => "Mages",
             JobTypes.Elves => "Elves",
-            JobTypes.Rouges => "Rouges",
+            JobTypes.Villagers => "Villagers",
+            JobTypes.Mysterious => "Mysterious",
+            JobTypes.Necromancer => "Necromancer",
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

@@ -77,6 +77,7 @@ public class View_StageClearMgr
     public void SetBadge(BadgeConfiguration badgeCfg)=> View_stageClear.SetBadge(badgeCfg);
     public void SetCard(CardArg arg, bool resetPos) => View_stageClear.SetCard(arg, resetPos);
     public void SetCardAction(UnityAction onceAction) => View_stageClear.SetCardAction(onceAction);
+    public void SetCoin(int coin, int sum) => View_stageClear.SetCoin(coin, sum);
 
     public IEnumerator ShowOptions(float localY, float seconds) => View_stageClear.ShowOptions(localY, seconds);
 
@@ -95,7 +96,9 @@ public class View_StageClearMgr
 
     private class View_StageClear : UiBase
     {
-        private TMP_Text text_exp { get; set; }
+        private TMP_Text tmp_exp { get; set; }
+        private TMP_Text tmp_coin { get; set; }
+        private TMP_Text tmp_coinAdd { get; set; }
         private Button btn_next { get; set; }
         private Button btn_ad { get; set; }
         private Image img_star_0 { get; }
@@ -118,7 +121,9 @@ public class View_StageClearMgr
             img_star_1 = v.Get<Image>("img_star_1");
             img_star_2 = v.Get<Image>("img_star_2");
             Stars = new[] { img_star_0, img_star_1, img_star_2 };
-            text_exp = v.Get<TMP_Text>("text_exp");
+            tmp_exp = v.Get<TMP_Text>("tmp_exp");
+            tmp_coin = v.Get<TMP_Text>("tmp_coin");
+            tmp_coinAdd = v.Get<TMP_Text>("tmp_coinAdd");
             btn_next = v.Get<Button>("btn_next");
             btn_next.onClick.AddListener(onClickNextAction);
             btn_ad = v.Get<Button>("btn_ad");
@@ -135,6 +140,12 @@ public class View_StageClearMgr
             view_options.Hide();
         }
 
+        public void SetCoin(int coin, int sum)
+        {
+            tmp_coinAdd.text = coin.ToString();
+            tmp_coin.text = sum.ToString();
+        }
+
         public void SetCardAction(UnityAction onceAction) => view_cardSect.SetCardAction(onceAction);
 
         public void SetAlpha(float alpha) => view_cardSect.SetAlpha(alpha);
@@ -146,7 +157,7 @@ public class View_StageClearMgr
         public void HideOptions() => view_options.Hide();
 
         public void PlayLevelAura() => view_userLevel.PlayLevelAura();
-        public void SetExpValue(int exp) => text_exp.text = exp.ToString();
+        public void SetExpValue(int exp) => tmp_exp.text = exp.ToString();
         public void SetExpBar(int exp, float max) => view_userLevel.SetExp(exp, max);
         public void SetBadge(BadgeConfiguration badgeCfg) => view_userLevel.SetBadge(badgeCfg);
         public void SetLevel(string title, int level) => view_userLevel.SetLevel(title, level);

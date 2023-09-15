@@ -99,6 +99,16 @@ public class WordLevelModel : ModelBase
         SendEvent(GameEvents.Level_Reset);
     }
 
+    //public int GetScore(int sec)
+    //{
+    //    var missAve = GetMissTakeAve();
+    //    var multiplier = SelectedAlphabets.Count - missAve - 1;//最后-1是因为最小字数是3, 而3个字母最多2倍分数
+    //    var score = (int)(sec * multiplier);
+    //    return score;
+    //}
+
+    public double GetMissTakeAve() => SelectedAlphabets.Average(a => a.MissCount);
+
     //hack
     public void SetAllAlphabetSelected()
     {

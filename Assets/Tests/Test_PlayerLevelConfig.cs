@@ -1,5 +1,4 @@
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Test_PlayerLevelConfig : MonoBehaviour

@@ -20,7 +20,22 @@ MonoBehaviour:
   - "\u7B49\u7EA7": 2
     "\u79F0\u53F7": Junior Laborer
     "\u56FE\u6807": {fileID: 21300000, guid: 455730db777e57c4992292ec7c6b270c, type: 3}
-    "\u8F6C\u804C": []
+    "\u8F6C\u804C":
+    - JobType: 1
+      Level: 1
+      Cost: 170
+      Message: Warrior guild offer...
+      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
+    - JobType: 2
+      Level: 1
+      Cost: 190
+      Message: Shadowy invitation...
+      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
+    - JobType: 3
+      Level: 1
+      Cost: 200
+      Message: Magical invitation...
+      Icon: {fileID: 21300000, guid: cfca08577a857449f9070ba922aa86df, type: 3}
   - "\u7B49\u7EA7": 3
     "\u79F0\u53F7": Homestead Builder
     "\u56FE\u6807": {fileID: 21300000, guid: 19573d5b64e1e044ba39a9d0edf83c03, type: 3}
@@ -36,7 +51,17 @@ MonoBehaviour:
   - "\u7B49\u7EA7": 6
     "\u79F0\u53F7": Community Contributor
     "\u56FE\u6807": {fileID: 21300000, guid: e3361a085e969f44e927ffc0ed7c5a7d, type: 3}
-    "\u8F6C\u804C": []
+    "\u8F6C\u804C":
+    - JobType: 1
+      Level: 2
+      Cost: 1000
+      Message: Warrior guild offer...
+      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
+    - JobType: 2
+      Level: 2
+      Cost: 1350
+      Message: Shadowy invitation...
+      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
   - "\u7B49\u7EA7": 7
     "\u79F0\u53F7": Village Representative
     "\u56FE\u6807": {fileID: 21300000, guid: 2854d8ee8635982499d328f4673a137e, type: 3}
@@ -52,11 +77,21 @@ MonoBehaviour:
   - "\u7B49\u7EA7": 10
     "\u79F0\u53F7": Village Council Member
     "\u56FE\u6807": {fileID: 21300000, guid: 33467e8f31a61554ea7ba81cea4fb9f4, type: 3}
-    "\u8F6C\u804C": []
+    "\u8F6C\u804C":
+    - JobType: 1
+      Level: 5
+      Cost: 3000
+      Message: Warrior guild offer...
+      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
   - "\u7B49\u7EA7": 11
     "\u79F0\u53F7": Chamber of Commerce Member
     "\u56FE\u6807": {fileID: 21300000, guid: aabe63de4320026428c226a6b34147ed, type: 3}
-    "\u8F6C\u804C": []
+    "\u8F6C\u804C":
+    - JobType: 2
+      Level: 5
+      Cost: 3800
+      Message: Shadowy invitation...
+      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
   - "\u7B49\u7EA7": 12
     "\u79F0\u53F7": Property Owner
     "\u56FE\u6807": {fileID: 21300000, guid: 9269393a87eb1bf43ac65d539280ff21, type: 3}
@@ -68,11 +103,21 @@ MonoBehaviour:
   - "\u7B49\u7EA7": 14
     "\u79F0\u53F7": Community Elder
     "\u56FE\u6807": {fileID: 21300000, guid: 4c9082f8f7e32c947be26cc22ea4e257, type: 3}
-    "\u8F6C\u804C": []
+    "\u8F6C\u804C":
+    - JobType: 1
+      Level: 7
+      Cost: 6000
+      Message: Warrior guild offer...
+      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
   - "\u7B49\u7EA7": 15
     "\u79F0\u53F7": Major Merchant
     "\u56FE\u6807": {fileID: 21300000, guid: 02fdeb58a2fc9b946ad58a1c30b2f38a, type: 3}
-    "\u8F6C\u804C": []
+    "\u8F6C\u804C":
+    - JobType: 2
+      Level: 7
+      Cost: 6800
+      Message: Shadowy invitation...
+      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
   - "\u7B49\u7EA7": 16
     "\u79F0\u53F7": Village Chief
     "\u56FE\u6807": {fileID: 21300000, guid: e9214f24c8ffcf64686c5e5829333b87, type: 3}
@@ -80,7 +125,12 @@ MonoBehaviour:
   - "\u7B49\u7EA7": 17
     "\u79F0\u53F7": Land Mogul
     "\u56FE\u6807": {fileID: 21300000, guid: 26c1a849fa4107b4d920e165fe918bfa, type: 3}
-    "\u8F6C\u804C": []
+    "\u8F6C\u804C":
+    - JobType: 0
+      Level: 9
+      Cost: 8500
+      Message: Shadowy invitation...
+      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
   - "\u7B49\u7EA7": 18
     "\u79F0\u53F7": Regional Representative
     "\u56FE\u6807": {fileID: 21300000, guid: eceae59232e8db547b45d9d843f54357, type: 3}
@@ -88,7 +138,12 @@ MonoBehaviour:
   - "\u7B49\u7EA7": 19
     "\u79F0\u53F7": Community Legend
     "\u56FE\u6807": {fileID: 21300000, guid: c01e0aa2fd8786e43986cc2730fc53d1, type: 3}
-    "\u8F6C\u804C": []
+    "\u8F6C\u804C":
+    - JobType: 1
+      Level: 10
+      Cost: 10000
+      Message: Warrior guild offer...
+      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
   - "\u7B49\u7EA7": 20
     "\u79F0\u53F7": Local Luminary
     "\u56FE\u6807": {fileID: 21300000, guid: 724738b0f7bc3f147a1fea6a9a0e0225, type: 3}

@@ -1,9 +1,11 @@
 public enum JobTypes
 {
+    Villagers,
     Warriors,
+    Mysterious,
     Mages,
     Elves,
-    Rouges
+    Necromancer
 }
 
 public record PlayerJob

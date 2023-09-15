@@ -1,4 +1,4 @@
-public record PlayerLevel
+public record PlayerRec
 {
     public int Level { get; set; }
     public int Exp { get; set; }
@@ -6,7 +6,7 @@ public record PlayerLevel
     public int Score { get; set; }
     public PlayerJob Job { get; set; }
 
-    public PlayerLevel(int level, int exp, int coin, int score, PlayerJob job)
+    public PlayerRec(int level, int exp, int coin, int score, PlayerJob job)
     {
         Level = level;
         Exp = exp;

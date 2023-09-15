@@ -1,6 +1,7 @@
 using AOT.BaseUis;
 using AOT.Views;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -48,8 +49,17 @@ public class View_SettingsMgr
         View_settings.Set(gbmMute, sfcMute, bgmVolume, sfxVolume);
     }
 
-    private void HideSettings() => View_settings.Hide();
-    public void Show() => View_settings.Show();
+    private void HideSettings()
+    {
+        Time.timeScale = 1;
+        View_settings.Hide();
+    }
+
+    public void Show()
+    {
+        Time.timeScale = 0;
+        View_settings.Show();
+    }
 
     private class View_Settings : UiBase
     {

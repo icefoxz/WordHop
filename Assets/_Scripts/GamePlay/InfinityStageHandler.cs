@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using AOT.Core.Systems.Coroutines;
 using AOT.Utl;
@@ -14,6 +15,7 @@ public class InfinityStageHandler
     public WordConfigSo WordConfig { get; }
     public DifficultyLoader DifficultyLoader { get; }
     public LayoutConfigSo LayoutConfig { get; }
+    public Dictionary<int,List<WordGroup>> Data { get; } = new Dictionary<int, List<WordGroup>>();
 
     private int _timer;
     private int _countdownTime;
@@ -30,6 +32,16 @@ public class InfinityStageHandler
         WordConfig = wordConfig;
         DifficultyLoader = difficultyLoader;
         LayoutConfig = layoutConfig;
+        ResetData();
+    }
+
+    private void ResetData()
+    {
+        for (var i = 3; i < 7; i++)
+        {
+            var words = WordConfig.GetWords(i);
+            Data.Add(i, words.ToList());
+        }
     }
 
     public void StartGame()
@@ -52,11 +64,28 @@ public class InfinityStageHandler
         var levelIndex = Player.StageLevelDifficultyIndex;
         var words = levelIndex > 0 && levelIndex % 10 == 0 ? 7 : 0; // 每10关，第一关为7个字母，其余为随机(0)字母
         var (wds, exSecs) = DifficultyLoader.GetChallengeStageLevelConfig(levelIndex, words);
-        var wg = WordConfig.GetRandomWords(wds.Length);
-        var secs = exSecs + wg.Key.Length + 10; //暂时秒数这样设定
+        var wg = GetWordGroup(wds);
+
+        var secs = exSecs + //最多5秒
+                   wg.Key.Length + //最多7字
+                   Game.ConfigureSo.GameRoundConfigSo.BaseSeconds;
         var layout = GetLayout(wds.Length);
         _countdownTime = secs;
         WordLevel.InitLevel(wds, wg, secs, layout);
+    }
+
+    // 获取词语组
+    private WordGroup GetWordGroup(WordDifficulty[] wds)
+    {
+        var wgs = Data[wds.Length].ToArray();
+        if (wgs.Length == 0)
+        {
+            ResetData();
+            wgs = Data[wds.Length].ToArray();
+        }
+
+        var wg = wgs.OrderByDescending(_ => Random.Range(0, wgs.Length)).First();
+        return wg;
     }
 
     private LayoutConfig GetLayout(int words)
@@ -73,7 +102,7 @@ public class InfinityStageHandler
         while (_timer > 0)
         {
             yield return new WaitForSeconds(1f);
-            _timer -= 1;
+            Timer_Add(-1);
             // 更新UI显示倒计时，如果有的话
             WordLevel.Update(_timer);
             if (_timer <= 0)
@@ -82,6 +111,13 @@ public class InfinityStageHandler
 
         Lose(); // 时间到，游戏失败
     }
+
+    private void Timer_Add(int value)
+    {
+        _timer += value;
+        if(_timer < 0) _timer = 0;
+    }
+
     private void Lose()
     {
         // 游戏失败的逻辑
@@ -96,16 +132,13 @@ public class InfinityStageHandler
         Win();
     }
 
-    private void Win()//public for hack
+    private void Win()
     {
         // 游戏胜利的逻辑
         if(_countdownCoroutine) _countdownCoroutine.StopCo(); // 停止倒计时
-        var missAve = WordLevel.SelectedAlphabets.Average(a => a.MissCount);
-        var multiplier = WordLevel.SelectedAlphabets.Count - missAve - 1;//最后-1是因为最小字数是3, 而3个字母最多2倍分数
-        var score = (int)(_timer * multiplier);
-        Player.StageLevelPass(score);
-        Pref.SetHighestLevel(Player.HighestLevel);
-        Pref.SetPlayerLevel(Player.Level);
+        Player.StageLevelPass(_timer);
+        Pref.SetHighestLevel(Player.HighestRec);
+        Pref.SetPlayerLevel(Player.Current);
         XDebug.Log("You Win!");
         Game.MessagingManager.SendParams(GameEvents.Stage_Level_Win);
     }
@@ -120,6 +153,7 @@ public class InfinityStageHandler
             return;
         }
         alphabet.Miss();
+        if (_timer > 1) Timer_Add(-1);
         // 点击的顺序不对，视为失败
         WordLevel.SelectedAlphabet_Clear();
     }

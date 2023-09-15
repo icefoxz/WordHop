@@ -1,5 +1,4 @@
 using GamePlay;
-using Unity.Jobs.LowLevel.Unsafe;
 
 public class GameModelContainer
 {
@@ -8,9 +7,9 @@ public class GameModelContainer
 
     public void Init()
     {
-        var job = Game.ConfigureSo.JobTree.GetPlayerJob(JobTypes.Warriors, 1);
+        var job = Game.ConfigureSo.JobTree.GetPlayerJob(JobTypes.Villagers, 1);
         var levelFields = Game.ConfigureSo.UpgradeConfigSo.GetLevels();
-        Player = new PlayerModel(new PlayerLevel(1, 0, 0, 0, job), levelFields);
+        Player = new PlayerModel(new PlayerRec(1, 0, 0, 0, job), levelFields);
         var highestLevel = Pref.GetHighestLevel();
         if (highestLevel != null) Player.SetHighestLevel(highestLevel);
     }

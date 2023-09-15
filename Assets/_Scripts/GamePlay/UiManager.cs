@@ -4,7 +4,6 @@ using System.Linq;
 using AOT.Views;
 using AOT.BaseUis;
 using AOT.Utls;
-using GamePlay;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -13,12 +12,13 @@ public class UiManager : MonoBehaviour
 {
     [SerializeField] private View view_prefab;
     [SerializeField] private View winView;
-    [SerializeField] private View loseView;
-    [SerializeField] private View startView;
+    [SerializeField] private View gameOverView;
+    [SerializeField] private View homeView;
     [SerializeField] private View wordSlotView;
     [SerializeField] private View topSectionView;
     [SerializeField] private View settingsView;
     [SerializeField] private View underAttackView;
+    [SerializeField] private View achievementView;
 
     [SerializeField] private Transform _tapPadParent;
     [SerializeField] private Image _blockingPanel;
@@ -35,16 +35,13 @@ public class UiManager : MonoBehaviour
         _isBusy = false;
     }
 
-    //private WindowButtonUi WinWindow { get; set; }
-    //private WindowButtonUi LoseWindow { get; set; }
-    //private WindowButtonUi CompleteWindow { get; set; }
-    private WindowButtonUi StartWindow { get; set; }
-
     private View_WordSlotMgr WordSlotMgr { get; set; }
     private View_StageClearMgr StageClearMgr { get; set; }
     private View_GameOverMgr GameOverMgr { get; set; }
     private View_SettingsMgr SettingsMgr { get; set; }
-    public View_TopSection TopSection { get; set; }
+    private View_TopSection TopSection { get; set; }
+    private View_AchievementMgr AchievementMgr { get; set; }
+    private View_Home view_home { get; set; }
 
     private Transform TapPadParent => _tapPadParent;
     private GamePlayController GamePlayController => Game.Controller.Get<GamePlayController>();
@@ -107,11 +104,17 @@ public class UiManager : MonoBehaviour
 
     private void WindowsInit()
     {
+        AchievementMgr = new View_AchievementMgr(achievementView);
+        view_home = new View_Home(homeView, () =>
+        {
+            GamePlayController.StartGame();
+            view_home.Hide();
+        }, AchievementMgr.Show);
         SettingsMgr = new View_SettingsMgr(settingsView);
         SettingsMgr.LoadPref();
         TopSection = new View_TopSection(topSectionView, SettingsMgr.Show);
-        StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
-        GameOverMgr = new View_GameOverMgr(loseView, StartWindow.Show, () => XDebug.LogWarning("暂时不支持复活功能!"));
+        //StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
+        GameOverMgr = new View_GameOverMgr(gameOverView, view_home.Show, () => XDebug.LogWarning("暂时不支持复活功能!"));
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => SetGameOver());
         StageClearMgr = new View_StageClearMgr(winView, StartLevel);
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, b => OnLevelClear());
@@ -134,7 +137,7 @@ public class UiManager : MonoBehaviour
     private void SetGameOver()
     {
         var player = Game.Model.Player;
-        var playerLevel = player.Level;
+        var playerLevel = player.Current;
         var job = playerLevel.Job;
         var badgeCfg = GetBadgeCfgForCurrentLevel();
         var cardArg = GetCardArg();
@@ -160,6 +163,7 @@ public class UiManager : MonoBehaviour
             var levelInfo = player.GetPlayerLevelInfo();
             var badgeCfg = GetBadgeCfgForCurrentLevel();
             var isUpgrade = upgradeRec.Levels.Count > 1;
+            StageClearMgr.SetCoin(player.LastCoinAdd, player.Current.Coin);
             yield return StageClearMgr.PlayExpGrowing(levelInfo?.title, CalculateStar(current, max), upgradeRec,
                 prefab => BadgeConfigLoader.LoadPrefab(badgeCfg, prefab));
             if (isUpgrade)
@@ -168,7 +172,7 @@ public class UiManager : MonoBehaviour
                 var arg = GetCardArg();
                 StageClearMgr.ClearCard();
                 StageClearMgr.SetCard(arg, true);
-                var options = arg.options.Where(o => player.Level.Coin >= o.Cost)
+                var options = arg.options.Where(o => player.Current.Coin >= o.Cost)
                             .Select(ConvertJobArg).ToArray();
                 if (options.Length > 0)
                 {
@@ -204,7 +208,7 @@ public class UiManager : MonoBehaviour
     private static CardArg GetCardArg()
     {
         var player = Game.Model.Player;
-        return Game.ConfigureSo.JobTree.GetCardArg(player.Level.Job);
+        return Game.ConfigureSo.JobTree.GetCardArg(player.Current.Job);
     }
 
     private static (string title, string Message, Sprite Icon) ConvertJobArg(JobSwitch o)

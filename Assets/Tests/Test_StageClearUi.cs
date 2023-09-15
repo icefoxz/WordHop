@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
-using System.Linq;
 using AOT.Utls;
 using AOT.Views;
-using DG.Tweening;
-using log4net.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 

@@ -637,6 +637,7 @@ MonoBehaviour:
   - {fileID: 1319912180}
   Resources:
     Objs: []
+    Colors: []
 --- !u!1 &824259800
 GameObject:
   m_ObjectHideFlags: 0
