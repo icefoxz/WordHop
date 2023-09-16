@@ -15,41 +15,81 @@ MonoBehaviour:
   "\u804C\u4E1A\u7B49\u7EA7":
   - "\u7B49\u7EA7": 1
     "\u79F0\u53F7": Elf Sprout
+    "\u56FE\u6807": {fileID: 21300000, guid: 7dc3f76594a61dd44a7c66b37393c6f4, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 2
     "\u79F0\u53F7": Forest Apprentice
+    "\u56FE\u6807": {fileID: 21300000, guid: 36432a0b884428a4488b9ebdef4a5096, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 3
     "\u79F0\u53F7": Elven Emissary
+    "\u56FE\u6807": {fileID: 21300000, guid: f2c30977d4b561341a44199dd19e1dbf, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 4
     "\u79F0\u53F7": Nature's Guard
+    "\u56FE\u6807": {fileID: 21300000, guid: fcbc354df9a615d4b8ecd7c0f4557c9b, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 5
     "\u79F0\u53F7": Forest Dancer
+    "\u56FE\u6807": {fileID: 21300000, guid: 38b9d69f21e4c6244b0c24133614737a, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 6
     "\u79F0\u53F7": Moonlight Singer
+    "\u56FE\u6807": {fileID: 21300000, guid: 4c17399fbcd37194d86005ea57b477ac, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 7
     "\u79F0\u53F7": Superior Elf
+    "\u56FE\u6807": {fileID: 21300000, guid: 41091355bd778a6459132e237ea94a12, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 8
     "\u79F0\u53F7": Elven Mage
+    "\u56FE\u6807": {fileID: 21300000, guid: 25cbfcbd46576e14e86f719d69ea9c1d, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 9
     "\u79F0\u53F7": Child of Nature
+    "\u56FE\u6807": {fileID: 21300000, guid: 5848ce327ca39134198b10a423c99375, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 10
     "\u79F0\u53F7": Forest Guide
+    "\u56FE\u6807": {fileID: 21300000, guid: 4f2a66191a4bc9f4ab55d1f43434047e, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 11
     "\u79F0\u53F7": Elven Noble
+    "\u56FE\u6807": {fileID: 21300000, guid: 62cc927142b8bf7478aaa08bcb5e5424, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 12
     "\u79F0\u53F7": Nightshade Hunter
+    "\u56FE\u6807": {fileID: 21300000, guid: 1aba623cf95f2a1489e870e73f1ecf6e, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 13
     "\u79F0\u53F7": Starlight Messenger
+    "\u56FE\u6807": {fileID: 21300000, guid: 964d5514ea16e2448aaffe52faf73274, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 14
     "\u79F0\u53F7": Forest Guardian
+    "\u56FE\u6807": {fileID: 21300000, guid: df1c027a8fd06e440830f78b0b31d950, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 15
     "\u79F0\u53F7": Leader of Nature
+    "\u56FE\u6807": {fileID: 21300000, guid: 5ba135cf2ec27e444a7a1a5722d0c7f8, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 16
     "\u79F0\u53F7": Moon Elf
+    "\u56FE\u6807": {fileID: 21300000, guid: 92713e5788df14c408506ebb79031bc4, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 17
     "\u79F0\u53F7": Star Dancer
+    "\u56FE\u6807": {fileID: 21300000, guid: 243fd6258ffcb1d41b01652179c8f988, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 18
     "\u79F0\u53F7": Ancient Elf
+    "\u56FE\u6807": {fileID: 21300000, guid: 5a03053ea9d8c33429da2025aa63ec50, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 19
     "\u79F0\u53F7": Elven King
+    "\u56FE\u6807": {fileID: 21300000, guid: afbc163c412db3a44a5eb98fc0619fa6, type: 3}
+    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 20
     "\u79F0\u53F7": Lord of the Forest
+    "\u56FE\u6807": {fileID: 21300000, guid: 2f9249b7899cca34a9b462358adec33a, type: 3}
+    "\u8F6C\u804C": []

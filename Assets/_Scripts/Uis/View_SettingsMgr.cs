@@ -17,16 +17,32 @@ public class View_SettingsMgr
                 HideSettings();
                 SetCurrent();
             },
-            onBgmToggleAction: AudioManager.SetBgmMute,
-            onSfxToggleAction: AudioManager.SetSfxMute,
-            onBgmVolumeAction: AudioManager.SetBgmVolume,
-            onSfxVolumeAction: AudioManager.SetSfxVolume);
+            onBgmToggleAction: OnBgmToggleAction,
+            onSfxToggleAction: OnSfxToggleAction,
+            onBgmVolumeAction: f => AudioManager.SetBgmVolume(f),
+            onSfxVolumeAction: f => AudioManager.SetSfxVolume(f));
+    }
+
+    private void OnSfxToggleAction(bool isOn)
+    {
+        var isMute = !isOn;
+        AudioManager.SetSfxMute(isMute);
+        var volume = isMute ? 0 : Pref.GetSfxVolume();
+        View_settings.SetSfx(isMute, volume);
+    }
+
+    private void OnBgmToggleAction(bool isOn)
+    {
+        var isMute = !isOn;
+        AudioManager.SetBgmMute(isMute);
+        var volume = isMute ? 0 : Pref.GetBgmVolume();
+        View_settings.SetBgm(isMute, volume);
     }
 
     private void SetCurrent()
     {
-        Set(isBgmMute: View_settings.IsBgmOn, 
-            isSfxMute: View_settings.IsSfxOn, 
+        Set(isBgmMute: !View_settings.IsBgmOn, 
+            isSfxMute: !View_settings.IsSfxOn, 
             bgmVolume: View_settings.BgmVolume, 
             sfxVolume: View_settings.SfxVolume);
     }
@@ -40,13 +56,18 @@ public class View_SettingsMgr
         Pref.SetSfxVolume(sfxVolume);
     }
 
-    public void LoadPref()
+    public void Init()
     {
-        var gbmMute = Pref.GetBgmMute();
+        LoadPref();
+    }
+
+    private void LoadPref()
+    {
+        var bgmMute = Pref.GetBgmMute();
         var sfcMute = Pref.GetSfxMute();
-        var bgmVolume = Pref.GetBgmVolume();
-        var sfxVolume = Pref.GetSfxVolume();
-        View_settings.Set(gbmMute, sfcMute, bgmVolume, sfxVolume);
+        var bgmVolume = bgmMute ? 0 : Pref.GetBgmVolume();
+        var sfxVolume = sfcMute ? 0 : Pref.GetSfxVolume();
+        View_settings.Set(bgmMute, sfcMute, bgmVolume, sfxVolume);
     }
 
     private void HideSettings()
@@ -70,8 +91,8 @@ public class View_SettingsMgr
 
         public float BgmVolume => element_audioBGM.Volume;
         public float SfxVolume => element_audioSFX.Volume;
-        public bool IsBgmOn => element_audioBGM.IsMute;
-        public bool IsSfxOn => element_audioSFX.IsMute;
+        public bool IsBgmOn => !element_audioBGM.IsMute;
+        public bool IsSfxOn => !element_audioSFX.IsMute;
 
         public View_Settings(IView v, UnityAction onClickAction,
             UnityAction<bool> onBgmToggleAction,
@@ -88,12 +109,24 @@ public class View_SettingsMgr
             btn_ok.onClick.AddListener(onClickAction);
         }
 
+
+
         public void Set(bool bgmMute, bool sfxMute, float bgmVolume, float sfxVolume)
         {
-            element_audioBGM.SetToggle(bgmMute);
-            element_audioSFX.SetToggle(sfxMute);
-            element_audioBGM.SetVolume(bgmVolume);
+            SetBgm(bgmMute, bgmVolume);
+            SetSfx(sfxMute, sfxVolume);
+        }
+
+        public void SetSfx(bool sfxMute, float sfxVolume)
+        {
+            element_audioSFX.SetMute(sfxMute);
             element_audioSFX.SetVolume(sfxVolume);
+        }
+
+        public void SetBgm(bool bgmMute, float bgmVolume)
+        {
+            element_audioBGM.SetMute(bgmMute);
+            element_audioBGM.SetVolume(bgmVolume);
         }
 
         private class Element_Audio : UiBase
@@ -108,10 +141,10 @@ public class View_SettingsMgr
                 UnityAction<bool> onToggleAction, 
                 UnityAction<float> onVolumeAction) : base(v)
             {
-                view_icon = new View_Icon(v.Get<View>("view_icon"), () =>
+                view_icon = new View_Icon(v.Get<View>("view_icon"), isOn =>
                 {
-                    onToggleAction(!IsMute);
-                    SetToggle(!IsMute);
+                    onToggleAction(isOn);
+                    SetMute(!isOn);
                 });
                 text_title = v.Get<TMP_Text>("text_title");
                 slider_volume = v.Get<Slider>("slider_volume");
@@ -128,30 +161,42 @@ public class View_SettingsMgr
                 Volume = volume;
             }
 
-            public void SetToggle(bool on)
+            public void SetMute(bool isMute)
             {
-                view_icon.SetToggle(on);
-                IsMute = on;
+                IsMute = isMute;
+                slider_volume.interactable = !IsMute;
+                view_icon.SetToggle(!IsMute);
             }
+
 
             private class View_Icon : UiBase
             {
                 private Image img_iconOn { get; set; }
                 private Image img_iconOff { get; set; }
                 private Button btn_click { get; set; }
+                private bool ToggleOn { get; set; }
+                private event UnityAction<bool> OnClickToggleAction;
 
-                public View_Icon(IView v, UnityAction onClickToggleAction) : base(v, true)
+                public View_Icon(IView v, UnityAction<bool> onClickToggleAction) : base(v, true)
                 {
                     img_iconOn = v.Get<Image>("img_iconOn");
                     img_iconOff = v.Get<Image>("img_iconOff");
                     btn_click = v.Get<Button>("btn_click");
-                    btn_click.onClick.AddListener(onClickToggleAction);
+                    OnClickToggleAction = onClickToggleAction;
+                    btn_click.onClick.AddListener(SwitchToggle);
                 }
 
-                public void SetToggle(bool mute)
+                private void SwitchToggle()
                 {
-                    img_iconOn.gameObject.SetActive(!mute);
-                    img_iconOff.gameObject.SetActive(mute);
+                    SetToggle(!ToggleOn);
+                    OnClickToggleAction?.Invoke(ToggleOn);
+                }
+
+                public void SetToggle(bool isOn)
+                {
+                    ToggleOn = isOn;
+                    img_iconOn.gameObject.SetActive(ToggleOn);
+                    img_iconOff.gameObject.SetActive(!ToggleOn);
                 }
             }
         }

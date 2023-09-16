@@ -43,9 +43,9 @@ public class Pref
     public static bool GetSfxMute() => CheckOrDefault(SFX_MUTE, false);
 
     public static void SetSfxMute(bool value) => PlayerPrefs.SetInt(SFX_MUTE, value ? 1 : 0);
-    public static float GetBgmVolume() => CheckOrDefault(BGM_VOLUME, 1);
+    public static float GetBgmVolume() => CheckOrDefault(BGM_VOLUME, 0.5f);
     public static void SetBgmVolume(float value) => PlayerPrefs.SetFloat(BGM_VOLUME, value);
-    public static float GetSfxVolume() => CheckOrDefault(SFX_VOLUME, 1);
+    public static float GetSfxVolume() => CheckOrDefault(SFX_VOLUME, 0.5f);
     public static void SetSfxVolume(float value) => PlayerPrefs.SetFloat(SFX_VOLUME, value);
 
     public static PlayerRec GetHighestLevel()

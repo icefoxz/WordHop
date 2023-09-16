@@ -111,7 +111,7 @@ public class UiManager : MonoBehaviour
             view_home.Hide();
         }, AchievementMgr.Show);
         SettingsMgr = new View_SettingsMgr(settingsView);
-        SettingsMgr.LoadPref();
+        SettingsMgr.Init();
         TopSection = new View_TopSection(topSectionView, SettingsMgr.Show);
         //StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
         GameOverMgr = new View_GameOverMgr(gameOverView, view_home.Show, () => XDebug.LogWarning("暂时不支持复活功能!"));

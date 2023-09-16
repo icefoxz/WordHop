@@ -15,11 +15,11 @@ MonoBehaviour:
   "\u804C\u4E1A\u7B49\u7EA7":
   - "\u7B49\u7EA7": 1
     "\u79F0\u53F7": Village Newcomer
-    "\u56FE\u6807": {fileID: 21300000, guid: b2ada91d26a380440bae69a784fd4f4a, type: 3}
+    "\u56FE\u6807": {fileID: 1409679856, guid: b2ada91d26a380440bae69a784fd4f4a, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 2
     "\u79F0\u53F7": Junior Laborer
-    "\u56FE\u6807": {fileID: 21300000, guid: 455730db777e57c4992292ec7c6b270c, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: 85c65d5f9c52ce64d906535dec6aa0e1, type: 3}
     "\u8F6C\u804C":
     - JobType: 1
       Level: 1
@@ -38,15 +38,15 @@ MonoBehaviour:
       Icon: {fileID: 21300000, guid: cfca08577a857449f9070ba922aa86df, type: 3}
   - "\u7B49\u7EA7": 3
     "\u79F0\u53F7": Homestead Builder
-    "\u56FE\u6807": {fileID: 21300000, guid: 19573d5b64e1e044ba39a9d0edf83c03, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: 4868f0db93ad9ef419360248f9ad9d64, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 4
     "\u79F0\u53F7": Craftsman Apprentice
-    "\u56FE\u6807": {fileID: 21300000, guid: f3a174b6899da054eaa82509fd6cc022, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: 881b699fdd3a92342bd4f68cb836c406, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 5
     "\u79F0\u53F7": Skilled Worker
-    "\u56FE\u6807": {fileID: 21300000, guid: f19c694a3a93ba04a9a2a51e506ade71, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: 3bd3a94b8c66c994d967cc505a31ed7a, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 6
     "\u79F0\u53F7": Community Contributor
