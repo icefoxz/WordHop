@@ -13,8 +13,8 @@ public class View_AchievementMgr
     public View_AchievementMgr(IView view)
     {
         View_achivement = new View_Achivement(view,
-            onClickBack: () => Debug.Log("Back"),
-            onClickHome: () => Debug.Log("Home"),
+            onClickBack: () => View_achivement.Hide(),
+            onClickHome: () => View_achivement.Hide(),
             OnTabFocus);
     }
 
