@@ -43,8 +43,21 @@ public class Test_WordArranger : MonoBehaviour
             .Where(s=>!s.IsNullOrWhitespace())
             .Select(w=>w.Trim('\r').ToLower())
             .Distinct()
-            .Where(c=>!IsShortForm(c))
+            .Where(c=>!IsShortForm(c) && !HasTripleConsecutiveChars(c))
             .ToArray();
+    }
+
+    static bool HasTripleConsecutiveChars(string word)
+    {
+        if(word.Length < 3) return false;
+        for (int i = 0; i < word.Length - 2; i++)
+        {
+            if (word[i] == word[i + 1] && word[i] == word[i + 2])
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     static bool IsShortForm(string word)
