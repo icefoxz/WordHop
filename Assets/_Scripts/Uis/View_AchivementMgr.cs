@@ -3,7 +3,6 @@ using System.Linq;
 using AOT.BaseUis;
 using AOT.Views;
 using TMPro;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -13,14 +12,14 @@ public class View_AchievementMgr
     public View_AchievementMgr(IView view)
     {
         View_achivement = new View_Achivement(view,
-            onClickBack: () => View_achivement.Hide(),
-            onClickHome: () => View_achivement.Hide(),
+            onClickBack: () => View_achivement?.Hide(),
+            onClickHome: () => View_achivement?.Hide(),
             OnTabFocus);
     }
 
     private void OnTabFocus(JobTypes jobType)
     {
-        var map = Game.ConfigureSo.JobTree.Data();
+        var map = Game.ConfigureSo.JobConfig.Data();
         var args = map[jobType];
         View_achivement.SetFocus(jobType, args);
     }
@@ -29,6 +28,9 @@ public class View_AchievementMgr
     {
         OnTabFocus(JobTypes.Villagers);
         View_achivement.Show();
+        var highest = Game.Model.Player.HighestRec;
+        SetGem(highest.Score);
+        SetGold(highest.Coin);
     }
 
     private void SetGold(int gold) => View_achivement.SetGold(gold);

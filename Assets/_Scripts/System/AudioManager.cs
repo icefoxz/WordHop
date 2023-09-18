@@ -61,6 +61,11 @@ public class AudioManager : MonoBehaviour
         {
             randomPlayBgm = false;
             PlayMusic(0);
+        });        
+        Game.MessagingManager.RegEvent(GameEvents.Stage_Quit, _ =>
+        {
+            randomPlayBgm = false;
+            PlayMusic(0);
         });
         Game.MessagingManager.RegEvent(GameEvents.Stage_Start, _ =>
         {

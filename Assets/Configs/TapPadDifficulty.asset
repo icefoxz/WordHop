@@ -14,17 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u96BE\u5EA6\u914D\u7F6E":
     _outlineSet:
-    - DifficultyValue: 1
+    - DifficultyValue: 0.1
       Ratio: 0.1
-    - DifficultyValue: 2
+    - DifficultyValue: 0.2
       Ratio: 0.2
-    - DifficultyValue: 3
+    - DifficultyValue: 0.3
       Ratio: 0.3
-    - DifficultyValue: 4
+    - DifficultyValue: 0.4
       Ratio: 0.4
-    - DifficultyValue: 5
+    - DifficultyValue: 0.5
       Ratio: 0.5
     _itemSet:
-      Weight: 0.3
+      Weight: 0.4
       Items: 1
-      DifficultyValue: 2
+      DifficultyValue: 0.2

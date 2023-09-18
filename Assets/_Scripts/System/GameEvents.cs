@@ -1,7 +1,8 @@
 public static class GameEvents
 {
-    public const string Stage_Job_Update = "Stage_Job_Update";
     public const string Stage_Start = "Stage_Start";
+    public const string Stage_Quit = "Stage_Quit";
+    public const string Stage_Job_Update = "Stage_Job_Update";
     public const string Stage_Game_Win = "Stage_Game_Win";
     public const string Stage_Timer_Update = "Stage_Timer_Update";
     public const string Stage_Point_Update = "Stage_point_update";
@@ -10,7 +11,9 @@ public static class GameEvents
     public const string Stage_Level_Win = "Stage_Level_Win";
     public const string Stage_Level_Lose = "Stage_Level_Lose";
     public const string Stage_Level_Update = "Stage_Level_Update";
-    public const string Stage_Highest_Level_Update = "Stage_Highest_Level_Update";
+    public const string Stage_Highest_Rec_Update = "Stage_Highest_Rec_Update";
+
+    public const string Player_Level_Up = "Player_Level_Up";
 
     public const string Level_Init = "Level_Init";
     public const string Level_Word_Clear = "Level_Word_Clear";

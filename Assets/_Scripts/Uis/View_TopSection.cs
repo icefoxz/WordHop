@@ -7,9 +7,18 @@ public class View_TopSection : UiBase
 {
     private View_SubMenu view_subMenu { get; set; }
 
-    public View_TopSection(IView v, UnityAction onSettingAction) : base(v)
+    public View_TopSection(IView v, UnityAction onSettingAction, UnityAction onHomeAction) : base(v)
     {
-        view_subMenu = new View_SubMenu(v.Get<View>("view_subMenu"), onSettingAction);
+        view_subMenu = new View_SubMenu(v.Get<View>("view_subMenu"),
+            onSettingAction,
+            onHomeAction);
+    }
+
+    public void Init()
+    {
+        Game.MessagingManager.RegEvent(GameEvents.Stage_Start, _ => view_subMenu.DisplayHomeButton(true));
+        Game.MessagingManager.RegEvent(GameEvents.Stage_Quit, _ => view_subMenu.DisplayHomeButton(false));
+        view_subMenu.DisplayHomeButton(false);
     }
 
     private class View_SubMenu : UiBase
@@ -17,14 +26,20 @@ public class View_TopSection : UiBase
         private Element_Sub element_sub_mission { get; }
         private Element_Sub element_sub_rank { get; }
         private Button btn_settings { get; }
+        private Button btn_home { get; }
 
-        public View_SubMenu(IView v, UnityAction onSettingAction, bool display = true) : base(v, display)
+        public View_SubMenu(IView v, UnityAction onSettingAction, UnityAction onHomeAction, bool display = true) :
+            base(v, display)
         {
-            element_sub_mission = new Element_Sub(v.Get<View>("element_sub_mission"), () => { },false);
-            element_sub_rank = new Element_Sub(v.Get<View>("element_sub_rank"), () => { },false);
+            element_sub_mission = new Element_Sub(v.Get<View>("element_sub_mission"), () => { }, false);
+            element_sub_rank = new Element_Sub(v.Get<View>("element_sub_rank"), () => { }, false);
+            btn_home = v.Get<Button>("btn_home");
+            btn_home.onClick.AddListener(onHomeAction);
             btn_settings = v.Get<Button>("btn_settings");
             btn_settings.onClick.AddListener(onSettingAction);
         }
+
+        public void DisplayHomeButton(bool display) => btn_home.gameObject.SetActive(display);
 
         private class Element_Sub : UiBase
         {

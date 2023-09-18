@@ -15,11 +15,11 @@ MonoBehaviour:
   "\u804C\u4E1A\u7B49\u7EA7":
   - "\u7B49\u7EA7": 1
     "\u79F0\u53F7": Shadow Neophyte
-    "\u56FE\u6807": {fileID: 21300000, guid: 8c354dd8b2b52b041bdc88ead32149ab, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: 039398de7365567429648ec809c5f750, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 2
     "\u79F0\u53F7": Dark Laborer
-    "\u56FE\u6807": {fileID: 21300000, guid: 7e6e46f5405ff804caea566780260133, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: 5f03da13a523dfc449f72e17109bd588, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 3
     "\u79F0\u53F7": Gargoyle Guardian
@@ -27,7 +27,7 @@ MonoBehaviour:
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 4
     "\u79F0\u53F7": Raven Messenger
-    "\u56FE\u6807": {fileID: 21300000, guid: e7c736babd9f5f14ea0997381972f26e, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: 7def89f62ce330c4aa51c3fdcca3e8a1, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 5
     "\u79F0\u53F7": Moonlight Apprentice
@@ -39,7 +39,7 @@ MonoBehaviour:
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 7
     "\u79F0\u53F7": Candle Merchant
-    "\u56FE\u6807": {fileID: 21300000, guid: f3f9aa38bd37afa438e278180bd6d77f, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: 7ac57ad3dd6ca46439f61a01b9b8062a, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 8
     "\u79F0\u53F7": Dancer of the Shadows
@@ -76,7 +76,7 @@ MonoBehaviour:
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 15
     "\u79F0\u53F7": Council Member of Arcane
-    "\u56FE\u6807": {fileID: 21300000, guid: 3fd88590a2b83dd4f9a6eec30a70dfed, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: cfe50f7a17b6a9a42985367cbd625f21, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 16
     "\u79F0\u53F7": Guardian of the Stars
@@ -89,7 +89,7 @@ MonoBehaviour:
       Icon: {fileID: 21300000, guid: cfca08577a857449f9070ba922aa86df, type: 3}
   - "\u7B49\u7EA7": 17
     "\u79F0\u53F7": Duke of Darkness
-    "\u56FE\u6807": {fileID: 21300000, guid: a43f2feb80143a743bca19a59aa1c553, type: 3}
+    "\u56FE\u6807": {fileID: 21300000, guid: cd544c151fe6a2449840555c9bee1c2f, type: 3}
     "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 18
     "\u79F0\u53F7": Sovereign of the Hidden Moon

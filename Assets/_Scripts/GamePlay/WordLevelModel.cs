@@ -10,7 +10,7 @@ public class WordLevelModel : ModelBase
     public WordGroup WordGroup { get; private set; }
     public LayoutConfig Layout { get; set; }
     public int Seconds { get; set; }
-    public WordDifficulty[] WordDifficulties { get; set; }
+    public TapDifficulty[] WordDifficulties { get; set; }
 
     public IReadOnlyList<Alphabet> SelectedAlphabets => _selectedList;
     public IReadOnlyList<Alphabet> Hints => _hints;
@@ -20,7 +20,7 @@ public class WordLevelModel : ModelBase
     public bool IsLastAlphabetApply { get; private set; }
     private GamePlayRule Rule { get; set; }
 
-    public void InitLevel(WordDifficulty[] wds, WordGroup wg, int secs, LayoutConfig layout)
+    public void InitLevel(TapDifficulty[] wds, WordGroup wg, int secs, LayoutConfig layout)
     {
         WordDifficulties = wds;
         WordGroup = wg;
@@ -31,11 +31,8 @@ public class WordLevelModel : ModelBase
         SendEvent(GameEvents.Level_Init);
     }
 
-    public int GetCurrentMaxScore()
-    {
-        var perfectMultiplier = WordGroup.Key.Length - 1; // Perfect game, so no misses.
-        return Seconds * perfectMultiplier;
-    }
+    public int GetCurrentMaxScore() =>
+        Game.ConfigureSo.GameRoundConfigSo.CalculateExperience(Seconds, WordGroup.Key.Length);
 
     public void Hints_add(Alphabet alphabet)
     {
@@ -108,6 +105,8 @@ public class WordLevelModel : ModelBase
     //}
 
     public double GetMissTakeAve() => SelectedAlphabets.Average(a => a.MissCount);
+
+    public int GetMissTakes() => SelectedAlphabets.Sum(a => a.MissCount);
 
     //hack
     public void SetAllAlphabetSelected()

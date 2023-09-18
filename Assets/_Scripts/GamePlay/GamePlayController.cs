@@ -12,7 +12,7 @@ public class GamePlayController : MonoBehaviour, IController
 
     private DifficultyLoader ChallengeLoader { get; set; }
     //当前游戏进度
-    private InfinityStageHandler StageHandler { get; set; }
+    private InfinityStageModel StageModel => Game.Model.InfinityStage;
 
     public void Start()
     {
@@ -21,20 +21,15 @@ public class GamePlayController : MonoBehaviour, IController
 
     public void StartGame()
     {
-        StageHandler = new InfinityStageHandler(Game.Model.Player, 
-            Game.Model.WordLevel, 
-            WordConfig, 
-            ChallengeLoader,
-            LayoutConfig);
-        StageHandler.StartGame();
-        Game.MessagingManager.SendParams(GameEvents.Stage_Start);
+        Game.Model.NewInfinityStage(new InfinityStageModel(ChallengeLoader, LayoutConfig));
+        StageModel.StartGame();
     }
 
-    public void StartLevel() => StageHandler.StartLevel();
+    public void StartLevel() => StageModel.StartLevel();
 
     public void OnAlphabetSelected(Alphabet alphabet, bool isOutline)
     {
-        var isHinted = StageHandler.IsHinted(alphabet);
+        var isHinted = StageModel.IsHinted(alphabet);
         var stateNum = 5;
         if (isHinted) stateNum--;
         if (isOutline) stateNum--;
@@ -46,15 +41,22 @@ public class GamePlayController : MonoBehaviour, IController
             _ => Alphabet.States.Fair
         };
         alphabet.UpdateState(state);
-        StageHandler.ApplyOrder(alphabet);
+        StageModel.ApplyOrder(alphabet);
     }
 
-    public void OnItemClicked(Alphabet alphabet)
+    public void OnItemClicked()
     {
         Game.MessagingManager.SendParams(GameEvents.Level_Item_Clear);
     }
 
 #if UNITY_EDITOR
-    [Button(ButtonSizes.Medium),GUIColor("red")]private void Hack_Level_Win() => StageHandler.HackWin();
+    [Button(ButtonSizes.Medium),GUIColor("red")]private void Hack_Level_Win() => StageModel.HackWin();
 #endif
+    public void QuitCurrentGame()
+    {
+        StageModel.StopService();
+        Quit();
+    }
+
+    public void Quit() => StageModel.Quit();
 }

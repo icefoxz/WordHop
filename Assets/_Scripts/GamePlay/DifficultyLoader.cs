@@ -15,41 +15,36 @@ public class DifficultyLoader
     }
 
     // 获取随机关卡配置
-    public (WordDifficulty[]words, int countdown) GetChallengeStageLevelConfig(float difficulty, int word = 0)
+    public (TapDifficulty[]words, int countdown) GetChallengeStageLevelConfig(int gameCount)
     {
-        var levelDiff = GetDifficultyWeight(LevelDifficultySo, TapPadDifficultySo); // 获取难度权重
-        var totalDiff = difficulty +
-                        //levelDiff.Total / 7; // 计算总难度
-                        Random.Range(0, 3);
-        var timeDiff = levelDiff.GetTimeDifficulty(totalDiff); // 分配时间难度
-        var wordDiff = levelDiff.GetWordDifficulty(totalDiff); // 分配文字难度
-        var secSet = LevelDifficultySo.GetCountdownSecsByDifficulty(timeDiff); // 获取倒计时配置
-        var countdown = secSet.ExtraSecs; // 计算倒计时
-        var wds = GetTapPadSettings(LevelDifficultySo, TapPadDifficultySo, wordDiff, word); // 获取文字难度配置
-        return (wds, countdown);
+        var difficulty = new GameDifficulty(gameCount, LevelDifficultySo); // 获取当前的难度系数
+        var difficultyValue = difficulty.GetCurrentDifficulty(); // 获取难度值
+        var extraSecs = difficulty.GetExtraTime(); // 获取额外时间
+        var wordLength = difficulty.GetWordLength();// 获取文字长度, 如果有指定文字长度，则使用指定的文字长度
+        var wds = GetTapPadSettings(TapPadDifficultySo, difficultyValue, wordLength); // 获取文字难度配置
+        return (wds, extraSecs);
     }
 
     // 获取文字难度配置
-    public static WordDifficulty[] GetTapPadSettings(LevelDifficultySo levelDifficultySo,
-        TapPadDifficultySo tapPadDifficultySo, float wordLengthDiff, int words = 0)
+    public static TapDifficulty[] GetTapPadSettings(TapPadDifficultySo tapPadDifficultySo, float difficulty, int wordLength)
     {
-        // 先决定最大字数
-        var set = words > 0
-            ? levelDifficultySo.GetRandomDifficultyByLength(words)
-            : levelDifficultySo.GetRandomWordLengthByDifficulty(wordLengthDiff);
         //根据最大字数分配难度权重
-        var wordArray = new WordDifficulty[set.WordLength];
-        for (var i = 0; i < set.WordLength; i++)
+        var wordArray = new TapDifficulty[wordLength];
+
+        float avgDifficulty = difficulty / wordLength;
+        float variance = avgDifficulty * 0.1f; // 你可以调整这个值来控制难度的变化幅度
+
+        for (var i = 0; i < wordLength; i++)
         {
             // 难度值小于0时，难度值为0
-            var difficultValue = wordLengthDiff <= 0 ? 0 : Random.Range(0, set.DifficultyValue);
+            var difficultValue = difficulty <= 0 ? 0 : Random.Range(avgDifficulty - variance, avgDifficulty + variance);
             var wd = tapPadDifficultySo.GetDifficultyValue(difficultValue, 0.5f);
             wordArray[i] = wd;
-            wordLengthDiff -= set.DifficultyValue;
+            difficulty -= difficultValue;
         }
-
         return wordArray;
     }
+
 
     // 获取关卡难度权重
     public static LevelDifficultyWeight GetDifficultyWeight(LevelDifficultySo levelDifficultySo,
@@ -61,5 +56,53 @@ public class DifficultyLoader
         var padMaxDifficulty = maxWords * tapPadMaxDifficulty; // 字数 * 点击难度 = 最大点击难度
         var w = new LevelDifficultyWeight(padMaxDifficulty, maxTimeDifficulty); // 点击难度权重，加时难度权重
         return w;
+    }
+}
+
+public class GameDifficulty
+{
+    public LevelDifficultySo LevelConfig;
+    private int gameCount;
+
+    private const float K = 0.001f; // 这是我们提到的k值，你可以根据需要调整它
+
+
+    public GameDifficulty(int gameCount, LevelDifficultySo levelConfig)
+    {
+        this.gameCount = gameCount;
+        this.LevelConfig = levelConfig;
+    }
+
+    public float GetCurrentDifficulty()
+    {
+        // 使用新的难度曲线函数
+        return 1f - Mathf.Exp(-KValue() * gameCount);
+    }
+
+    // 难度曲线函数, k值 如果基于 400局的游戏
+    // 0.004f 为适中, 0.002f 为难度上升更平缓, 0.006f 就会比较陡峭也比较有挑战性
+    private static float KValue()
+    {
+        return 0.004f;
+    }
+
+    public int GetExtraTime()
+    {
+        var currentDifficulty = GetCurrentDifficulty();
+        return gameCount % 10 == 0 ? // 每10关额外加时
+            // 考虑为7字数的关卡提供更多的额外时间，可以调整这里的逻辑
+            LevelConfig.GetCountdownSecsByDifficulty(1.0f).ExtraSecs : LevelConfig.GetCountdownSecsByDifficulty(currentDifficulty).ExtraSecs;
+    }
+
+    public int GetWordLength()
+    {
+        var currentDifficulty = GetCurrentDifficulty();
+        var wordLength = LevelConfig.GetWordLengthByDifficulty(currentDifficulty);
+        if (gameCount % 10 == 0) // 每10关7字数
+        {
+            wordLength += Random.Range(0, 2);
+            return wordLength > 7 ? 7 : wordLength;
+        }
+        return wordLength;
     }
 }

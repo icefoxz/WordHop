@@ -79,7 +79,7 @@ public class TapPad
 
     public void Destroy()=> _tapPad.Destroy();
 
-    public void Apply(WordDifficulty difficulty) => _tapPad.ApplyDifficulty(difficulty.Outline, difficulty.Item);
+    public void Apply(TapDifficulty difficulty) => _tapPad.ApplyDifficulty(difficulty.Outline, difficulty.Item);
 
     public override string ToString() => Alphabet.ToString();
 

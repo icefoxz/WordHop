@@ -72,13 +72,13 @@ public class View_SettingsMgr
 
     private void HideSettings()
     {
-        Time.timeScale = 1;
+        Game.Pause(false);
         View_settings.Hide();
     }
 
     public void Show()
     {
-        Time.timeScale = 0;
+        Game.Pause(true);
         View_settings.Show();
     }
 

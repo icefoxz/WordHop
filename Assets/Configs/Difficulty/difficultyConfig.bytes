@@ -1,0 +1,57 @@
+[
+    {
+        "DifficultyValue": 0.05,
+        "WordLengths": [3, 4],
+        "Weights": [1.0, 0.0]
+    },
+    {
+        "DifficultyValue": 0.10,
+        "WordLengths": [3, 4, 5],
+        "Weights": [0.8, 0.2, 0.0]
+    },
+    {
+        "DifficultyValue": 0.20,
+        "WordLengths": [3, 4, 5, 6],
+        "Weights": [0.6, 0.3, 0.1, 0.0]
+    },
+    {
+        "DifficultyValue": 0.30,
+        "WordLengths": [3, 4, 5, 6, 7],
+        "Weights": [0.5, 0.2, 0.2, 0.1, 0.0]
+    },
+    {
+        "DifficultyValue": 0.40,
+        "WordLengths": [3, 4, 5, 6, 7, 8],
+        "Weights": [0.4, 0.2, 0.2, 0.1, 0.05, 0.05]
+    },
+    {
+        "DifficultyValue": 0.50,
+        "WordLengths": [3, 4, 5, 6, 7, 8, 9],
+        "Weights": [0.3, 0.2, 0.2, 0.1, 0.1, 0.05, 0.05]
+    },
+    {
+        "DifficultyValue": 0.60,
+        "WordLengths": [3, 4, 5, 6, 7, 8, 9, 10],
+        "Weights": [0.25, 0.15, 0.2, 0.15, 0.1, 0.05, 0.05, 0.05]
+    },
+    {
+        "DifficultyValue": 0.70,
+        "WordLengths": [3, 4, 5, 6, 7, 8, 9, 10],
+        "Weights": [0.2, 0.1, 0.2, 0.2, 0.1, 0.1, 0.05, 0.05]
+    },
+    {
+        "DifficultyValue": 0.80,
+        "WordLengths": [3, 4, 5, 6, 7, 8, 9, 10],
+        "Weights": [0.15, 0.1, 0.15, 0.2, 0.15, 0.1, 0.075, 0.075]
+    },
+    {
+        "DifficultyValue": 0.90,
+        "WordLengths": [3, 4, 5, 6, 7, 8, 9, 10],
+        "Weights": [0.1, 0.1, 0.1, 0.2, 0.2, 0.15, 0.1, 0.075]
+    },
+    {
+        "DifficultyValue": 1.00,
+        "WordLengths": [3, 4, 5, 6, 7, 8, 9, 10],
+        "Weights": [0.1, 0.1, 0.1, 0.15, 0.15, 0.15, 0.125, 0.125]
+    }
+]

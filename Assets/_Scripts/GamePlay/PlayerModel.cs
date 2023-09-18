@@ -38,29 +38,31 @@ namespace GamePlay
         public int GetMaxExp(int level) => Levels.FirstOrDefault(l => l.Level == level)?.MaxExp ?? -1;
         public int GetMaxExpOfCurrentLevel() => UpgradeHandler.CurrentLevel.MaxExp;
 
-        private void Upgrade(int missTake, int secs)
+        private void ScoreCalculation(int missTake, int secs)
         {
             var point = secs - missTake;
-            var upgradeExp = Game.ConfigureSo.GameRoundConfigSo.CalculateExperience(point);
-            var coin = Game.ConfigureSo.GameRoundConfigSo.CalculateCoins(point);
+            var upgradeExp =
+                Game.ConfigureSo.GameRoundConfigSo.CalculateExperience(point, WordLevel.WordGroup.Key.Length);
             UpgradeRecord = UpgradeHandler.Upgrade(upgradeExp);
+            var isLevelUp = UpgradeRecord.Levels.Count > 1;
             var level = UpgradeHandler.CurrentLevel.Level;
             var exp = UpgradeHandler.Exp;
+            var coin = GetStars();
             AddCoin(coin);
             Current.AddScore(point);
             Current.SetLevel(level, exp);
-            var job = Game.ConfigureSo.JobTree.GetPlayerJob(Current.Job.JobType, level);
+            var job = Game.ConfigureSo.JobConfig.GetPlayerJob(Current.Job.JobType, level);
             Current.UpdateJob(job);
             SendEvent(GameEvents.Stage_Point_Update, point);
-            CompareAndReplaceHighest();
+            if(isLevelUp) SendEvent(GameEvents.Player_Level_Up, level);
         }
 
-        private void CompareAndReplaceHighest()
+        public void CompareAndReplaceHighest()
         {
             if (HighestRec == null || (Current != HighestRec && Current.Score > HighestRec.Score))
             {
                 HighestRec = Current;
-                SendEvent(GameEvents.Stage_Highest_Level_Update, HighestRec);
+                SendEvent(GameEvents.Stage_Highest_Rec_Update, HighestRec);
             }
         }
 
@@ -68,9 +70,8 @@ namespace GamePlay
         {
             UpgradeHandler.SetLevel(op.Level, 0);
             Current.SetLevel(op.Level, 0);
-            var job = Game.ConfigureSo.JobTree.GetPlayerJob(op.JobType, op.Level);
+            var job = Game.ConfigureSo.JobConfig.GetPlayerJob(op.JobType, op.Level);
             Current.UpdateJob(job);
-            CompareAndReplaceHighest();
             SendEvent(GameEvents.Stage_Job_Update);
         }
         
@@ -89,8 +90,8 @@ namespace GamePlay
 
         public void StageLevelPass(int secs)
         {
-            var missTake = (int)WordLevel.GetMissTakeAve();
-            Upgrade(missTake, secs);
+            var missTake = WordLevel.GetMissTakes();
+            ScoreCalculation(missTake, secs);
             StageLevelDifficultyIndex++;
         }
 
@@ -103,7 +104,15 @@ namespace GamePlay
         public (string title, Sprite sprite)? GetPlayerLevelInfo()
         {
             var playerLevel = GetPlayerLevel();
-            return Game.ConfigureSo.JobTree.GetJobInfo(Current.Job.JobType, playerLevel);
+            return Game.ConfigureSo.JobConfig.GetJobInfo(Current.Job.JobType, playerLevel);
+        }
+
+        public int GetStars()
+        {
+            var max = WordLevel.GetCurrentMaxScore();
+            var current = UpgradeRecord.UpgradeExp;
+            var roundConfig = Game.ConfigureSo.GameRoundConfigSo;
+            return roundConfig.CalculateStar(current, max);
         }
     }
 }

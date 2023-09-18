@@ -14,87 +14,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u804C\u4E1A\u7B49\u7EA7":
   - "\u7B49\u7EA7": 1
-    "\u79F0\u53F7": Novice Warrior
+    "\u79F0\u53F7": Raw Recruit
     "\u56FE\u6807": {fileID: 21300000, guid: 88b03d8f5b59faa4fb13f5b47701bbfd, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 2
-    "\u79F0\u53F7": Brawler
+    "\u79F0\u53F7": Squire
     "\u56FE\u6807": {fileID: 21300000, guid: a43d08e7cfb28834da507dccbf61a7a0, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 3
-    "\u79F0\u53F7": Ironclad Fighter
+    "\u79F0\u53F7": Swordbearer
     "\u56FE\u6807": {fileID: 21300000, guid: 96f8f27a51659774e848733e6fd0f149, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 4
-    "\u79F0\u53F7": Sword Dancer
+    "\u79F0\u53F7": Infantry
     "\u56FE\u6807": {fileID: 21300000, guid: 1775b4b0667dc3141b4589c6cec31b60, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 5
-    "\u79F0\u53F7": Advanced Warrior
+    "\u79F0\u53F7": Elite Guard
     "\u56FE\u6807": {fileID: 21300000, guid: 9b08769a7f76cd1498b5467811d8d103, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 6
-    "\u79F0\u53F7": Gladiator
+    "\u79F0\u53F7": Captain's Apprentice
     "\u56FE\u6807": {fileID: 21300000, guid: 0bafb18794953c04dabd655d75d539b1, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 7
-    "\u79F0\u53F7": Knight
+    "\u79F0\u53F7": Silver Shield
     "\u56FE\u6807": {fileID: 21300000, guid: c237e034d64175b4592f5e8c50ebb8e5, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 8
-    "\u79F0\u53F7": Swordmaster
+    "\u79F0\u53F7": Knighted Guard
     "\u56FE\u6807": {fileID: 21300000, guid: cdf5db66aa4bbf14391da71f7f6c6f34, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 9
-    "\u79F0\u53F7": Combat Mentor
+    "\u79F0\u53F7": Battalion Commander
     "\u56FE\u6807": {fileID: 21300000, guid: b3d45853ec1fbef41812292edc444c6b, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 10
-    "\u79F0\u53F7": Battlefield Commander
+    "\u79F0\u53F7": Warrior Scholar
     "\u56FE\u6807": {fileID: 21300000, guid: c3ad58cb9a61e4b4fac59ec0d65c40f1, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 11
-    "\u79F0\u53F7": Elite Knight
+    "\u79F0\u53F7": Crimson Blade
     "\u56FE\u6807": {fileID: 21300000, guid: 21fc93e217015dc42907b6fd4a336b58, type: 3}
-    "\u8F6C\u804C":
-    - JobType: 3
-      Level: 4
-      Cost: 4000
-      Message: Learn magic...
-      Icon: {fileID: 21300000, guid: cfca08577a857449f9070ba922aa86df, type: 3}
   - "\u7B49\u7EA7": 12
-    "\u79F0\u53F7": Steel Warrior
+    "\u79F0\u53F7": Royal Guard
     "\u56FE\u6807": {fileID: 21300000, guid: d6f760037af195047b8a5e7ae15daf4b, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 13
-    "\u79F0\u53F7": Guardian of Honor
+    "\u79F0\u53F7": Elite Vanguard
     "\u56FE\u6807": {fileID: 21300000, guid: a13825f5d52067e46abe28a97af1d269, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 14
-    "\u79F0\u53F7": War Hero
+    "\u79F0\u53F7": War Strategist
     "\u56FE\u6807": {fileID: 21300000, guid: 0891b64fa2c78384bb13d456279658d8, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 15
-    "\u79F0\u53F7": Master Warrior
+    "\u79F0\u53F7": General's Aide
     "\u56FE\u6807": {fileID: 21300000, guid: b0e35bdb79a72054bbb6f82cd0644fba, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 16
-    "\u79F0\u53F7": Chosen of the War God
+    "\u79F0\u53F7": Warlord
     "\u56FE\u6807": {fileID: 21300000, guid: a2d07e59e18214d4093a4e7a9d47b164, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 17
-    "\u79F0\u53F7": Divine Swordsman
+    "\u79F0\u53F7": King's Blade
     "\u56FE\u6807": {fileID: 21300000, guid: 3f16f9de35faf004dbe135a00f33d966, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 18
-    "\u79F0\u53F7": Great Warlord
+    "\u79F0\u53F7": Master of the Arsenal
     "\u56FE\u6807": {fileID: 21300000, guid: 7d156bf25cdf51b488a5e57e46ce0cab, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 19
-    "\u79F0\u53F7": Legendary Warrior
+    "\u79F0\u53F7": Chief War Counsel
     "\u56FE\u6807": {fileID: 21300000, guid: 31213864180e23845b6ebf4cd7887530, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 20
-    "\u79F0\u53F7": Undefeated War King
+    "\u79F0\u53F7": High Commander
     "\u56FE\u6807": {fileID: 21300000, guid: bf6a7209588f16d4bb6b8542c9b44eab, type: 3}
-    "\u8F6C\u804C": []

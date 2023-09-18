@@ -1,9 +1,9 @@
-public readonly struct WordDifficulty
+public readonly struct TapDifficulty
 {
     public float Outline { get; }
     public int Item { get; }
 
-    public WordDifficulty(float outline, int item)
+    public TapDifficulty(float outline, int item)
     {
         Outline = outline;
         Item = item;

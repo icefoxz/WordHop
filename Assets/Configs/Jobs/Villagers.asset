@@ -14,137 +14,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u804C\u4E1A\u7B49\u7EA7":
   - "\u7B49\u7EA7": 1
-    "\u79F0\u53F7": Village Newcomer
+    "\u79F0\u53F7": Newcomer
     "\u56FE\u6807": {fileID: 1409679856, guid: b2ada91d26a380440bae69a784fd4f4a, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 2
-    "\u79F0\u53F7": Junior Laborer
+    "\u79F0\u53F7": Labore
     "\u56FE\u6807": {fileID: 21300000, guid: 85c65d5f9c52ce64d906535dec6aa0e1, type: 3}
-    "\u8F6C\u804C":
-    - JobType: 1
-      Level: 1
-      Cost: 170
-      Message: Warrior guild offer...
-      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
-    - JobType: 2
-      Level: 1
-      Cost: 190
-      Message: Shadowy invitation...
-      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
-    - JobType: 3
-      Level: 1
-      Cost: 200
-      Message: Magical invitation...
-      Icon: {fileID: 21300000, guid: cfca08577a857449f9070ba922aa86df, type: 3}
   - "\u7B49\u7EA7": 3
-    "\u79F0\u53F7": Homestead Builder
+    "\u79F0\u53F7": Farmhand
     "\u56FE\u6807": {fileID: 21300000, guid: 4868f0db93ad9ef419360248f9ad9d64, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 4
-    "\u79F0\u53F7": Craftsman Apprentice
+    "\u79F0\u53F7": Apprentice Smith
     "\u56FE\u6807": {fileID: 21300000, guid: 881b699fdd3a92342bd4f68cb836c406, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 5
-    "\u79F0\u53F7": Skilled Worker
+    "\u79F0\u53F7": Skilled Craftsman
     "\u56FE\u6807": {fileID: 21300000, guid: 3bd3a94b8c66c994d967cc505a31ed7a, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 6
-    "\u79F0\u53F7": Community Contributor
-    "\u56FE\u6807": {fileID: 21300000, guid: e3361a085e969f44e927ffc0ed7c5a7d, type: 3}
-    "\u8F6C\u804C":
-    - JobType: 1
-      Level: 2
-      Cost: 1000
-      Message: Warrior guild offer...
-      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
-    - JobType: 2
-      Level: 2
-      Cost: 1350
-      Message: Shadowy invitation...
-      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
+    "\u79F0\u53F7": Merchant's Assistant
+    "\u56FE\u6807": {fileID: 21300000, guid: dc2b6e2ff92b2fc46807c3ed738c1d26, type: 3}
   - "\u7B49\u7EA7": 7
-    "\u79F0\u53F7": Village Representative
-    "\u56FE\u6807": {fileID: 21300000, guid: 2854d8ee8635982499d328f4673a137e, type: 3}
-    "\u8F6C\u804C": []
+    "\u79F0\u53F7": Village Guide
+    "\u56FE\u6807": {fileID: 21300000, guid: 96a497d185c6b5e459cecc3546bcd78b, type: 3}
   - "\u7B49\u7EA7": 8
-    "\u79F0\u53F7": Business Starter
-    "\u56FE\u6807": {fileID: 21300000, guid: 3322089dc9716fc4fa66935599ea412f, type: 3}
-    "\u8F6C\u804C": []
+    "\u79F0\u53F7": Minor Council Member
+    "\u56FE\u6807": {fileID: 21300000, guid: bf5f7783cfdba1941942b63a0a7a2df1, type: 3}
   - "\u7B49\u7EA7": 9
-    "\u79F0\u53F7": Small Trader
-    "\u56FE\u6807": {fileID: 21300000, guid: e691cea8b71c4e74a96a2d4f3c703064, type: 3}
-    "\u8F6C\u804C": []
+    "\u79F0\u53F7": Senior Artisan
+    "\u56FE\u6807": {fileID: 21300000, guid: 47fbe392e2e15a74181b2ad7fabc1054, type: 3}
   - "\u7B49\u7EA7": 10
-    "\u79F0\u53F7": Village Council Member
+    "\u79F0\u53F7": Village Elder's Assistant
     "\u56FE\u6807": {fileID: 21300000, guid: 33467e8f31a61554ea7ba81cea4fb9f4, type: 3}
-    "\u8F6C\u804C":
-    - JobType: 1
-      Level: 5
-      Cost: 3000
-      Message: Warrior guild offer...
-      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
   - "\u7B49\u7EA7": 11
-    "\u79F0\u53F7": Chamber of Commerce Member
+    "\u79F0\u53F7": Local Healer
     "\u56FE\u6807": {fileID: 21300000, guid: aabe63de4320026428c226a6b34147ed, type: 3}
-    "\u8F6C\u804C":
-    - JobType: 2
-      Level: 5
-      Cost: 3800
-      Message: Shadowy invitation...
-      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
   - "\u7B49\u7EA7": 12
-    "\u79F0\u53F7": Property Owner
-    "\u56FE\u6807": {fileID: 21300000, guid: 9269393a87eb1bf43ac65d539280ff21, type: 3}
-    "\u8F6C\u804C": []
+    "\u79F0\u53F7": Town Crier
+    "\u56FE\u6807": {fileID: 21300000, guid: 7587b8de5887d94449ed46ef40682404, type: 3}
   - "\u7B49\u7EA7": 13
-    "\u79F0\u53F7": Local Leader
-    "\u56FE\u6807": {fileID: 21300000, guid: c5452a3b0e4dd1b42b7bb9856e1c8f93, type: 3}
-    "\u8F6C\u804C": []
+    "\u79F0\u53F7": Village Protector
+    "\u56FE\u6807": {fileID: 21300000, guid: f0e47b49f5cfa6b468f8daa94a6cbc22, type: 3}
   - "\u7B49\u7EA7": 14
-    "\u79F0\u53F7": Community Elder
-    "\u56FE\u6807": {fileID: 21300000, guid: 4c9082f8f7e32c947be26cc22ea4e257, type: 3}
-    "\u8F6C\u804C":
-    - JobType: 1
-      Level: 7
-      Cost: 6000
-      Message: Warrior guild offer...
-      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
+    "\u79F0\u53F7": Elder's Aide
+    "\u56FE\u6807": {fileID: 21300000, guid: f8d21d3efda5fd0478e0a8873f62f69c, type: 3}
   - "\u7B49\u7EA7": 15
-    "\u79F0\u53F7": Major Merchant
-    "\u56FE\u6807": {fileID: 21300000, guid: 02fdeb58a2fc9b946ad58a1c30b2f38a, type: 3}
-    "\u8F6C\u804C":
-    - JobType: 2
-      Level: 7
-      Cost: 6800
-      Message: Shadowy invitation...
-      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
+    "\u79F0\u53F7": Village Treasurer
+    "\u56FE\u6807": {fileID: 21300000, guid: 04992bff46e1db04c948c1d0ab33dba6, type: 3}
   - "\u7B49\u7EA7": 16
-    "\u79F0\u53F7": Village Chief
-    "\u56FE\u6807": {fileID: 21300000, guid: e9214f24c8ffcf64686c5e5829333b87, type: 3}
-    "\u8F6C\u804C": []
+    "\u79F0\u53F7": Village Chief's Deputy
+    "\u56FE\u6807": {fileID: 21300000, guid: f8d20331f3660e249bb70cda5c41aae6, type: 3}
   - "\u7B49\u7EA7": 17
-    "\u79F0\u53F7": Land Mogul
-    "\u56FE\u6807": {fileID: 21300000, guid: 26c1a849fa4107b4d920e165fe918bfa, type: 3}
-    "\u8F6C\u804C":
-    - JobType: 0
-      Level: 9
-      Cost: 8500
-      Message: Shadowy invitation...
-      Icon: {fileID: 21300000, guid: 19ed8061dbac3433c895296474c0007f, type: 3}
+    "\u79F0\u53F7": Head of Craftsmen
+    "\u56FE\u6807": {fileID: 21300000, guid: 8ffa902915ff9ee4ba2b9f2231b4c583, type: 3}
   - "\u7B49\u7EA7": 18
-    "\u79F0\u53F7": Regional Representative
-    "\u56FE\u6807": {fileID: 21300000, guid: eceae59232e8db547b45d9d843f54357, type: 3}
-    "\u8F6C\u804C": []
+    "\u79F0\u53F7": Village Ambassador
+    "\u56FE\u6807": {fileID: 21300000, guid: 014c2e0177cc2a74f91c27cabf2b4997, type: 3}
   - "\u7B49\u7EA7": 19
-    "\u79F0\u53F7": Community Legend
-    "\u56FE\u6807": {fileID: 21300000, guid: c01e0aa2fd8786e43986cc2730fc53d1, type: 3}
-    "\u8F6C\u804C":
-    - JobType: 1
-      Level: 10
-      Cost: 10000
-      Message: Warrior guild offer...
-      Icon: {fileID: 21300000, guid: c4550c49b87864e6fa713c5050fff80c, type: 3}
+    "\u79F0\u53F7": Village Chief's Right Hand
+    "\u56FE\u6807": {fileID: 21300000, guid: e1a6107b4f07b4141ad60b336491453b, type: 3}
   - "\u7B49\u7EA7": 20
-    "\u79F0\u53F7": Local Luminary
+    "\u79F0\u53F7": Village Elder
     "\u56FE\u6807": {fileID: 21300000, guid: 724738b0f7bc3f147a1fea6a9a0e0225, type: 3}
-    "\u8F6C\u804C": []

@@ -1,4 +1,3 @@
-using System.Collections;
 using AOT.Core;
 using AOT.Core.Systems.Coroutines;
 using AOT.Core.Systems.Messaging;
@@ -20,6 +19,8 @@ public class Game : MonoBehaviour
     [SerializeField] private CoroutineService _coroutineService;
     [SerializeField] private AudioManager _audioManager;
 
+    private PlayerSaveSystem SaveSystem { get; } = new PlayerSaveSystem();
+
     void Start()
     {
         AudioManager = _audioManager;
@@ -30,11 +31,17 @@ public class Game : MonoBehaviour
         _uiManager.Init();
         _audioManager.Init();
         Model.Init();
+        SaveSystem.Init();
         MessagingManager.SendParams(GameEvents.Game_Start);
     }
 
     private void RegControllers(IController controller)
     {
         Controller.Reg(controller);
+    }
+
+    public static void Pause(bool pauseGame)
+    {
+        Time.timeScale = pauseGame ? 0 : 1;
     }
 }

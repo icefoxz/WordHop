@@ -10,7 +10,7 @@ public class TapPadDifficultySo : ScriptableObject
 
     public TapPadDifficulty Difficulty => 难度配置;
 
-    public WordDifficulty GetDifficultyValue(float difficultValue, float randomRange = 0) =>
+    public TapDifficulty GetDifficultyValue(float difficultValue, float randomRange = 0) =>
         Difficulty.GetDifficultyValue(difficultValue, randomRange);
 }
 
@@ -22,7 +22,7 @@ public class TapPadDifficulty
     private OutlineDifficulty[] OutlineSet => _outlineSet;
     private ItemSetting ItemSet => _itemSet;
 
-    public WordDifficulty GetDifficultyValue(float difficultValue, float randomRange = 0)
+    public TapDifficulty GetDifficultyValue(float difficultValue, float randomRange = 0)
     {
         var dValue = difficultValue + Random.Range(-randomRange, randomRange);
         var outlines = OutlineSet.Where(o => o.DifficultyValue <= dValue).OrderByDescending(_ => Random.Range(0, 1f)).ToList();
@@ -30,8 +30,8 @@ public class TapPadDifficulty
         var outline = outlines[0];
         dValue -= outline.DifficultyValue;
         var arg = dValue <= 0
-            ? new WordDifficulty(outline.Ratio, 0)
-            : new WordDifficulty(outline.Ratio, ItemSet.GetValue(dValue) ? 
+            ? new TapDifficulty(outline.Ratio, 0)
+            : new TapDifficulty(outline.Ratio, ItemSet.GetValue(dValue) ? 
                 (int)ItemSet.DifficultyValue : 0);
         return arg;
     }

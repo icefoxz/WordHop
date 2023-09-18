@@ -14,82 +14,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u804C\u4E1A\u7B49\u7EA7":
   - "\u7B49\u7EA7": 1
-    "\u79F0\u53F7": Magic Novice
+    "\u79F0\u53F7": Novice of the Arcane
     "\u56FE\u6807": {fileID: 21300000, guid: 13fcc6821128b8145b5c21acd5bc7035, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 2
-    "\u79F0\u53F7": Spell Apprentice
+    "\u79F0\u53F7": Elemental Student
     "\u56FE\u6807": {fileID: 21300000, guid: 6de8f9ce07435874c96879e215293544, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 3
-    "\u79F0\u53F7": Elemental Caller
+    "\u79F0\u53F7": Enchanter
     "\u56FE\u6807": {fileID: 21300000, guid: 212eb13515dcf4549ba4c6a26e41c0cb, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 4
-    "\u79F0\u53F7": Magic Adept
-    "\u56FE\u6807": {fileID: 21300000, guid: 01f57aea61420df468df3b07f8be2752, type: 3}
-    "\u8F6C\u804C": []
-  - "\u7B49\u7EA7": 5
-    "\u79F0\u53F7": Mage
-    "\u56FE\u6807": {fileID: 21300000, guid: 1ca62e8d4df5d424797c8f16a0ee820e, type: 3}
-    "\u8F6C\u804C": []
-  - "\u7B49\u7EA7": 6
     "\u79F0\u53F7": Spellweaver
+    "\u56FE\u6807": {fileID: 21300000, guid: 01f57aea61420df468df3b07f8be2752, type: 3}
+  - "\u7B49\u7EA7": 5
+    "\u79F0\u53F7": Rune Caster
+    "\u56FE\u6807": {fileID: 21300000, guid: 1ca62e8d4df5d424797c8f16a0ee820e, type: 3}
+  - "\u7B49\u7EA7": 6
+    "\u79F0\u53F7": Fire Conjurer
     "\u56FE\u6807": {fileID: 21300000, guid: 84b6f5fc8713538478e071e17ef885be, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 7
-    "\u79F0\u53F7": Sorcerer
+    "\u79F0\u53F7": Mage Scholar
     "\u56FE\u6807": {fileID: 21300000, guid: 58b9483493ab9a44b8d71a145d53d201, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 8
-    "\u79F0\u53F7": Arcane Expert
+    "\u79F0\u53F7": Arcane Protector
     "\u56FE\u6807": {fileID: 21300000, guid: d66213777ca34a54a960600be5f68659, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 9
-    "\u79F0\u53F7": Flame Caller
+    "\u79F0\u53F7": Portal Keeper
     "\u56FE\u6807": {fileID: 21300000, guid: 74fc13ea46133fd449d5aecbd88e39a7, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 10
-    "\u79F0\u53F7": Ancient Magus
+    "\u79F0\u53F7": Mystic Flame Holder
     "\u56FE\u6807": {fileID: 21300000, guid: f7ab6b6c3bad65242a299db414265998, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 11
-    "\u79F0\u53F7": Spellmaster
+    "\u79F0\u53F7": Master Enchanter
     "\u56FE\u6807": {fileID: 21300000, guid: 4e2c6941d84984d489149169c1c1df2a, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 12
-    "\u79F0\u53F7": High Mage
+    "\u79F0\u53F7": Elemental Lord
     "\u56FE\u6807": {fileID: 21300000, guid: a913b185648371747abaf4d5f679fc0a, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 13
-    "\u79F0\u53F7": Arcane Mentor
+    "\u79F0\u53F7": Grand Spellmaster
     "\u56FE\u6807": {fileID: 21300000, guid: 44b8eb90b8741c8468a0aa2168f0b4c0, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 14
-    "\u79F0\u53F7": Magic Elder
+    "\u79F0\u53F7": Keeper of Arcane Secrets
     "\u56FE\u6807": {fileID: 21300000, guid: 2146d9ee872e6fd4cbbe9bc894a02f2d, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 15
-    "\u79F0\u53F7": Spell Leader
+    "\u79F0\u53F7": Time Bender
     "\u56FE\u6807": {fileID: 21300000, guid: b586868ec16285042b0a6dd1798056b1, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 16
-    "\u79F0\u53F7": Guardian of the Grimoires
+    "\u79F0\u53F7": Space Warper
     "\u56FE\u6807": {fileID: 21300000, guid: e57f64bc94f8abb4088c1c8c11cda2d0, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 17
-    "\u79F0\u53F7": Mystic Sorcerer
+    "\u79F0\u53F7": Elemental Elder
     "\u56FE\u6807": {fileID: 21300000, guid: 14e4e9ccbfe4943408b98af7e0ba32a9, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 18
-    "\u79F0\u53F7": Grand Sorcerer
+    "\u79F0\u53F7": Master of Portals
     "\u56FE\u6807": {fileID: 21300000, guid: aebbdcd172a792144b64adccef407bc8, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 19
-    "\u79F0\u53F7": Archmage
+    "\u79F0\u53F7": Mage Council Member
     "\u56FE\u6807": {fileID: 21300000, guid: 092d8303867188f4097369a1020b91f6, type: 3}
-    "\u8F6C\u804C": []
   - "\u7B49\u7EA7": 20
-    "\u79F0\u53F7": King of Spells
+    "\u79F0\u53F7": Archmage
     "\u56FE\u6807": {fileID: 21300000, guid: 00ef4de4eb726c642a2fcfac0b68c295, type: 3}
-    "\u8F6C\u804C": []

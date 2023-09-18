@@ -19,6 +19,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private View settingsView;
     [SerializeField] private View underAttackView;
     [SerializeField] private View achievementView;
+    [SerializeField] private View windowConfirmView;
 
     [SerializeField] private Transform _tapPadParent;
     [SerializeField] private Image _blockingPanel;
@@ -42,6 +43,7 @@ public class UiManager : MonoBehaviour
     private View_TopSection TopSection { get; set; }
     private View_AchievementMgr AchievementMgr { get; set; }
     private View_Home view_home { get; set; }
+    private View_windowConfirm view_windowConfirm { get; set; }
 
     private Transform TapPadParent => _tapPadParent;
     private GamePlayController GamePlayController => Game.Controller.Get<GamePlayController>();
@@ -66,7 +68,6 @@ public class UiManager : MonoBehaviour
     private void LoadLevel()
     {
         var wordLevel = Game.Model.WordLevel;
-        var stage = Game.Model.Player;
         var wg = wordLevel.WordGroup;
         var wds = wordLevel.WordDifficulties;
         var layout = wordLevel.Layout;
@@ -84,7 +85,7 @@ public class UiManager : MonoBehaviour
                     prefabView: view,
                     onTapAction: pad => GamePlayController.OnAlphabetSelected(pad.Alphabet, false),
                     onOutlineAction: pad => GamePlayController.OnAlphabetSelected(pad.Alphabet, true),
-                    onItemAction: pad => GamePlayController.OnItemClicked(pad.Alphabet),
+                    onItemAction: pad => GamePlayController.OnItemClicked(),
                     id, alphabet);
                 p.Apply(wordDifficulty);
                 return p;
@@ -105,6 +106,7 @@ public class UiManager : MonoBehaviour
     private void WindowsInit()
     {
         AchievementMgr = new View_AchievementMgr(achievementView);
+        view_windowConfirm = new View_windowConfirm(windowConfirmView);
         view_home = new View_Home(homeView, () =>
         {
             GamePlayController.StartGame();
@@ -112,7 +114,8 @@ public class UiManager : MonoBehaviour
         }, AchievementMgr.Show);
         SettingsMgr = new View_SettingsMgr(settingsView);
         SettingsMgr.Init();
-        TopSection = new View_TopSection(topSectionView, SettingsMgr.Show);
+        TopSection = new View_TopSection(topSectionView, SettingsMgr.Show, OnHomeAction);
+        TopSection.Init();
         //StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
         GameOverMgr = new View_GameOverMgr(gameOverView, view_home.Show, () => XDebug.LogWarning("暂时不支持复活功能!"));
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => SetGameOver());
@@ -120,6 +123,18 @@ public class UiManager : MonoBehaviour
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, b => OnLevelClear());
         underAttackView.GameObject.SetActive(false);
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Failed, b => PlayUnderAttack());
+    }
+
+    private void OnHomeAction()
+    {
+        view_windowConfirm.Set("Exit to start menu", "Current progress will not be saved.", ExitToMenu,
+            pauseGame: true);
+    }
+
+    private void ExitToMenu()
+    {
+        GamePlayController.QuitCurrentGame();
+        view_home.Show();
     }
 
     private void PlayUnderAttack()
@@ -157,14 +172,11 @@ public class UiManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
             var player = Game.Model.Player;
             var upgradeRec = player.UpgradeRecord;
-            var wordLevel = Game.Model.WordLevel;
-            var max = wordLevel.GetCurrentMaxScore();
-            var current = player.UpgradeRecord.UpgradeExp;
             var levelInfo = player.GetPlayerLevelInfo();
             var badgeCfg = GetBadgeCfgForCurrentLevel();
             var isUpgrade = upgradeRec.Levels.Count > 1;
             StageClearMgr.SetCoin(player.LastCoinAdd, player.Current.Coin);
-            yield return StageClearMgr.PlayExpGrowing(levelInfo?.title, CalculateStar(current, max), upgradeRec,
+            yield return StageClearMgr.PlayExpGrowing(levelInfo?.title, player.GetStars(), upgradeRec,
                 prefab => BadgeConfigLoader.LoadPrefab(badgeCfg, prefab));
             if (isUpgrade)
             {
@@ -208,12 +220,12 @@ public class UiManager : MonoBehaviour
     private static CardArg GetCardArg()
     {
         var player = Game.Model.Player;
-        return Game.ConfigureSo.JobTree.GetCardArg(player.Current.Job);
+        return Game.ConfigureSo.JobConfig.GetCardArg(player.Current.Job);
     }
 
     private static (string title, string Message, Sprite Icon) ConvertJobArg(JobSwitch o)
     {
-        var jobInfo = Game.ConfigureSo.JobTree.GetJobInfo(o.JobType, o.Level).Value;
+        var jobInfo = Game.ConfigureSo.JobConfig.GetJobInfo(o.JobType, o.Level).Value;
         return (jobInfo.title, o.Message, o.Icon);
     }
 
@@ -221,17 +233,6 @@ public class UiManager : MonoBehaviour
     {
         GamePlayController.StartLevel();
         StageClearMgr.Hide();
-    }
-
-    public int CalculateStar(float currentScore, float maxScore)
-    {
-        var percentageScore = currentScore / maxScore * 100;
-        return percentageScore switch
-        {
-            >= 80 => 3,
-            >= 50 => 2,
-            _ => 1
-        };
     }
 
     private void ResetTapPads()

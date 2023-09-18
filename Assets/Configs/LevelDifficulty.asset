@@ -12,27 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d698e19003899247b530d0cab66cc21, type: 3}
   m_Name: LevelDifficulty
   m_EditorClassIdentifier: 
-  "\u5B57\u6570\u914D\u7F6E":
-  - DifficultyValue: 1
-    WordLength: 3
-  - DifficultyValue: 10
-    WordLength: 4
-  - DifficultyValue: 20
-    WordLength: 5
-  - DifficultyValue: 30
-    WordLength: 6
-  - DifficultyValue: 40
-    WordLength: 7
+  "\u5B57\u6570\u914D\u7F6EJson": {fileID: 4900000, guid: c32cb029875de4043999953ca8f53a17,
+    type: 3}
   "\u6311\u6218\u65F6\u957F\u914D\u7F6E":
-  - DifficultyValue: 1
+  - DifficultyValue: 0.1
     ExtraSecs: 5
-  - DifficultyValue: 2
+  - DifficultyValue: 0.3
     ExtraSecs: 4
-  - DifficultyValue: 3
+  - DifficultyValue: 0.5
     ExtraSecs: 3
-  - DifficultyValue: 4
+  - DifficultyValue: 0.7
     ExtraSecs: 2
-  - DifficultyValue: 5
+  - DifficultyValue: 0.9
     ExtraSecs: 1
-  - DifficultyValue: 6
+  - DifficultyValue: 1
     ExtraSecs: 0
