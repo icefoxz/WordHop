@@ -19,9 +19,11 @@ public class View_AchievementMgr
 
     private void OnTabFocus(JobTypes jobType)
     {
-        var map = Game.ConfigureSo.JobConfig.Data();
+        int[] cardLevels = Pref.GetCardData(jobType);
+        var map = Game.ConfigureSo.JobTree.Data();
         var args = map[jobType];
-        View_achivement.SetFocus(jobType, args);
+        CardArg[] cards = args.Where(c => cardLevels.Contains(c.level)).ToArray();
+        View_achivement.SetFocus(jobType, cards);
     }
 
     public void Show()

@@ -1,4 +1,5 @@
 using AOT.Utl;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Pref
@@ -9,6 +10,13 @@ public class Pref
     private const string SFX_VOLUME = "SFX_VOLUME";
     private const string Highestlevel = "HighestLevel";
     private const string Playerlevel = "PlayerLevel";
+
+    private const string VillagersSet = "VillagersSet";
+    private const string WarriorsSet = "WarriorSet";
+    private const string MysteriousSet = "MysteriousSet";
+    private const string MagesSet = "MagesSet";
+    private const string ElvesSet = "ElvesSet";
+    private const string NecromancerSet = "NecromancerSet";
 
     private static int CheckOrDefault(string key, int defaultValue)
     {
@@ -70,5 +78,78 @@ public class Pref
     {
         var json = Json.Serialize(current);
         PlayerPrefs.SetString(Playerlevel, json);
+    }
+
+    public static int[] GetCardData(JobTypes jobType)
+    {
+        string key = string.Empty;
+        switch (jobType)
+        {
+            case JobTypes.Villagers:
+                key = VillagersSet;
+                break;
+            case JobTypes.Warriors:
+                key = WarriorsSet;
+                break;
+            case JobTypes.Mysterious:
+                key = MysteriousSet;
+                break;
+            case JobTypes.Mages:
+                key = MagesSet;
+                break;
+            case JobTypes.Elves:
+                key = ElvesSet;
+                break;
+            case JobTypes.Necromancer:
+                key = NecromancerSet;
+                break;
+        }
+        var json = PlayerPrefs.GetString(key, string.Empty);
+        if (!string.IsNullOrEmpty(json))
+        {
+            var list = Json.Deserialize<int[]>(json);
+            return list;
+        }
+        return null;
+    }
+
+    public static void SetCardData(JobTypes jobType, int level)
+    {
+        string key = string.Empty;
+        switch (jobType)
+        {
+            case JobTypes.Villagers:
+                key = VillagersSet;
+                break;
+            case JobTypes.Warriors:
+                key = WarriorsSet;
+                break;
+            case JobTypes.Mysterious:
+                key = MysteriousSet;
+                break;
+            case JobTypes.Mages:
+                key = MagesSet;
+                break;
+            case JobTypes.Elves:
+                key = ElvesSet;
+                break;
+            case JobTypes.Necromancer:
+                key = NecromancerSet;
+                break;
+        }
+        SetCardData(key, level);
+    }
+
+    private static void SetCardData(string key, int level)
+    {
+        List<int> card = new List<int>();
+        var json = PlayerPrefs.GetString(key, string.Empty);
+        var data = Json.Deserialize<int[]>(json);
+        for (int i = 0; i < data.Length; i++)
+            card.Add(data[i]);
+        card.Add(level);
+        int[] lists = card.ToArray();
+        json = Json.Serialize(lists);
+        PlayerPrefs.SetString(key, json);
     }
 }
