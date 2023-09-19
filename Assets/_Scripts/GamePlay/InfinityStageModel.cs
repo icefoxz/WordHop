@@ -57,7 +57,7 @@ public class InfinityStageModel : ModelBase
     private void LoadChallengeStage()
     {
         var levelIndex = Player.StageLevelDifficultyIndex;
-        var (wds, exSecs) = DifficultyLoader.GetChallengeStageLevelConfig(levelIndex + 1);
+        var (wds, exSecs, difficulty) = DifficultyLoader.GetChallengeStageLevelConfig(levelIndex + 1);
         var wg = GetWordGroup(wds);
 
         var secs = exSecs + //最多5秒
@@ -65,7 +65,7 @@ public class InfinityStageModel : ModelBase
                    Game.ConfigureSo.GameRoundConfigSo.BaseSeconds;
         var layout = GetLayout(wds.Length);
         _countdownTime = secs;
-        WordLevel.InitLevel(wds, wg, secs, layout);
+        WordLevel.InitLevel(wds, wg, difficulty, secs, layout);
     }
 
     // 获取词语组

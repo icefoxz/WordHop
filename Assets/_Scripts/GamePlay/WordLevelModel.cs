@@ -9,7 +9,7 @@ public class WordLevelModel : ModelBase
     private readonly List<Alphabet> _hints = new List<Alphabet>();
     public WordGroup WordGroup { get; private set; }
     public LayoutConfig Layout { get; set; }
-    public int Seconds { get; set; }
+    public int TotalSeconds { get; set; }
     public TapDifficulty[] WordDifficulties { get; set; }
 
     public IReadOnlyList<Alphabet> SelectedAlphabets => _selectedList;
@@ -19,20 +19,19 @@ public class WordLevelModel : ModelBase
     //是否上一个字符正确
     public bool IsLastAlphabetApply { get; private set; }
     private GamePlayRule Rule { get; set; }
+    public float Difficulty { get; private set; }
 
-    public void InitLevel(TapDifficulty[] wds, WordGroup wg, int secs, LayoutConfig layout)
+    public void InitLevel(TapDifficulty[] wds, WordGroup wg, float difficulty ,int secs, LayoutConfig layout)
     {
+        Difficulty = difficulty;
         WordDifficulties = wds;
         WordGroup = wg;
-        Seconds = secs;
+        TotalSeconds = secs;
         Layout = layout;
         Rule = new GamePlayRule(wg.Words);
         _selectedList.Clear();
         SendEvent(GameEvents.Level_Init);
     }
-
-    public int GetCurrentMaxScore() =>
-        Game.ConfigureSo.GameRoundConfigSo.CalculateExperience(Seconds, WordGroup.Key.Length);
 
     public void Hints_add(Alphabet alphabet)
     {
@@ -67,9 +66,9 @@ public class WordLevelModel : ModelBase
     {
         var letters = WordGroup.Words[0];
         var alphabetLength = letters.Length;
-        var elapsed = Seconds - secs;
+        var elapsed = TotalSeconds - secs;
         var hints =
-            WordHintProvider.CalculateHints(elapsedSeconds: elapsed, totalSeconds: Seconds, totalHints: alphabetLength);
+            WordHintProvider.CalculateHints(elapsedSeconds: elapsed, totalSeconds: TotalSeconds, totalHints: alphabetLength);
 
         // 使用hintIndex来决定添加哪一个提示，例如，如果hintIndex是1，则添加第二个字母的提示。
         for (var index = 0; index < hints; index++)
@@ -90,7 +89,7 @@ public class WordLevelModel : ModelBase
         Rule = null;
         WordGroup = default;
         Layout = null;
-        Seconds = 0;
+        TotalSeconds = 0;
         _selectedList.Clear();
         _hints.Clear();
         SendEvent(GameEvents.Level_Reset);

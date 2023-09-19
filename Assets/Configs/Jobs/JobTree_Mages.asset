@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34be6d5d454bd834e9d5a082c685cbd6, type: 3}
   m_Name: JobTree_Mages
   m_EditorClassIdentifier: 
+  "\u804C\u4E1A\u56FE\u6807": {fileID: 21300000, guid: cfca08577a857449f9070ba922aa86df,
+    type: 3}
   "\u804C\u4E1A\u7B49\u7EA7":
   - Level: 5
     JobSwitch:
@@ -19,67 +21,57 @@ MonoBehaviour:
       Level: 7
       Cost: 80
       Message: Cosmic knowledge beckons.
-      Icon: {fileID: 0}
   - Level: 5
     JobSwitch:
       JobType: 4
       Level: 6
       Cost: 90
       Message: Nature's arcane secrets.
-      Icon: {fileID: 0}
   - Level: 7
     JobSwitch:
       JobType: 1
       Level: 8
       Cost: 100
       Message: Magic-infused combat.
-      Icon: {fileID: 0}
   - Level: 7
     JobSwitch:
       JobType: 5
       Level: 7
       Cost: 110
       Message: Twilight energies surge.
-      Icon: {fileID: 0}
   - Level: 9
     JobSwitch:
       JobType: 2
       Level: 10
       Cost: 120
       Message: The cosmos awaits.
-      Icon: {fileID: 0}
   - Level: 11
     JobSwitch:
       JobType: 4
       Level: 10
       Cost: 130
       Message: Arcane nature's champion.
-      Icon: {fileID: 0}
   - Level: 13
     JobSwitch:
       JobType: 1
       Level: 11
       Cost: 140
       Message: Mage knight trials.
-      Icon: {fileID: 0}
   - Level: 15
     JobSwitch:
       JobType: 5
       Level: 10
       Cost: 150
       Message: Master of dark arts.
-      Icon: {fileID: 0}
   - Level: 17
     JobSwitch:
       JobType: 2
       Level: 13
       Cost: 160
       Message: Ultimate cosmic truths.
-      Icon: {fileID: 0}
   - Level: 19
     JobSwitch:
       JobType: 4
       Level: 12
       Cost: 170
       Message: Guardian of magic forests.
-      Icon: {fileID: 0}

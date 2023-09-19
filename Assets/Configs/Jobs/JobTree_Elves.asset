@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34be6d5d454bd834e9d5a082c685cbd6, type: 3}
   m_Name: JobTree_Elves
   m_EditorClassIdentifier: 
+  "\u804C\u4E1A\u56FE\u6807": {fileID: 21300000, guid: 1d24290f967d845358a5920bb8b3d6c0,
+    type: 3}
   "\u804C\u4E1A\u7B49\u7EA7":
   - Level: 5
     JobSwitch:
@@ -19,67 +21,57 @@ MonoBehaviour:
       Level: 6
       Cost: 80
       Message: Forest's guardian.
-      Icon: {fileID: 0}
   - Level: 5
     JobSwitch:
       JobType: 3
       Level: 7
       Cost: 110
       Message: Ancient woodland spells.
-      Icon: {fileID: 0}
   - Level: 7
     JobSwitch:
       JobType: 2
       Level: 9
       Cost: 120
       Message: Nature's cosmic wonders.
-      Icon: {fileID: 0}
   - Level: 7
     JobSwitch:
       JobType: 5
       Level: 7
       Cost: 130
       Message: The balance of life and death.
-      Icon: {fileID: 0}
   - Level: 9
     JobSwitch:
       JobType: 3
       Level: 10
       Cost: 140
       Message: '"Forest mage supreme."'
-      Icon: {fileID: 0}
   - Level: 11
     JobSwitch:
       JobType: 1
       Level: 12
       Cost: 150
       Message: Elf knight elite.
-      Icon: {fileID: 0}
   - Level: 13
     JobSwitch:
       JobType: 0
       Level: 12
       Cost: 160
       Message: Mysteries of the wild.
-      Icon: {fileID: 0}
   - Level: 15
     JobSwitch:
       JobType: 5
       Level: 12
       Cost: 170
       Message: Life and death's guardian.
-      Icon: {fileID: 0}
   - Level: 17
     JobSwitch:
       JobType: 3
       Level: 15
       Cost: 180
       Message: '"Master of nature''s magic."'
-      Icon: {fileID: 0}
   - Level: 19
     JobSwitch:
       JobType: 1
       Level: 15
       Cost: 190
       Message: Ultimate forest warrior.
-      Icon: {fileID: 0}

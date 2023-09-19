@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34be6d5d454bd834e9d5a082c685cbd6, type: 3}
   m_Name: JobTree_Warriors
   m_EditorClassIdentifier: 
+  "\u804C\u4E1A\u56FE\u6807": {fileID: 21300000, guid: 2bc20b1c7a9cf4af38e7464961b8429d,
+    type: 3}
   "\u804C\u4E1A\u7B49\u7EA7":
   - Level: 3
     JobSwitch:
@@ -19,67 +21,57 @@ MonoBehaviour:
       Level: 5
       Cost: 20
       Message: Return to simplicity.
-      Icon: {fileID: 0}
   - Level: 3
     JobSwitch:
       JobType: 4
       Level: 5
       Cost: 50
       Message: A warrior of the forest?
-      Icon: {fileID: 0}
   - Level: 5
     JobSwitch:
       JobType: 3
       Level: 5
       Cost: 70
       Message: Merge magic with might.
-      Icon: {fileID: 0}
   - Level: 5
     JobSwitch:
       JobType: 5
       Level: 5
       Cost: 85
       Message: Darker forces offer power.
-      Icon: {fileID: 0}
   - Level: 7
     JobSwitch:
       JobType: 2
       Level: 6
       Cost: 100
       Message: A call to the unknown.
-      Icon: {fileID: 0}
   - Level: 9
     JobSwitch:
       JobType: 3
       Level: 7
       Cost: 110
       Message: Dive deeper into magic.
-      Icon: {fileID: 0}
   - Level: 11
     JobSwitch:
       JobType: 4
       Level: 8
       Cost: 120
       Message: Champion of nature.
-      Icon: {fileID: 0}
   - Level: 13
     JobSwitch:
       JobType: 5
       Level: 8
       Cost: 130
       Message: Further into darkness.
-      Icon: {fileID: 0}
   - Level: 15
     JobSwitch:
       JobType: 0
       Level: 17
       Cost: 140
       Message: Seek peace.
-      Icon: {fileID: 0}
   - Level: 17
     JobSwitch:
       JobType: 3
       Level: 10
       Cost: 150
       Message: The peak of magic.
-      Icon: {fileID: 0}

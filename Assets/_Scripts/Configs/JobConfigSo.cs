@@ -116,13 +116,7 @@ public class JobConfigSo : ScriptableObject
 
     public (string title, Sprite sprite)? GetJobInfo(JobTypes type, int level) => GetJobInfo(GetJobName(type), level);
 
-    public Sprite GetJobIcon(JobTypes type, int level)
-    {
-        var job = GetJobType(GetJobName(type)).LevelSets.FirstOrDefault(j => j.Level == level);
-        if (job != null) return job.Icon;
-        Debug.LogError($"没有找到职业{type}的{level}级设定");
-        return null;
-    }
+    public Sprite GetJobIcon(JobTypes type) => GetJobTree(type).JobIcon;
 
     public (string title, Sprite sprite)? GetJobInfo(string jobName,int level)
     {

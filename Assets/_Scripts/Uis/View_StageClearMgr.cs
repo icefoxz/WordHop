@@ -24,7 +24,7 @@ public class View_StageClearMgr
     private void SetExpBar(int exp, int max) => View_stageClear.SetExpBar(exp, max);
     private void SetExpValue(int exp) => View_stageClear.SetExpValue(exp);
     private void SetLevel(string title,int level) => View_stageClear.SetLevel(title, level);
-
+    public void ResetWinPos() => View_stageClear.ResetWindowPos();
     /// <summary>
     /// 播放升级记录
     /// </summary>
@@ -36,7 +36,6 @@ public class View_StageClearMgr
         UnityAction<GameObject> transformAction , float seconds = 1f)
     {
         var firstRec = upgrade.Levels[0];
-        View_stageClear.ResetWindowPos();
         Show();
         View_stageClear.PlayStars(stars);
         //如果不是升级,仅增加经验的演示

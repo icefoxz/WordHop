@@ -165,6 +165,7 @@ public class UiManager : MonoBehaviour
     private void OnLevelClear()
     {
         StartCoroutine(Call(PlaySlotAnim));
+
         IEnumerator PlaySlotAnim()
         {
             StageClearMgr.DisplayCardSect(false);
@@ -175,25 +176,31 @@ public class UiManager : MonoBehaviour
             var levelInfo = player.GetPlayerLevelInfo();
             var badgeCfg = GetBadgeCfgForCurrentLevel();
             var isUpgrade = upgradeRec.Levels.Count > 1;
+            var arg = GetCardArg();
             StageClearMgr.SetCoin(player.LastCoinAdd, player.Current.Coin);
-            yield return StageClearMgr.PlayExpGrowing(levelInfo?.title, player.GetStars(), upgradeRec,
+            StageClearMgr.ClearCard();
+            StageClearMgr.SetCard(arg, true);
+            StageClearMgr.DisplayCardSect(true);
+            if (!isUpgrade)
+                yield return StageClearMgr.FadeOutCard(0);
+
+            yield return StageClearMgr.PlayExpGrowing(levelInfo?.title, player.Stars, upgradeRec,
                 prefab => BadgeConfigLoader.LoadPrefab(badgeCfg, prefab));
             if (isUpgrade)
             {
-                StageClearMgr.DisplayCardSect(true);
-                var arg = GetCardArg();
-                StageClearMgr.ClearCard();
-                StageClearMgr.SetCard(arg, true);
+                //yield return StageClearMgr.PlayWindowToY(300, 0.5f);
+                yield return StageClearMgr.FadeOutCard(1.5f);
+            }
+            else
+            {
                 var options = arg.options.Where(o => player.Current.Coin >= o.Cost)
-                            .Select(ConvertJobArg).ToArray();
+                    .Select(ConvertJobArg).ToArray();
                 if (options.Length > 0)
                 {
                     StageClearMgr.SetOptions(options,
                         StartLevel, index => SwitchJob(arg.options[index]));
                     StageClearMgr.SetCardAction(() => StartCoroutine(StageClearMgr.ShowOptions(1000, 1)));
                 }
-                yield return StageClearMgr.PlayWindowToY(300, 0.5f);
-                yield return StageClearMgr.FadeOutCard(1.5f);
             }
         }
     }
@@ -225,8 +232,10 @@ public class UiManager : MonoBehaviour
 
     private static (string title, string Message, Sprite Icon) ConvertJobArg(JobSwitch o)
     {
-        var jobInfo = Game.ConfigureSo.JobConfig.GetJobInfo(o.JobType, o.Level).Value;
-        return (jobInfo.title, o.Message, o.Icon);
+        var jobInfo = Game.ConfigureSo.JobConfig.GetCardArg(o.JobType, o.Level);
+        var jobIcon = Game.ConfigureSo.JobConfig.GetJobIcon(o.JobType);
+
+        return (jobInfo.title, o.Message, jobIcon);
     }
 
     private void StartLevel()
@@ -240,5 +249,3 @@ public class UiManager : MonoBehaviour
         foreach (var pad in TapPadList.List) pad.ResetColor();
     }
 }
-
-

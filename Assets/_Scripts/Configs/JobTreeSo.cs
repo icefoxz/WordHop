@@ -5,8 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "JobTreeSo", menuName = "配置/玩家职业/职业树")]
 public class JobTreeSo : ScriptableObject
 {
+    [SerializeField] private Sprite 职业图标;
     [SerializeField] private JobSwitchField[] 职业等级;
     private JobSwitchField[] Jobs => 职业等级;
+    public Sprite JobIcon => 职业图标;
 
     public JobSwitch[] GetJobSwitches(int level) => Jobs.Where(j => j.Level == level).Select(j=>j.JobSwitch).ToArray();
 
@@ -23,5 +25,4 @@ public class JobSwitch
     public int Level;
     public int Cost;
     public string Message;
-    public Sprite Icon;
 }

@@ -15,14 +15,14 @@ public class DifficultyLoader
     }
 
     // 获取随机关卡配置
-    public (TapDifficulty[]words, int countdown) GetChallengeStageLevelConfig(int gameCount)
+    public (TapDifficulty[]words, int countdown, float difficulty) GetChallengeStageLevelConfig(int gameCount)
     {
         var difficulty = new GameDifficulty(gameCount, LevelDifficultySo); // 获取当前的难度系数
         var difficultyValue = difficulty.GetCurrentDifficulty(); // 获取难度值
         var extraSecs = difficulty.GetExtraTime(); // 获取额外时间
         var wordLength = difficulty.GetWordLength();// 获取文字长度, 如果有指定文字长度，则使用指定的文字长度
         var wds = GetTapPadSettings(TapPadDifficultySo, difficultyValue, wordLength); // 获取文字难度配置
-        return (wds, extraSecs);
+        return (wds, extraSecs, difficultyValue);
     }
 
     // 获取文字难度配置

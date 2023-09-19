@@ -1,5 +1,7 @@
+using System;
 using AOT.Utl;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Pref
@@ -82,74 +84,66 @@ public class Pref
 
     public static int[] GetCardData(JobTypes jobType)
     {
-        string key = string.Empty;
-        switch (jobType)
+        var key = GetJobTypeKey(jobType);
+        var list = GetCardList(key);
+        if (list == null)
         {
-            case JobTypes.Villagers:
-                key = VillagersSet;
-                break;
-            case JobTypes.Warriors:
-                key = WarriorsSet;
-                break;
-            case JobTypes.Mysterious:
-                key = MysteriousSet;
-                break;
-            case JobTypes.Mages:
-                key = MagesSet;
-                break;
-            case JobTypes.Elves:
-                key = ElvesSet;
-                break;
-            case JobTypes.Necromancer:
-                key = NecromancerSet;
-                break;
+            foreach (var type in Enum.GetValues(typeof(JobTypes)).Cast<JobTypes>())
+            {
+                var typeKey = GetJobTypeKey(type);
+                if (type == JobTypes.Villagers)
+                {
+                    SetCardData(typeKey, new[] { 1 });
+                    continue;
+                }
+
+                SetCardData(typeKey, Array.Empty<int>());
+            }
+
+            list = GetCardList(key);
         }
-        var json = PlayerPrefs.GetString(key, string.Empty);
-        if (!string.IsNullOrEmpty(json))
+
+        return list;
+
+        int[] GetCardList(string k)
         {
-            var list = Json.Deserialize<int[]>(json);
-            return list;
+            var json = PlayerPrefs.GetString(k, string.Empty);
+            var l = Json.Deserialize<int[]>(json);
+            return l;
         }
-        return null;
+
     }
 
-    public static void SetCardData(JobTypes jobType, int level)
+    private static string GetJobTypeKey(JobTypes jobType)
     {
-        string key = string.Empty;
-        switch (jobType)
+        var key = jobType switch
         {
-            case JobTypes.Villagers:
-                key = VillagersSet;
-                break;
-            case JobTypes.Warriors:
-                key = WarriorsSet;
-                break;
-            case JobTypes.Mysterious:
-                key = MysteriousSet;
-                break;
-            case JobTypes.Mages:
-                key = MagesSet;
-                break;
-            case JobTypes.Elves:
-                key = ElvesSet;
-                break;
-            case JobTypes.Necromancer:
-                key = NecromancerSet;
-                break;
-        }
-        SetCardData(key, level);
+            JobTypes.Villagers => VillagersSet,
+            JobTypes.Warriors => WarriorsSet,
+            JobTypes.Mysterious => MysteriousSet,
+            JobTypes.Mages => MagesSet,
+            JobTypes.Elves => ElvesSet,
+            JobTypes.Necromancer => NecromancerSet,
+            _ => throw new ArgumentOutOfRangeException(nameof(jobType), jobType, null)
+        };
+
+        return key;
     }
 
-    private static void SetCardData(string key, int level)
+    public static void UnlockCardLevel(JobTypes jobType, int level)
     {
-        List<int> card = new List<int>();
+        var key = GetJobTypeKey(jobType);
         var json = PlayerPrefs.GetString(key, string.Empty);
         var data = Json.Deserialize<int[]>(json);
-        for (int i = 0; i < data.Length; i++)
-            card.Add(data[i]);
+        var card = data.ToList();
         card.Add(level);
-        int[] lists = card.ToArray();
-        json = Json.Serialize(lists);
+        var lists = card.ToArray();
+        SetCardData(key, lists);
+    }
+
+    private static void SetCardData(string key, int[] lists)
+    {
+        var json = Json.Serialize(lists);
         PlayerPrefs.SetString(key, json);
     }
 }
