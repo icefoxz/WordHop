@@ -23,5 +23,5 @@ public static class GameEvents
     public const string Level_Reset = "Level_Reset";
     public const string Level_Alphabet_Failed = "Level_Alphabet_Failed";
     
-    public const string Game_Start = "Game_Start";
+    public const string Game_Init = "Game_Start";
 }

@@ -25,6 +25,7 @@ public class TapPad
             HighlightTapPad();
         }, onItemAction);
         _order = clickOrder;
+        ResetColor();
     }
 
     private void HighlightTapPad()
@@ -33,8 +34,8 @@ public class TapPad
         _tapPad.DisplayHighlight(word.IsLastAlphabetApply);
         if (word.IsLastAlphabetApply)
         {
-            _tapPad.SetTextColor(_tapPad.YellowColor());
-            _tapPad.SetOutlineColor(Color.yellow);
+            //_tapPad.SetTextColor(_tapPad.YellowColor());
+            //_tapPad.SetOutlineColor(Color.yellow);
             _tapPad.DisplayAura(true);
             return;
         }
@@ -63,6 +64,7 @@ public class TapPad
         });
         _tapPad.SetText(Alphabet.UpperText);
         _order = -1;
+        ResetColor();
     }
 
     private void OnItemClick()
@@ -86,9 +88,8 @@ public class TapPad
     public void ResetColor()
     {
         _tapPad.DisplayHighlight(false);
-        _tapPad.SetTextColor(_tapPad.GreyColor());
-        _tapPad.SetOutlineColor(_tapPad.GreyColor());
+        //_tapPad.SetTextColor(_tapPad.GreyColor());
+        //_tapPad.SetOutlineColor(_tapPad.GreyColor());
         _tapPad.DisplayAura(false);
-
     }
 }

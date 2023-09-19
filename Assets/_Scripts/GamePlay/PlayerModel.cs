@@ -11,7 +11,7 @@ namespace GamePlay
         /// <summary>
         /// 用于不断攀升增加难度的数值
         /// </summary>
-        public int StageLevelDifficultyIndex { get; private set; }
+        public int GameStageIndex { get; private set; }
         private IPlayerLevelField[] Levels { get; set; }
         public UpgradingRecord UpgradeRecord { get; private set; }
         public PlayerRec Current { get; private set; }
@@ -28,11 +28,16 @@ namespace GamePlay
         public PlayerModel(PlayerRec current, IPlayerLevelField[] levelFields)
         {
             Current = current;
+            HighestRec = current;
             Levels = levelFields;
             UpgradeHandler = new PlayerUpgradeHandler(Levels);
         }
 
-        public void SetHighestLevel(PlayerRec current) => HighestRec = current;
+        public void SetHighestLevel(PlayerRec rec)
+        {
+            if (rec != null)
+                HighestRec = rec;
+        }
 
         public int GetScore() => Exp + Levels.Where(l => l.Level < Current.Level).Sum(l => l.MaxExp);
 
@@ -45,19 +50,30 @@ namespace GamePlay
             var rewardConfig = Game.ConfigureSo.GameRoundConfigSo;
             var point = secs - missTake;
             var reward = rewardConfig.GetRewardsByQuality(secs, maxSecs, difficulty);
-            UpgradeRecord = UpgradeHandler.Upgrade(reward.Exp);
+            var currentLevel = Upgrade(reward.Exp);
             var adRatio = reward.AdRatio;
             var isLevelUp = UpgradeRecord.Levels.Count > 1;
-            var currentLevel = UpgradeHandler.CurrentLevel.Level;
-            var currentExp = UpgradeHandler.Exp;
             Stars = rewardConfig.CalculateStars(secs, WordLevel.TotalSeconds, difficulty);
             AddCoin(reward.Coin);
-            Current.AddScore(point);
-            Current.SetLevel(currentLevel, currentExp);
+            Current.AddScore(reward.Exp);
             var job = Game.ConfigureSo.JobConfig.GetPlayerJob(Current.Job.JobType, currentLevel);
             Current.UpdateJob(job);
             SendEvent(GameEvents.Stage_Point_Update, point);
             if(isLevelUp) SendEvent(GameEvents.Player_Level_Up, currentLevel);
+        }
+
+        /// <summary>
+        /// 一般用在内部调用, 除非Hack等级
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <returns></returns>
+        private int Upgrade(int exp)
+        {
+            UpgradeRecord = UpgradeHandler.Upgrade(exp);
+            var currentLevel = UpgradeHandler.CurrentLevel.Level;
+            var currentExp = UpgradeHandler.Exp;
+            Current.SetLevel(currentLevel, currentExp);
+            return currentLevel;
         }
 
         public void CompareAndReplaceHighest()
@@ -96,12 +112,12 @@ namespace GamePlay
             var missTake = WordLevel.GetMissTakes();
             var difficulty = WordLevel.Difficulty;
             ScoreCalculation(secs, WordLevel.TotalSeconds,difficulty, missTake);
-            StageLevelDifficultyIndex++;
+            GameStageIndex++;
         }
 
         public void Reset()
         {
-            StageLevelDifficultyIndex = 0;
+            GameStageIndex = 0;
             UpgradeHandler.Reset();
         }
 
@@ -111,5 +127,10 @@ namespace GamePlay
             return Game.ConfigureSo.JobConfig.GetJobInfo(Current.Job.JobType, playerLevel);
         }
 
+        public bool IsMaxLevel() => Current.Level >= Game.ConfigureSo.UpgradeConfigSo.GetMaxLevel();
+
+#if UNITY_EDITOR
+        public void HackUpgrade(int exp) => Upgrade(exp);
+#endif
     }
 }

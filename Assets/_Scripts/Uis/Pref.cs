@@ -130,11 +130,12 @@ public class Pref
         return key;
     }
 
-    public static void UnlockCardLevel(JobTypes jobType, int level)
+    public static void UnlockCard(JobTypes jobType, int level)
     {
         var key = GetJobTypeKey(jobType);
         var json = PlayerPrefs.GetString(key, string.Empty);
         var data = Json.Deserialize<int[]>(json);
+        if (data.Contains(level)) return;
         var card = data.ToList();
         card.Add(level);
         var lists = card.ToArray();

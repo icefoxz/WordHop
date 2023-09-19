@@ -5,6 +5,7 @@ using AOT.Core.Systems.Coroutines;
 using AOT.Utl;
 using AOT.Utls;
 using GamePlay;
+using Sirenix.OdinInspector.Editor.GettingStarted;
 using UnityEngine;
 
 //无限关卡执行器
@@ -56,16 +57,25 @@ public class InfinityStageModel : ModelBase
     // 挑战模式, 无限关卡, 动态生成, 难度递增
     private void LoadChallengeStage()
     {
-        var levelIndex = Player.StageLevelDifficultyIndex;
-        var (wds, exSecs, difficulty) = DifficultyLoader.GetChallengeStageLevelConfig(levelIndex + 1);
+        var gameStageIndex = Player.GameStageIndex;
+        var dif = new GameDifficulty(gameStageIndex + 1, Game.ConfigureSo.LevelDifficulty);
+        var difficultyValue = dif.GetCurrentDifficulty(); // 获取难度值
+        var exSecs = dif.GetExtraTime(); // 获取额外时间
+        var wordLength = dif.GetWordLength();// 获取文字长度, 如果有指定文字长度，则使用指定的文字长度
+        if (Player.IsMaxLevel()) // 满级使用最高难度
+        {
+            wordLength = 7;
+            exSecs = 0;
+            difficultyValue = 1;
+        }
+        var wds = DifficultyLoader.GetTapPadSettings(difficultyValue, wordLength);
         var wg = GetWordGroup(wds);
-
         var secs = exSecs + //最多5秒
                    wg.Key.Length + //最多7字
                    Game.ConfigureSo.GameRoundConfigSo.BaseSeconds;
         var layout = GetLayout(wds.Length);
         _countdownTime = secs;
-        WordLevel.InitLevel(wds, wg, difficulty, secs, layout);
+        WordLevel.InitLevel(wds, wg, difficultyValue, secs, layout);
     }
 
     // 获取词语组

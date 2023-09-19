@@ -19,19 +19,19 @@ MonoBehaviour:
     JobSwitch:
       JobType: 1
       Level: 2
-      Cost: 20
+      Cost: 130
       Message: Train as a soldier.
   - Level: 2
     JobSwitch:
       JobType: 2
       Level: 2
-      Cost: 30
+      Cost: 150
       Message: Feel a mystic presence.
   - Level: 4
     JobSwitch:
       JobType: 1
       Level: 3
-      Cost: 40
+      Cost: 1
       Message: Join the knights.
   - Level: 4
     JobSwitch:

@@ -14,17 +14,18 @@ public class View_StageClearMgr
     public View_StageClearMgr(IView view, UnityAction onClickAction)
     {
         View_stageClear = new View_StageClear(view, onClickAction,
-            onClickAdAction: () => { Debug.Log("Watch ads to get reward"); }
-        );
+            onClickAdAction: () => Debug.Log("Watch ads to get reward"));
     }
 
     public void Hide() => View_stageClear.Hide();
     public void Show() => View_stageClear.Show();
-    public void HideOptions() => View_stageClear.HideOptions(); 
+    public void HideOptions() => View_stageClear.HideOptions();
     private void SetExpBar(int exp, int max) => View_stageClear.SetExpBar(exp, max);
     private void SetExpValue(int exp) => View_stageClear.SetExpValue(exp);
-    private void SetLevel(string title,int level) => View_stageClear.SetLevel(title, level);
+    private void SetLevel(string title, int level) => View_stageClear.SetLevel(title, level);
     public void ResetWinPos() => View_stageClear.ResetWindowPos();
+    public void SetComplete(UnityAction endGameAction) => View_stageClear.SetEndGame(endGameAction);
+
     /// <summary>
     /// 播放升级记录
     /// </summary>
@@ -32,8 +33,8 @@ public class View_StageClearMgr
     /// <param name="upgrade"></param>
     /// <param name="seconds"></param>
     /// <returns></returns>
-    public IEnumerator PlayExpGrowing(string title,int stars, UpgradingRecord upgrade, 
-        UnityAction<GameObject> transformAction , float seconds = 1f)
+    public IEnumerator PlayExpGrowing(string title, int stars, UpgradingRecord upgrade,
+        UnityAction<GameObject> transformAction, float seconds = 1f)
     {
         var firstRec = upgrade.Levels[0];
         Show();
@@ -73,7 +74,8 @@ public class View_StageClearMgr
             SetExpValue(exp);
         }
     }
-    public void SetBadge(BadgeConfiguration badgeCfg)=> View_stageClear.SetBadge(badgeCfg);
+
+    public void SetBadge(BadgeConfiguration badgeCfg) => View_stageClear.SetBadge(badgeCfg);
     public void SetCard(CardArg arg, bool resetPos) => View_stageClear.SetCard(arg, resetPos);
     public void SetCardAction(UnityAction onceAction) => View_stageClear.SetCardAction(onceAction);
     public void SetCoin(int coin, int sum) => View_stageClear.SetCoin(coin, sum);
@@ -88,9 +90,11 @@ public class View_StageClearMgr
 
     public IEnumerator FadeOutCard(float seconds) => View_stageClear.FadeOutCard(seconds);
     public IEnumerator PlayWindowToY(float localY, float seconds) => View_stageClear.PlayWindowToY(localY, seconds);
+
     public void SetOptions((string title, string message, Sprite icon)[] args, UnityAction onContinueAction,
         UnityAction<int> onOpSelectedAction) =>
         View_stageClear.SetOptions(args, onContinueAction, onOpSelectedAction);
+
     public void DisplayCardSect(bool display) => View_stageClear.DisplayCardSect(display);
 
     private class View_StageClear : UiBase
@@ -108,12 +112,12 @@ public class View_StageClearMgr
         private Transform trans_win { get; }
         private View_options view_options { get; }
         private View_cardSect view_cardSect { get; }
+        private View_complete view_complete { get; }
 
         private event UnityAction OptionContinueAction;
         private event UnityAction<int> OptionSelectAction;
 
-        public View_StageClear(IView v, UnityAction onClickNextAction, 
-            UnityAction onClickAdAction) : base(v, false)
+        public View_StageClear(IView v, UnityAction onClickNextAction, UnityAction onClickAdAction) : base(v, false)
         {
             trans_win = v.Get<Transform>("trans_win");
             img_star_0 = v.Get<Image>("img_star_0");
@@ -131,6 +135,7 @@ public class View_StageClearMgr
             view_options = new View_options(v.Get<View>("view_options"), () => OptionContinueAction(),
                 a => OptionSelectAction(a));
             view_cardSect = new View_cardSect(v.Get<View>("view_cardSect"));
+            view_complete = new View_complete(v.Get<View>("view_complete"));
         }
 
         public void SetCard(CardArg arg, bool resetPos)
@@ -148,6 +153,7 @@ public class View_StageClearMgr
         public void SetCardAction(UnityAction onceAction) => view_cardSect.SetCardAction(onceAction);
 
         public void SetAlpha(float alpha) => view_cardSect.SetAlpha(alpha);
+
         public IEnumerator FadeOutCard(float seconds)
         {
             yield return view_cardSect.FadeOut(seconds).WaitForCompletion();
@@ -165,7 +171,7 @@ public class View_StageClearMgr
             view_userLevel.PlayToValue(toValue, max, seconds);
 
         public IEnumerator PlayToLevel(string title, int level, UnityAction<GameObject> transformAction, float sec) =>
-            view_userLevel.PlayToLevel(title, level, transformAction,sec);
+            view_userLevel.PlayToLevel(title, level, transformAction, sec);
 
         public IEnumerator ShowOptions(float cardYPos, float secs)
         {
@@ -181,9 +187,10 @@ public class View_StageClearMgr
                 var star = Stars[i];
                 star.gameObject.SetActive(false);
                 if (i >= stars) continue;
-                t.AppendCallback(()=>star.gameObject.SetActive(true))
+                t.AppendCallback(() => star.gameObject.SetActive(true))
                     .AppendInterval(0.5f);
             }
+
             return t.Play();
         }
 
@@ -192,12 +199,13 @@ public class View_StageClearMgr
             trans_win.localPosition = Vector3.zero;
             view_cardSect.HideCard();
         }
+
         public IEnumerator PlayWindowToY(float yPos, float secs)
         {
             yield return trans_win.DOLocalMoveY(yPos, secs).WaitForCompletion();
         }
 
-        public void SetOptions((string title, string message, Sprite icon)[] options, 
+        public void SetOptions((string title, string message, Sprite icon)[] options,
             UnityAction continueAction, UnityAction<int> selectAction)
         {
             view_options.Set(options);
@@ -207,12 +215,29 @@ public class View_StageClearMgr
 
         public void SetCardModeActive() => view_cardSect.SetCardModeActive();
 
+        public void SetAd(UnityAction adAction)
+        {
+            btn_ad.gameObject.SetActive(true);
+            btn_ad.onClick.AddListener(() =>
+            {
+                btn_ad.onClick.RemoveAllListeners();
+                adAction();
+            });
+        }
+
         public void DisplayCardSect(bool display)
         {
+            view_cardSect.DisplayPanel(false);
             if (display)
                 view_cardSect.Show();
             else
                 view_cardSect.Hide();
+        }
+
+        public void SetEndGame(UnityAction endGameAction)
+        {
+            btn_ad.gameObject.SetActive(false);
+            view_complete.SetEndGame(endGameAction);
         }
 
         private class View_userLevel : UiBase
@@ -221,6 +246,7 @@ public class View_StageClearMgr
             private TMP_Text tmp_exp { get; set; }
             private Animation anim_levelAura { get; set; }
             private View_Badge view_badge { get; }
+
             public View_userLevel(IView v) : base(v, true)
             {
                 slider_exp = v.Get<Slider>("slider_exp");
@@ -235,7 +261,7 @@ public class View_StageClearMgr
                 anim_levelAura.gameObject.SetActive(true);
             }
 
-            public void SetExp(int exp,float max)
+            public void SetExp(int exp, float max)
             {
                 slider_exp.value = exp / max;
                 UpdateExpText(exp, (int)max);
@@ -279,7 +305,9 @@ public class View_StageClearMgr
             private Element_option element_option_6 { get; set; }
             private Element_option[] ElementOptions { get; set; }
             private Image img_optionPanel { get; set; }
-            public View_options(IView v, UnityAction onClickContinueAction, UnityAction<int> onClickAction) : base(v, false)
+
+            public View_options(IView v, UnityAction onClickContinueAction, UnityAction<int> onClickAction) : base(v,
+                false)
             {
                 btn_continue = v.Get<Button>("btn_continue");
                 btn_continue.onClick.AddListener(() =>
@@ -287,13 +315,17 @@ public class View_StageClearMgr
                     onClickContinueAction();
                     Hide();
                 });
-                element_option_1 = new Element_option(v.Get<View>("element_option_1"), ()=>onClickAction(0));
-                element_option_2 = new Element_option(v.Get<View>("element_option_2"), ()=>onClickAction(1));
-                element_option_3 = new Element_option(v.Get<View>("element_option_3"), ()=>onClickAction(2));
-                element_option_4 = new Element_option(v.Get<View>("element_option_4"), ()=>onClickAction(3));
-                element_option_5 = new Element_option(v.Get<View>("element_option_5"), ()=>onClickAction(4));
-                element_option_6 = new Element_option(v.Get<View>("element_option_6"), ()=>onClickAction(5));
-                ElementOptions = new Element_option[] { element_option_1, element_option_2, element_option_3, element_option_4, element_option_5, element_option_6 };
+                element_option_1 = new Element_option(v.Get<View>("element_option_1"), () => onClickAction(0));
+                element_option_2 = new Element_option(v.Get<View>("element_option_2"), () => onClickAction(1));
+                element_option_3 = new Element_option(v.Get<View>("element_option_3"), () => onClickAction(2));
+                element_option_4 = new Element_option(v.Get<View>("element_option_4"), () => onClickAction(3));
+                element_option_5 = new Element_option(v.Get<View>("element_option_5"), () => onClickAction(4));
+                element_option_6 = new Element_option(v.Get<View>("element_option_6"), () => onClickAction(5));
+                ElementOptions = new Element_option[]
+                {
+                    element_option_1, element_option_2, element_option_3, element_option_4, element_option_5,
+                    element_option_6
+                };
                 img_optionPanel = v.Get<Image>("img_optionPanel");
             }
 
@@ -308,6 +340,7 @@ public class View_StageClearMgr
                         element.Hide();
                         continue;
                     }
+
                     var (title, message, icon) = options[i];
                     element.SetIcon(icon);
                     element.Set(title, message);
@@ -321,6 +354,7 @@ public class View_StageClearMgr
                 private TMP_Text tmp_title { get; set; }
                 private TMP_Text tmp_message { get; set; }
                 private Button btn_click { get; set; }
+
                 public Element_option(IView v, UnityAction onClickAction) : base(v, true)
                 {
                     img_icon = v.Get<Image>("img_icon");
@@ -329,7 +363,9 @@ public class View_StageClearMgr
                     btn_click = v.Get<Button>("btn_click");
                     btn_click.onClick.AddListener(onClickAction);
                 }
+
                 public void SetIcon(Sprite icon) => img_icon.sprite = icon;
+
                 public void Set(string title, string message)
                 {
                     tmp_title.text = title;
@@ -369,7 +405,7 @@ public class View_StageClearMgr
 
             public Tween ShowOptions(float cardYPos, float secs)
             {
-                trans_cardBg.gameObject.SetActive(true);
+                DisplayPanel(true);
                 SetOptionNotify(false);
                 return canvas_card.transform.DOLocalMoveY(cardYPos, secs);
             }
@@ -393,11 +429,30 @@ public class View_StageClearMgr
 
             public void HideCard()
             {
-                trans_cardBg.gameObject.SetActive(false);
+                DisplayPanel(false);
                 view_card.Hide();
             }
 
+            public void DisplayPanel(bool display) => trans_cardBg.gameObject.SetActive(display);
+
             private void SetOptionNotify(bool display) => img_optionNotify.gameObject.SetActive(display);
+        }
+
+        private class View_complete : UiBase
+        {
+            private Button btn_endGame { get; }
+
+            public View_complete(IView v) : base(v, false)
+            {
+                btn_endGame = v.Get<Button>("btn_endGame");
+            }
+
+            public void SetEndGame(UnityAction endGameAction)
+            {
+                btn_endGame.onClick.RemoveAllListeners();
+                btn_endGame.onClick.AddListener(endGameAction);
+                Show();
+            }
         }
     }
 }

@@ -57,7 +57,7 @@ public class AudioManager : MonoBehaviour
 
     private void BgmInit()
     {
-        Game.MessagingManager.RegEvent(GameEvents.Game_Start, _ =>
+        Game.MessagingManager.RegEvent(GameEvents.Game_Init, _ =>
         {
             randomPlayBgm = false;
             PlayMusic(0);

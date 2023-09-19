@@ -107,11 +107,7 @@ public class UiManager : MonoBehaviour
     {
         AchievementMgr = new View_AchievementMgr(achievementView);
         view_windowConfirm = new View_windowConfirm(windowConfirmView);
-        view_home = new View_Home(homeView, () =>
-        {
-            GamePlayController.StartGame();
-            view_home.Hide();
-        }, AchievementMgr.Show);
+        view_home = new View_Home(homeView, GameStart, AchievementMgr.Show);
         SettingsMgr = new View_SettingsMgr(settingsView);
         SettingsMgr.Init();
         TopSection = new View_TopSection(topSectionView, SettingsMgr.Show, OnHomeAction);
@@ -123,6 +119,12 @@ public class UiManager : MonoBehaviour
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, b => OnLevelClear());
         underAttackView.GameObject.SetActive(false);
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Failed, b => PlayUnderAttack());
+    }
+
+    private void GameStart()
+    {
+        GamePlayController.StartGame(JobTypes.Villagers);
+        view_home.Hide();
     }
 
     private void OnHomeAction()
@@ -181,6 +183,10 @@ public class UiManager : MonoBehaviour
             StageClearMgr.ClearCard();
             StageClearMgr.SetCard(arg, true);
             StageClearMgr.DisplayCardSect(true);
+            if (player.IsMaxLevel())//如果最大等级
+            {
+                StageClearMgr.SetComplete(OnGameEnd);
+            }
             if (!isUpgrade)
                 yield return StageClearMgr.FadeOutCard(0);
 
@@ -202,6 +208,19 @@ public class UiManager : MonoBehaviour
                     StageClearMgr.SetCardAction(() => StartCoroutine(StageClearMgr.ShowOptions(1000, 1)));
                 }
             }
+        }
+    }
+
+    private void OnGameEnd()
+    {
+        view_windowConfirm.Set("Exit to start menu", "Save current record and exit to start menu.", EndGameToMenu,
+            pauseGame: true);
+
+        void EndGameToMenu()
+        {
+            StageClearMgr.Hide();
+            Game.PlayerSave.SaveAll();
+            ExitToMenu();
         }
     }
 

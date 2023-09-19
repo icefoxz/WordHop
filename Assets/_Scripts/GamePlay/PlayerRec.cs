@@ -24,8 +24,5 @@ public record PlayerRec
     public void AddCoin(int coin) => Coin += coin;
     public void SetScore(int score) => Score = score;
     public void SetCoin(int coin) => Coin = coin;
-    public void UpdateJob(PlayerJob job)
-    {
-        Job = job;
-    }
+    public void UpdateJob(PlayerJob job) => Job = job;
 }

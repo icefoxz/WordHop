@@ -14,19 +14,8 @@ public class DifficultyLoader
         TapPadDifficultySo = tapPadDifficultySo;
     }
 
-    // 获取随机关卡配置
-    public (TapDifficulty[]words, int countdown, float difficulty) GetChallengeStageLevelConfig(int gameCount)
-    {
-        var difficulty = new GameDifficulty(gameCount, LevelDifficultySo); // 获取当前的难度系数
-        var difficultyValue = difficulty.GetCurrentDifficulty(); // 获取难度值
-        var extraSecs = difficulty.GetExtraTime(); // 获取额外时间
-        var wordLength = difficulty.GetWordLength();// 获取文字长度, 如果有指定文字长度，则使用指定的文字长度
-        var wds = GetTapPadSettings(TapPadDifficultySo, difficultyValue, wordLength); // 获取文字难度配置
-        return (wds, extraSecs, difficultyValue);
-    }
-
     // 获取文字难度配置
-    public static TapDifficulty[] GetTapPadSettings(TapPadDifficultySo tapPadDifficultySo, float difficulty, int wordLength)
+    public TapDifficulty[] GetTapPadSettings(float difficulty, int wordLength)
     {
         //根据最大字数分配难度权重
         var wordArray = new TapDifficulty[wordLength];
@@ -38,7 +27,7 @@ public class DifficultyLoader
         {
             // 难度值小于0时，难度值为0
             var difficultValue = difficulty <= 0 ? 0 : Random.Range(avgDifficulty - variance, avgDifficulty + variance);
-            var wd = tapPadDifficultySo.GetDifficultyValue(difficultValue, 0.5f);
+            var wd = TapPadDifficultySo.GetDifficultyValue(difficultValue, 0.5f);
             wordArray[i] = wd;
             difficulty -= difficultValue;
         }

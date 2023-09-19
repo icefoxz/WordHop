@@ -1,7 +1,11 @@
+using System;
 using AOT.Core;
 using AOT.Core.Systems.Coroutines;
 using AOT.Core.Systems.Messaging;
+using GamePlay;
+#if UNITY_EDITOR
 using Sirenix.OdinInspector;
+#endif
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -20,7 +24,7 @@ public class Game : MonoBehaviour
     [SerializeField] private CoroutineService _coroutineService;
     [SerializeField] private AudioManager _audioManager;
 
-    private PlayerSaveSystem SaveSystem { get; } = new PlayerSaveSystem();
+    public static PlayerSaveSystem PlayerSave { get; } = new PlayerSaveSystem();
 
     void Start()
     {
@@ -31,15 +35,11 @@ public class Game : MonoBehaviour
         RegControllers(Controllers.AddComponent<GamePlayController>());
         _uiManager.Init();
         _audioManager.Init();
-        Model.Init();
-        SaveSystem.Init();
-        MessagingManager.SendParams(GameEvents.Game_Start);
+        PlayerSave.Init();
+        MessagingManager.SendParams(GameEvents.Game_Init);
     }
 
-    private void RegControllers(IController controller)
-    {
-        Controller.Reg(controller);
-    }
+    private void RegControllers(IController controller) => Controller.Reg(controller);
 
     public static void Pause(bool pauseGame)
     {
@@ -47,5 +47,8 @@ public class Game : MonoBehaviour
     }
 #if UNITY_EDITOR
     [Button(ButtonSizes.Large),GUIColor("Cyan")]public void HackAchievement(JobTypes types) => _uiManager.AchievementMgr.HackTab(types);
+    [Button(ButtonSizes.Medium), GUIColor("yellow")] private void Hack_Level_Win() => Model.InfinityStage.HackWin();
+    [Button(ButtonSizes.Large), GUIColor("red")]
+    public void HackLevel(int exp) => Model.Player.HackUpgrade(exp);
 #endif
 }

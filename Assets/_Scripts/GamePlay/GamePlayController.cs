@@ -1,5 +1,4 @@
 using AOT.Core;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GamePlayController : MonoBehaviour, IController 
@@ -19,8 +18,9 @@ public class GamePlayController : MonoBehaviour, IController
         ChallengeLoader = new DifficultyLoader(LevelDifficulty, TapPadDifficulty);
     }
 
-    public void StartGame()
+    public void StartGame(JobTypes type)
     {
+        Game.PlayerSave.StartGame(type);
         Game.Model.NewInfinityStage(new InfinityStageModel(ChallengeLoader, LayoutConfig));
         StageModel.StartGame();
     }
@@ -49,9 +49,6 @@ public class GamePlayController : MonoBehaviour, IController
         Game.MessagingManager.SendParams(GameEvents.Level_Item_Clear);
     }
 
-#if UNITY_EDITOR
-    [Button(ButtonSizes.Medium),GUIColor("red")]private void Hack_Level_Win() => StageModel.HackWin();
-#endif
     public void QuitCurrentGame()
     {
         StageModel.StopService();

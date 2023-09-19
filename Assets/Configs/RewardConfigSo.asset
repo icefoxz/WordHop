@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c44ecdf7b90793429fd7ddf91a38556, type: 3}
+  m_Name: RewardConfigSo
+  m_EditorClassIdentifier: 
+  "\u5956\u52B1\u6570\u636E":
+  - DifficultyValue: 0.1
+    Seconds: 3
+    Exp:
+      Low: 15
+      Middle: 30
+      High: 40
+    Coin:
+      Low: 2
+      Middle: 6
+      High: 14
+  - DifficultyValue: 0.2
+    Seconds: 3
+    Exp:
+      Low: 16
+      Middle: 33
+      High: 43
+    Coin:
+      Low: 2
+      Middle: 7
+      High: 16
+  - DifficultyValue: 0.3
+    Seconds: 4
+    Exp:
+      Low: 18
+      Middle: 36
+      High: 48
+    Coin:
+      Low: 3
+      Middle: 8
+      High: 18
+  - DifficultyValue: 0.4
+    Seconds: 4
+    Exp:
+      Low: 19
+      Middle: 42
+      High: 52
+    Coin:
+      Low: 3
+      Middle: 9
+      High: 20
+  - DifficultyValue: 0.5
+    Seconds: 5
+    Exp:
+      Low: 21
+      Middle: 45
+      High: 55
+    Coin:
+      Low: 3
+      Middle: 9
+      High: 22
+  - DifficultyValue: 0.6
+    Seconds: 5
+    Exp:
+      Low: 22
+      Middle: 48
+      High: 60
+    Coin:
+      Low: 4
+      Middle: 10
+      High: 23
+  - DifficultyValue: 0.7
+    Seconds: 5
+    Exp:
+      Low: 24
+      Middle: 51
+      High: 65
+    Coin:
+      Low: 4
+      Middle: 10
+      High: 25
+  - DifficultyValue: 0.8
+    Seconds: 5
+    Exp:
+      Low: 26
+      Middle: 54
+      High: 70
+    Coin:
+      Low: 4
+      Middle: 11
+      High: 27
+  - DifficultyValue: 0.9
+    Seconds: 5
+    Exp:
+      Low: 28
+      Middle: 57
+      High: 75
+    Coin:
+      Low: 5
+      Middle: 12
+      High: 28
+  - DifficultyValue: 1
+    Seconds: 5
+    Exp:
+      Low: 30
+      Middle: 60
+      High: 80
+    Coin:
+      Low: 5
+      Middle: 13
+      High: 30
+  "\u57FA\u7840\u79D2\u6570": 15
+  "\u5E7F\u544A\u500D\u7387": 1.5
