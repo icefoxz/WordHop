@@ -13,22 +13,26 @@ public class View_AchievementMgr
     {
         View_achivement = new View_Achivement(view,
             onClickBack: () => View_achivement?.Hide(),
-            onClickHome: () => View_achivement?.Hide(),
-            OnTabFocus);
+            onClickHome: () => View_achivement?.Hide(), type =>
+                OnTabFocus(type, false));
     }
 
-    private void OnTabFocus(JobTypes jobType)
+#if UNITY_EDITOR
+    public void HackTab(JobTypes jobType) => OnTabFocus(jobType, true);
+#endif
+
+    private void OnTabFocus(JobTypes jobType, bool all)
     {
         int[] cardLevels = Pref.GetCardData(jobType);
         var map = Game.ConfigureSo.JobConfig.Data();
         var args = map[jobType];
-        CardArg[] cards = args.Where(c => cardLevels.Contains(c.level)).ToArray();
+        var cards = all ? args : args.Where(c => cardLevels.Contains(c.level)).ToArray();
         View_achivement.SetFocus(jobType, cards);
     }
 
     public void Show()
     {
-        OnTabFocus(JobTypes.Villagers);
+        OnTabFocus(JobTypes.Villagers, false);
         View_achivement.Show();
         var highest = Game.Model.Player.HighestRec;
         SetGem(highest.Score);

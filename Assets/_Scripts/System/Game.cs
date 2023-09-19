@@ -1,6 +1,7 @@
 using AOT.Core;
 using AOT.Core.Systems.Coroutines;
 using AOT.Core.Systems.Messaging;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Game : MonoBehaviour
@@ -44,4 +45,7 @@ public class Game : MonoBehaviour
     {
         Time.timeScale = pauseGame ? 0 : 1;
     }
+#if UNITY_EDITOR
+    [Button(ButtonSizes.Large),GUIColor("Cyan")]public void HackAchievement(JobTypes types) => _uiManager.AchievementMgr.HackTab(types);
+#endif
 }

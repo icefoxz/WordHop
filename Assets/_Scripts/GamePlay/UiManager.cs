@@ -41,7 +41,7 @@ public class UiManager : MonoBehaviour
     private View_GameOverMgr GameOverMgr { get; set; }
     private View_SettingsMgr SettingsMgr { get; set; }
     private View_TopSection TopSection { get; set; }
-    private View_AchievementMgr AchievementMgr { get; set; }
+    public View_AchievementMgr AchievementMgr { get; set; }
     private View_Home view_home { get; set; }
     private View_windowConfirm view_windowConfirm { get; set; }
 
