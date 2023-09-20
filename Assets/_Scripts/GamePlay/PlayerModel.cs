@@ -91,7 +91,7 @@ namespace GamePlay
             Current.SetLevel(op.Level, 0);
             var job = Game.ConfigureSo.JobConfig.GetPlayerJob(op.JobType, op.Level);
             Current.UpdateJob(job);
-            SendEvent(GameEvents.Stage_Job_Update);
+            SendEvent(GameEvents.Stage_Job_Switch);
         }
         
         public void AddCoin(int coin)

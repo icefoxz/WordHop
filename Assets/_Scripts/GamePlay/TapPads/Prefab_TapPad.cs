@@ -24,6 +24,8 @@ public class Prefab_TapPad : UiBase
     private Image itemImage { get; }
 
     private IView view { get; }
+    public bool IsItemActive => itemImage.gameObject.activeSelf;
+
     public Color32 GreyColor() => view.GetColor(0);
     public Color32 YellowColor() => view.GetColor(1);
 

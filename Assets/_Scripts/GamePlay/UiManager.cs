@@ -63,6 +63,20 @@ public class UiManager : MonoBehaviour
     {
         Game.MessagingManager.RegEvent(GameEvents.Level_Init, bag => LoadLevel());
         Game.MessagingManager.RegEvent(GameEvents.Level_Word_Clear, _ => ResetTapPads());
+        Game.MessagingManager.RegEvent(GameEvents.Level_Hints_add, OnHintAdd);
+    }
+
+    private void OnHintAdd(ObjectBag b)
+    {
+        var ran = Random.Range(0, 1f);
+        var word = Game.Model.WordLevel;
+        if (ran > word.Difficulty) return;
+        var letter = b.Get<string>(0);
+        var pad = TapPadList.List
+            .Where(t=>!t.HasItem)
+            .OrderByDescending(_=>Random.Range(0,1f))
+            .FirstOrDefault(p => p.Alphabet.Text.Equals(letter));
+        pad?.ShowItem();
     }
 
     private void LoadLevel()

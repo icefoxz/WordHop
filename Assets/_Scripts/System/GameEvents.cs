@@ -2,7 +2,7 @@ public static class GameEvents
 {
     public const string Stage_Start = "Stage_Start";
     public const string Stage_Quit = "Stage_Quit";
-    public const string Stage_Job_Update = "Stage_Job_Update";
+    public const string Stage_Job_Switch = "Stage_Job_Update";
     public const string Stage_Game_Win = "Stage_Game_Win";
     public const string Stage_Timer_Update = "Stage_Timer_Update";
     public const string Stage_Point_Update = "Stage_point_update";

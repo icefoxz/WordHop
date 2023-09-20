@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u804C\u4E1A\u56FE\u6807": {fileID: 21300000, guid: 7effad5cd0ddf4f3692773445504dd61,
     type: 3}
+  "\u4ECB\u7ECD": Shadows whisper, secrets stir. Arcane rites, shrouded nights.
   "\u804C\u4E1A\u7B49\u7EA7":
   - Level: 4
     JobSwitch:

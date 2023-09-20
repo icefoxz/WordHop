@@ -6,7 +6,10 @@ using UnityEngine;
 public class JobTreeSo : ScriptableObject
 {
     [SerializeField] private Sprite 职业图标;
+    [SerializeField] private string 介绍;
     [SerializeField] private JobSwitchField[] 职业等级;
+
+    public string Brief => 介绍;
     private JobSwitchField[] Jobs => 职业等级;
     public Sprite JobIcon => 职业图标;
 

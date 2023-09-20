@@ -8,6 +8,7 @@ public class TapPad
     private Prefab_TapPad _tapPad;
     public RectTransform RectTransform => _tapPad.RectTransform;
     public Alphabet Alphabet { get; }
+    public bool HasItem => _tapPad.IsItemActive;
     public TapPad(IView prefabView, 
         UnityAction onTapAction, 
         UnityAction onOutlineAction, 
@@ -91,5 +92,10 @@ public class TapPad
         //_tapPad.SetTextColor(_tapPad.GreyColor());
         //_tapPad.SetOutlineColor(_tapPad.GreyColor());
         _tapPad.DisplayAura(false);
+    }
+
+    public void ShowItem()
+    {
+        _tapPad.SetItemVisible(true);
     }
 }

@@ -51,6 +51,7 @@ public class AudioManager : MonoBehaviour
         RegSfx(GameEvents.Level_Alphabet_Add, sfxData.Level_Alphabet_Add);
         RegSfx(GameEvents.Level_Hints_add, sfxData.Level_Hints_add);
         RegSfx(GameEvents.Level_Item_Clear, sfxData.Level_Item_Clear);
+        RegSfx(GameEvents.Stage_Job_Switch, sfxData.Job_Switch);
     }
 
     private void RegSfx(string gameEvent, AudioData aud) => Game.MessagingManager.RegEvent(gameEvent, _ => PlaySound(aud));
@@ -155,4 +156,5 @@ public class AudioData
     public AudioData Level_Hints_add;
     public AudioData Level_Alphabet_Add;
     public AudioData Level_Item_Clear;
+    public AudioData Job_Switch;
 }
