@@ -1,3 +1,5 @@
+using System;
+
 public enum JobTypes
 {
     Villagers,
@@ -5,7 +7,7 @@ public enum JobTypes
     Mysterious,
     Mages,
     Elves,
-    Necromancer
+    Necromancers
 }
 
 public record PlayerJob
@@ -20,4 +22,18 @@ public record PlayerJob
         Level = level;
         JobType = jobType;
     }
+}
+
+public static class JobExtension
+{
+    public static string ToText(this JobTypes job) => job switch
+    {
+        JobTypes.Villagers => "Villager",
+        JobTypes.Warriors => "Warrior",
+        JobTypes.Mysterious => "Mysterious",
+        JobTypes.Mages => "Mage",
+        JobTypes.Elves => "Elf",
+        JobTypes.Necromancers => "Necromancer",
+        _ => throw new ArgumentOutOfRangeException(nameof(job), job, null)
+    };
 }

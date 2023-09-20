@@ -1,3 +1,4 @@
+using System.Linq;
 using AOT.BaseUis;
 using AOT.Views;
 using TMPro;
@@ -8,34 +9,46 @@ using UnityEngine.UI;
 public class View_SelectJobMgr
 {
     private View_SelectJob View_selectJob { get; set; }
-    public View_SelectJobMgr(IView view)
+    private event UnityAction<JobTypes> OnJobSelected;
+    public View_SelectJobMgr(IView view, UnityAction<JobTypes> onJobSelected)
     {
-        View_selectJob = new View_SelectJob(view,
-            onClickAction: index => { Debug.Log("Select Job"); }
-        );
+        OnJobSelected = onJobSelected;
+        View_selectJob = new View_SelectJob(view);
+    }
+
+    public void Show()
+    {
+        var jobs = Game.PlayerSave.GetUnlockedJobs();
+        var jobConfig = Game.ConfigureSo.JobConfig;
+        var list = jobs.Select(jobType => (
+                jobType,
+                jobConfig.GetJobIcon(jobType),
+                jobConfig.GetJobBrief(jobType),
+                jobConfig.GetCardArg(jobType, 1)))
+            .ToArray();
+        View_selectJob.SetCharacterList(list, type => OnJobSelected?.Invoke(type));
+        View_selectJob.Show();
     }
 
     private class View_SelectJob : UiBase
     {
-        private ScrollRect scroll_cards { get; set; }
         private ListViewUi<Prefab> CharacterView { get; set; }
-        private UnityAction<int> OnClickAction;
-        public View_SelectJob(IView v, UnityAction<int> onClickAction) : base(v, false)
+        public View_SelectJob(IView v) : base(v, false)
         {
-            scroll_cards = v.Get<ScrollRect>("scroll_cards");
             CharacterView = new ListViewUi<Prefab>(v, "prefab_character", "scroll_cards");
-            OnClickAction = onClickAction;
         }
-        public void SetCharacterList((Sprite icon, string message)[] list)
+
+        public void SetCharacterList((JobTypes jobType,Sprite icon, string message, CardArg arg)[] list,
+            UnityAction<JobTypes> onSelectAction)
         {
             CharacterView.ClearList(ui => ui.Destroy());
-            for (int i = 0; i < list.Length; i++)
+            foreach (var (jobType,icon, message, arg) in list)
             {
-                var index = i;
-                var(icon, message) = list[i];
-                var ui = CharacterView.Instance(v => new Prefab(v, () => OnClickAction?.Invoke(index)));
+                var ui = CharacterView.Instance(v =>
+                    new Prefab(v, () => onSelectAction?.Invoke(jobType)));
                 ui.SetIcon(icon);
                 ui.SetText(message);
+                ui.SetCard(arg);
             }
         }
 
@@ -61,4 +74,6 @@ public class View_SelectJobMgr
             public void SetIcon(Sprite icon) => img_roleIcon.sprite = icon;
         }
     }
+
+    public void Hide() => View_selectJob.Hide();
 }

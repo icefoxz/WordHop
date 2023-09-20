@@ -123,7 +123,7 @@ public class Pref
             JobTypes.Mysterious => MysteriousSet,
             JobTypes.Mages => MagesSet,
             JobTypes.Elves => ElvesSet,
-            JobTypes.Necromancer => NecromancerSet,
+            JobTypes.Necromancers => NecromancerSet,
             _ => throw new ArgumentOutOfRangeException(nameof(jobType), jobType, null)
         };
 

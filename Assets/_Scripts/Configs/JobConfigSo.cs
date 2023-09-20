@@ -47,7 +47,7 @@ public class JobConfigSo : ScriptableObject
             {JobTypes.Elves, GetCardArgs(JobTypes.Elves)},
             {JobTypes.Villagers, GetCardArgs(JobTypes.Villagers)},
             {JobTypes.Mysterious, GetCardArgs(JobTypes.Mysterious)},
-            {JobTypes.Necromancer, GetCardArgs(JobTypes.Necromancer)},
+            {JobTypes.Necromancers, GetCardArgs(JobTypes.Necromancers)},
         };
 
     private CardArg[] GetCardArgs(JobTypes type)
@@ -70,7 +70,7 @@ public class JobConfigSo : ScriptableObject
             JobTypes.Mysterious => Mysterious,
             JobTypes.Mages => Mages,
             JobTypes.Elves => Elves,
-            JobTypes.Necromancer => Necromancer,
+            JobTypes.Necromancers => Necromancer,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
@@ -109,7 +109,7 @@ public class JobConfigSo : ScriptableObject
             JobTypes.Elves => "Elves",
             JobTypes.Villagers => "Villagers",
             JobTypes.Mysterious => "Mysterious",
-            JobTypes.Necromancer => "Necromancer",
+            JobTypes.Necromancers => "Necromancer",
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
@@ -133,4 +133,6 @@ public class JobConfigSo : ScriptableObject
         public string JobName => 职业名称;
         public JobTypeSo JobSo => 职业;
     }
+
+    public string GetJobBrief(JobTypes jobType) => GetJobTree(jobType).Brief;
 }

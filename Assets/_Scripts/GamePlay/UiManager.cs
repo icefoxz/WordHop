@@ -20,6 +20,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private View underAttackView;
     [SerializeField] private View achievementView;
     [SerializeField] private View windowConfirmView;
+    [SerializeField] private View selectJobView;
 
     [SerializeField] private Transform _tapPadParent;
     [SerializeField] private Image _blockingPanel;
@@ -44,6 +45,7 @@ public class UiManager : MonoBehaviour
     public View_AchievementMgr AchievementMgr { get; set; }
     private View_Home view_home { get; set; }
     private View_windowConfirm view_windowConfirm { get; set; }
+    private View_SelectJobMgr view_selectJob { get; set; }
 
     private Transform TapPadParent => _tapPadParent;
     private GamePlayController GamePlayController => Game.Controller.Get<GamePlayController>();
@@ -121,11 +123,12 @@ public class UiManager : MonoBehaviour
     {
         AchievementMgr = new View_AchievementMgr(achievementView);
         view_windowConfirm = new View_windowConfirm(windowConfirmView);
-        view_home = new View_Home(homeView, GameStart, AchievementMgr.Show);
+        view_home = new View_Home(homeView, OnTapToStart, AchievementMgr.Show);
         SettingsMgr = new View_SettingsMgr(settingsView);
         SettingsMgr.Init();
         TopSection = new View_TopSection(topSectionView, SettingsMgr.Show, OnHomeAction);
         TopSection.Init();
+        view_selectJob = new View_SelectJobMgr(selectJobView, OnRoleSelected);
         //StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
         GameOverMgr = new View_GameOverMgr(gameOverView, view_home.Show, () => XDebug.LogWarning("暂时不支持复活功能!"));
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => SetGameOver());
@@ -135,11 +138,22 @@ public class UiManager : MonoBehaviour
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Failed, b => PlayUnderAttack());
     }
 
-    private void GameStart()
+    private void OnRoleSelected(JobTypes job)
     {
-        GamePlayController.StartGame(JobTypes.Villagers);
-        view_home.Hide();
+        var jobConfig = Game.ConfigureSo.JobConfig;
+        var brief = jobConfig.GetJobBrief(job);
+        
+        view_windowConfirm.Set(job.ToText(), brief, StartGame, pauseGame: false);
+
+        void StartGame()
+        {
+            view_selectJob.Hide();
+            GamePlayController.StartGame(job);
+            view_home.Hide();
+        }
     }
+
+    private void OnTapToStart() => view_selectJob.Show();
 
     private void OnHomeAction()
     {

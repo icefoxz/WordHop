@@ -90,7 +90,7 @@ public class View_AchievementMgr
             element_tab_mysterious = new Element_Tab(v.Get<View>("element_tab_mysterious"),
                 () => onFocusAction(JobTypes.Mysterious));
             element_tab_necromancers = new Element_Tab(v.Get<View>("element_tab_necromancers"),
-                () => onFocusAction(JobTypes.Necromancer));
+                () => onFocusAction(JobTypes.Necromancers));
 
             Tabs = new Dictionary<JobTypes, Element_Tab>
             {
@@ -99,7 +99,7 @@ public class View_AchievementMgr
                 { JobTypes.Elves, element_tab_elves },
                 { JobTypes.Villagers, element_tab_villagers },
                 { JobTypes.Mysterious, element_tab_mysterious },
-                { JobTypes.Necromancer, element_tab_necromancers },
+                { JobTypes.Necromancers, element_tab_necromancers },
             };
             element_card_1 = new Element_Card(v.Get<View>("element_card_1"));
             element_card_2 = new Element_Card(v.Get<View>("element_card_2"));

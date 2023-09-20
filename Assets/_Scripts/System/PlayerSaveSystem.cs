@@ -42,4 +42,20 @@ public class PlayerSaveSystem
         Game.Model.InitPlayer(player);
         Game.PlayerSave.LoadHighestRecord();
     }
+
+    public JobTypes[] GetUnlockedJobs()
+    {
+        var jobs = new List<JobTypes> { JobTypes.Villagers };
+        var hasWarrior = Pref.GetCardData(JobTypes.Warriors).Contains(1);
+        if(hasWarrior) jobs.Add(JobTypes.Warriors);
+        var hasMage = Pref.GetCardData(JobTypes.Mages).Contains(1);
+        if(hasMage) jobs.Add(JobTypes.Mages);
+        var hasNecromancer = Pref.GetCardData(JobTypes.Necromancers).Contains(1);
+        if(hasNecromancer) jobs.Add(JobTypes.Necromancers);
+        var hasElves = Pref.GetCardData(JobTypes.Elves).Contains(1);
+        if(hasElves) jobs.Add(JobTypes.Elves);
+        var hasMysterious = Pref.GetCardData(JobTypes.Mysterious).Contains(1);
+        if(hasMysterious) jobs.Add(JobTypes.Mysterious);
+        return jobs.ToArray();
+    }
 }
