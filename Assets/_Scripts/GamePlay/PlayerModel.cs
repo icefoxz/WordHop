@@ -62,6 +62,8 @@ namespace GamePlay
             if(isLevelUp) SendEvent(GameEvents.Player_Level_Up, currentLevel);
         }
 
+        public void AddAdCoin() => AddCoin(LastCoinAdd /2);
+
         /// <summary>
         /// 一般用在内部调用, 除非Hack等级
         /// </summary>

@@ -4,6 +4,8 @@ using System.Linq;
 using AOT.Views;
 using AOT.BaseUis;
 using AOT.Utls;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -21,6 +23,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private View achievementView;
     [SerializeField] private View windowConfirmView;
     [SerializeField] private View selectJobView;
+    [SerializeField] private View popMessageView;
 
     [SerializeField] private Transform _tapPadParent;
     [SerializeField] private Image _blockingPanel;
@@ -46,6 +49,7 @@ public class UiManager : MonoBehaviour
     private View_Home view_home { get; set; }
     private View_windowConfirm view_windowConfirm { get; set; }
     private View_SelectJobMgr view_selectJob { get; set; }
+    private View_popMessage view_popMessage { get; set; }
 
     private Transform TapPadParent => _tapPadParent;
     private GamePlayController GamePlayController => Game.Controller.Get<GamePlayController>();
@@ -124,6 +128,7 @@ public class UiManager : MonoBehaviour
         AchievementMgr = new View_AchievementMgr(achievementView);
         view_windowConfirm = new View_windowConfirm(windowConfirmView);
         view_home = new View_Home(homeView, OnTapToStart, AchievementMgr.Show);
+        view_popMessage = new View_popMessage(popMessageView);
         SettingsMgr = new View_SettingsMgr(settingsView);
         SettingsMgr.Init();
         TopSection = new View_TopSection(topSectionView, SettingsMgr.Show, OnHomeAction);
@@ -136,6 +141,25 @@ public class UiManager : MonoBehaviour
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, b => OnLevelClear());
         underAttackView.GameObject.SetActive(false);
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Failed, b => PlayUnderAttack());
+    }
+
+    private void AdAction()
+    {
+        Game.AdAgent.ShowRewardedVideo((success, message) =>
+        {
+            if (success)
+            {
+                StageClearMgr.ActiveAdButton(false);
+                Game.Model.Player.AddAdCoin();
+                return;
+            }
+            PopMessage($"Ad error: {message}");
+        }, null);
+    }
+
+    public void PopMessage(string message)
+    {
+        StartCoroutine(view_popMessage.SetMessage(message));
     }
 
     private void OnRoleSelected(JobTypes job)
@@ -211,6 +235,8 @@ public class UiManager : MonoBehaviour
             StageClearMgr.ClearCard();
             StageClearMgr.SetCard(arg, true);
             StageClearMgr.DisplayCardSect(true);
+            var isAdAvailable = Game.AdAgent.IsRewardedVideoAvailable();
+            StageClearMgr.SetAdButton(isAdAvailable, AdAction);
             if (player.IsMaxLevel())//如果最大等级
             {
                 StageClearMgr.SetComplete(OnGameEnd);
@@ -294,5 +320,23 @@ public class UiManager : MonoBehaviour
     private void ResetTapPads()
     {
         foreach (var pad in TapPadList.List) pad.ResetColor();
+    }
+}
+
+public class View_popMessage: UiBase
+{
+    private TMP_Text tmp_message { get; }
+    public View_popMessage(IView v) : base(v, false)
+    {
+        tmp_message = v.Get<TMP_Text>("tmp_message");
+    }
+
+    public IEnumerator SetMessage(string message)
+    {
+        tmp_message.text = message;
+        tmp_message.DOFade(1, 0);
+        Show();
+        yield return tmp_message.DOFade(0, 1).WaitForCompletion();
+        Hide();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using AOT.BaseUis;
 using AOT.Views;
@@ -13,8 +14,7 @@ public class View_StageClearMgr
 
     public View_StageClearMgr(IView view, UnityAction onClickAction)
     {
-        View_stageClear = new View_StageClear(view, onClickAction,
-            onClickAdAction: () => Debug.Log("Watch ads to get reward"));
+        View_stageClear = new View_StageClear(view, onClickAction);
     }
 
     public void Hide() => View_stageClear.Hide();
@@ -97,6 +97,8 @@ public class View_StageClearMgr
 
     public void DisplayCardSect(bool display) => View_stageClear.DisplayCardSect(display);
 
+    public void ActiveAdButton(bool active)=> View_stageClear.DisplayAdButton(active);
+
     private class View_StageClear : UiBase
     {
         private TMP_Text tmp_exp { get; set; }
@@ -117,7 +119,7 @@ public class View_StageClearMgr
         private event UnityAction OptionContinueAction;
         private event UnityAction<int> OptionSelectAction;
 
-        public View_StageClear(IView v, UnityAction onClickNextAction, UnityAction onClickAdAction) : base(v, false)
+        public View_StageClear(IView v, UnityAction onClickNextAction) : base(v, false)
         {
             trans_win = v.Get<Transform>("trans_win");
             img_star_0 = v.Get<Image>("img_star_0");
@@ -130,7 +132,6 @@ public class View_StageClearMgr
             btn_next = v.Get<Button>("btn_next");
             btn_next.onClick.AddListener(onClickNextAction);
             btn_ad = v.Get<Button>("btn_ad");
-            btn_ad.onClick.AddListener(onClickAdAction);
             view_userLevel = new View_userLevel(v.Get<View>("view_userLevel"));
             view_options = new View_options(v.Get<View>("view_options"), () => OptionContinueAction(),
                 a => OptionSelectAction(a));
@@ -215,9 +216,14 @@ public class View_StageClearMgr
 
         public void SetCardModeActive() => view_cardSect.SetCardModeActive();
 
-        public void SetAd(UnityAction adAction)
+        public void SetAd(bool isAvailable,UnityAction adAction)
         {
-            btn_ad.gameObject.SetActive(true);
+            if (!isAvailable)
+            {
+                DisplayAdButton(false);
+                return;
+            }
+            DisplayAdButton(true);
             btn_ad.onClick.AddListener(() =>
             {
                 btn_ad.onClick.RemoveAllListeners();
@@ -236,9 +242,12 @@ public class View_StageClearMgr
 
         public void SetEndGame(UnityAction endGameAction)
         {
-            btn_ad.gameObject.SetActive(false);
+            DisplayAdButton(false);
             view_complete.SetEndGame(endGameAction);
         }
+
+
+        public void DisplayAdButton(bool active) => btn_ad.gameObject.SetActive(active);
 
         private class View_userLevel : UiBase
         {
@@ -454,5 +463,8 @@ public class View_StageClearMgr
                 Show();
             }
         }
+
     }
+
+    public void SetAdButton(bool isAdAvailable, UnityAction adAction) => View_stageClear.SetAd(isAdAvailable, adAction);
 }

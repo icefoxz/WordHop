@@ -1,8 +1,7 @@
-using System;
 using AOT.Core;
 using AOT.Core.Systems.Coroutines;
 using AOT.Core.Systems.Messaging;
-using GamePlay;
+using IsAd.Scripts;
 #if UNITY_EDITOR
 using Sirenix.OdinInspector;
 #endif
@@ -17,12 +16,14 @@ public class Game : MonoBehaviour
     public static ConfigureSo ConfigureSo { get; private set; }
     public static CoroutineService CoroutineService { get; private set; }
     public static AudioManager AudioManager { get; private set; }
+    public static AdAgent AdAgent { get; private set; }
     [SerializeField] private SpriteContainerSo spriteContainer;
     [SerializeField] private ConfigureSo configureSo;
     [SerializeField] private UiManager _uiManager;
     [SerializeField] private GameObject Controllers;
     [SerializeField] private CoroutineService _coroutineService;
     [SerializeField] private AudioManager _audioManager;
+    [SerializeField] private AdAgent _adAgent;
 
     public static PlayerSaveSystem PlayerSave { get; } = new PlayerSaveSystem();
 
@@ -32,14 +33,23 @@ public class Game : MonoBehaviour
         CoroutineService = _coroutineService;
         ResLoader = new ResLoader(spriteContainer);
         ConfigureSo = configureSo;
+        AdAgent = _adAgent;
         RegControllers(Controllers.AddComponent<GamePlayController>());
         _uiManager.Init();
         _audioManager.Init();
         PlayerSave.Init();
+        _adAgent.Init();
         MessagingManager.SendParams(GameEvents.Game_Init);
     }
 
     private void RegControllers(IController controller) => Controller.Reg(controller);
+
+
+    void OnApplicationPaused(bool isPaused)
+    {
+        _adAgent?.ApplicationPause(isPaused);
+    }
+
 
     public static void Pause(bool pauseGame)
     {
