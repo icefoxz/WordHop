@@ -20,59 +20,59 @@ MonoBehaviour:
     JobSwitch:
       JobType: 1
       Level: 7
-      Cost: 90
+      Cost: 180
       Message: Undying frontline.
   - Level: 5
     JobSwitch:
       JobType: 3
       Level: 6
-      Cost: 100
+      Cost: 200
       Message: Necromantic spells.
   - Level: 7
     JobSwitch:
       JobType: 2
       Level: 8
-      Cost: 110
+      Cost: 250
       Message: The cosmos and death intertwined.
   - Level: 7
     JobSwitch:
       JobType: 4
       Level: 8
-      Cost: 120
+      Cost: 260
       Message: Nature's twilight call.
   - Level: 9
     JobSwitch:
       JobType: 1
       Level: 10
-      Cost: 130
+      Cost: 300
       Message: Eternal warrior.
   - Level: 11
     JobSwitch:
       JobType: 3
       Level: 9
-      Cost: 140
+      Cost: 360
       Message: Forbidden spells.
   - Level: 13
     JobSwitch:
       JobType: 2
       Level: 11
-      Cost: 150
+      Cost: 400
       Message: Death's cosmic dance.
   - Level: 15
     JobSwitch:
       JobType: 4
       Level: 11
-      Cost: 160
+      Cost: 440
       Message: Balance of life and death.
   - Level: 17
     JobSwitch:
       JobType: 1
       Level: 13
-      Cost: 170
+      Cost: 500
       Message: Reaper's champion.
   - Level: 19
     JobSwitch:
       JobType: 3
       Level: 14
-      Cost: 180
+      Cost: 550
       Message: Necromancer supreme.

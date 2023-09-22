@@ -20,59 +20,59 @@ MonoBehaviour:
     JobSwitch:
       JobType: 3
       Level: 4
-      Cost: 50
+      Cost: 200
       Message: Harness your potential.
   - Level: 4
     JobSwitch:
       JobType: 5
       Level: 4
-      Cost: 65
+      Cost: 200
       Message: Seek deeper mysteries.
   - Level: 6
     JobSwitch:
       JobType: 1
       Level: 7
-      Cost: 80
+      Cost: 250
       Message: Cosmic blade training.
   - Level: 6
     JobSwitch:
       JobType: 4
       Level: 7
-      Cost: 100
+      Cost: 260
       Message: Mysteries of nature unfold.
   - Level: 8
     JobSwitch:
       JobType: 3
       Level: 8
-      Cost: 110
+      Cost: 310
       Message: Cosmic spells.
   - Level: 10
     JobSwitch:
-      JobType: 2
+      JobType: 5
       Level: 8
-      Cost: 120
+      Cost: 350
       Message: Seek the forbidden.
   - Level: 12
     JobSwitch:
       JobType: 1
       Level: 9
-      Cost: 130
+      Cost: 380
       Message: Warrior of the cosmos.
   - Level: 14
     JobSwitch:
       JobType: 4
       Level: 9
-      Cost: 140
+      Cost: 460
       Message: Nature's mystic protector.
   - Level: 16
     JobSwitch:
       JobType: 3
       Level: 11
-      Cost: 150
+      Cost: 520
       Message: Arcane mastery.
   - Level: 18
     JobSwitch:
       JobType: 0
       Level: 19
-      Cost: 160
+      Cost: 550
       Message: Return with knowledge.

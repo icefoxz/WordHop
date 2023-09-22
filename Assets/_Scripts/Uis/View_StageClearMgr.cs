@@ -25,13 +25,10 @@ public class View_StageClearMgr
     private void SetLevel(string title, int level) => View_stageClear.SetLevel(title, level);
     public void ResetWinPos() => View_stageClear.ResetWindowPos();
     public void SetComplete(UnityAction endGameAction) => View_stageClear.SetEndGame(endGameAction);
-
+    
     /// <summary>
     /// 播放升级记录
     /// </summary>
-    /// <param name="stars"></param>
-    /// <param name="upgrade"></param>
-    /// <param name="seconds"></param>
     /// <returns></returns>
     public IEnumerator PlayExpGrowing(string title, int stars, UpgradingRecord upgrade,
         UnityAction<GameObject> transformAction, float seconds = 1f)
@@ -78,7 +75,8 @@ public class View_StageClearMgr
     public void SetBadge(BadgeConfiguration badgeCfg) => View_stageClear.SetBadge(badgeCfg);
     public void SetCard(CardArg arg, bool resetPos) => View_stageClear.SetCard(arg, resetPos);
     public void SetCardAction(UnityAction onceAction) => View_stageClear.SetCardAction(onceAction);
-    public void SetCoin(int coin, int sum) => View_stageClear.SetCoin(coin, sum);
+    public void PlayToCoin(int fromCoin, int toCoin, float secs = 1f) => View_stageClear.PlayToCoin(fromCoin, toCoin, secs);
+    public void SetCoin(int addedCoin, int total) => View_stageClear.SetCoin(addedCoin, total);
 
     public IEnumerator ShowOptions(float localY, float seconds) => View_stageClear.ShowOptions(localY, seconds);
 
@@ -91,7 +89,7 @@ public class View_StageClearMgr
     public IEnumerator FadeOutCard(float seconds) => View_stageClear.FadeOutCard(seconds);
     public IEnumerator PlayWindowToY(float localY, float seconds) => View_stageClear.PlayWindowToY(localY, seconds);
 
-    public void SetOptions((string title, string message, Sprite icon)[] args, UnityAction onContinueAction,
+    public void SetOptions((string title, string message, Sprite icon, int cost)[] args, UnityAction onContinueAction,
         UnityAction<int> onOpSelectedAction) =>
         View_stageClear.SetOptions(args, onContinueAction, onOpSelectedAction);
 
@@ -195,6 +193,12 @@ public class View_StageClearMgr
             return t.Play();
         }
 
+        public Tween PlayToCoin(int fromValue, int toValue, float seconds)
+        {
+            tmp_coin.text = fromValue.ToString();
+            return DOTween.To(() => fromValue, v => tmp_coin.text = v.ToString(), toValue, seconds);
+        }
+
         public void ResetWindowPos()
         {
             trans_win.localPosition = Vector3.zero;
@@ -206,7 +210,7 @@ public class View_StageClearMgr
             yield return trans_win.DOLocalMoveY(yPos, secs).WaitForCompletion();
         }
 
-        public void SetOptions((string title, string message, Sprite icon)[] options,
+        public void SetOptions((string title, string message, Sprite icon, int cost)[] options,
             UnityAction continueAction, UnityAction<int> selectAction)
         {
             view_options.Set(options);
@@ -338,7 +342,7 @@ public class View_StageClearMgr
                 img_optionPanel = v.Get<Image>("img_optionPanel");
             }
 
-            public void Set((string title, string message, Sprite icon)[] options)
+            public void Set((string title, string message, Sprite icon, int cost)[] options)
             {
                 img_optionPanel.gameObject.SetActive(false);
                 for (var i = 0; i < ElementOptions.Length; i++)
@@ -350,9 +354,9 @@ public class View_StageClearMgr
                         continue;
                     }
 
-                    var (title, message, icon) = options[i];
+                    var (title, message, icon, cost) = options[i];
                     element.SetIcon(icon);
-                    element.Set(title, message);
+                    element.Set(title, message, cost);
                     element.Show();
                 }
             }
@@ -362,6 +366,7 @@ public class View_StageClearMgr
                 private Image img_icon { get; set; }
                 private TMP_Text tmp_title { get; set; }
                 private TMP_Text tmp_message { get; set; }
+                private TMP_Text tmp_cost { get; set; }
                 private Button btn_click { get; set; }
 
                 public Element_option(IView v, UnityAction onClickAction) : base(v, true)
@@ -369,16 +374,18 @@ public class View_StageClearMgr
                     img_icon = v.Get<Image>("img_icon");
                     tmp_title = v.Get<TMP_Text>("tmp_title");
                     tmp_message = v.Get<TMP_Text>("tmp_message");
+                    tmp_cost = v.Get<TMP_Text>("tmp_cost");
                     btn_click = v.Get<Button>("btn_click");
                     btn_click.onClick.AddListener(onClickAction);
                 }
 
                 public void SetIcon(Sprite icon) => img_icon.sprite = icon;
 
-                public void Set(string title, string message)
+                public void Set(string title, string message, int cost)
                 {
                     tmp_title.text = title;
                     tmp_message.text = message;
+                    tmp_cost.text = cost.ToString();
                 }
             }
         }

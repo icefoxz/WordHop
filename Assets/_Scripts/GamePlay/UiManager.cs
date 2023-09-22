@@ -145,16 +145,29 @@ public class UiManager : MonoBehaviour
 
     private void AdAction()
     {
+#if UNITY_EDITOR
+        AddCoin();
+#else
         Game.AdAgent.ShowRewardedVideo((success, message) =>
         {
             if (success)
             {
-                StageClearMgr.ActiveAdButton(false);
-                Game.Model.Player.AddAdCoin();
+                AddCoin();
                 return;
             }
             PopMessage($"Ad error: {message}");
         }, null);
+#endif
+        void AddCoin()
+        {
+            var player = Game.Model.Player;
+            StageClearMgr.ActiveAdButton(false);
+            var lastAdded = player.LastCoinAdd;
+            Game.Model.Player.AddAdCoin();
+            StageClearMgr.SetCoin(player.LastCoinAdd + lastAdded, player.Coin);
+            var fromCoin = player.Coin - player.LastCoinAdd;
+            StageClearMgr.PlayToCoin(fromCoin, player.Coin);
+        }
     }
 
     public void PopMessage(string message)
@@ -231,11 +244,13 @@ public class UiManager : MonoBehaviour
             var badgeCfg = GetBadgeCfgForCurrentLevel();
             var isUpgrade = upgradeRec.Levels.Count > 1;
             var arg = GetCardArg();
-            StageClearMgr.SetCoin(player.LastCoinAdd, player.Current.Coin);
             StageClearMgr.ClearCard();
             StageClearMgr.SetCard(arg, true);
             StageClearMgr.DisplayCardSect(true);
             var isAdAvailable = Game.AdAgent.IsRewardedVideoAvailable();
+#if UNITY_EDITOR
+            isAdAvailable = true;
+#endif
             StageClearMgr.SetAdButton(isAdAvailable, AdAction);
             if (player.IsMaxLevel())//如果最大等级
             {
@@ -243,7 +258,10 @@ public class UiManager : MonoBehaviour
             }
             if (!isUpgrade)
                 yield return StageClearMgr.FadeOutCard(0);
-
+            var lastAdded = player.LastCoinAdd;
+            StageClearMgr.SetCoin(lastAdded, player.Coin);
+            var fromCoin = player.Coin - lastAdded;
+            StageClearMgr.PlayToCoin(fromCoin, player.Coin);
             yield return StageClearMgr.PlayExpGrowing(levelInfo?.title, player.Stars, upgradeRec,
                 prefab => BadgeConfigLoader.LoadPrefab(badgeCfg, prefab));
             if (isUpgrade)
@@ -253,7 +271,7 @@ public class UiManager : MonoBehaviour
             }
             else
             {
-                var options = arg.options.Where(o => player.Current.Coin >= o.Cost)
+                var options = arg.options.Where(o => player.Coin >= o.Cost)
                     .Select(ConvertJobArg).ToArray();
                 if (options.Length > 0)
                 {
@@ -303,12 +321,12 @@ public class UiManager : MonoBehaviour
         return Game.ConfigureSo.JobConfig.GetCardArg(player.Current.Job);
     }
 
-    private static (string title, string Message, Sprite Icon) ConvertJobArg(JobSwitch o)
+    private static (string title, string Message, Sprite Icon, int cost) ConvertJobArg(JobSwitch o)
     {
         var jobInfo = Game.ConfigureSo.JobConfig.GetCardArg(o.JobType, o.Level);
         var jobIcon = Game.ConfigureSo.JobConfig.GetJobIcon(o.JobType);
 
-        return (jobInfo.title, o.Message, jobIcon);
+        return (jobInfo.title, o.Message, jobIcon, o.Cost);
     }
 
     private void StartLevel()

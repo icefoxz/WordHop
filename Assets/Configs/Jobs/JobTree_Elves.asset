@@ -20,59 +20,59 @@ MonoBehaviour:
     JobSwitch:
       JobType: 1
       Level: 6
-      Cost: 80
+      Cost: 200
       Message: Forest's guardian.
   - Level: 5
     JobSwitch:
       JobType: 3
       Level: 7
-      Cost: 110
+      Cost: 210
       Message: Ancient woodland spells.
   - Level: 7
     JobSwitch:
       JobType: 2
       Level: 9
-      Cost: 120
+      Cost: 250
       Message: Nature's cosmic wonders.
   - Level: 7
     JobSwitch:
       JobType: 5
       Level: 7
-      Cost: 130
+      Cost: 270
       Message: The balance of life and death.
   - Level: 9
     JobSwitch:
       JobType: 3
       Level: 10
-      Cost: 140
+      Cost: 310
       Message: '"Forest mage supreme."'
   - Level: 11
     JobSwitch:
       JobType: 1
       Level: 12
-      Cost: 150
+      Cost: 350
       Message: Elf knight elite.
   - Level: 13
     JobSwitch:
       JobType: 0
       Level: 12
-      Cost: 160
+      Cost: 380
       Message: Mysteries of the wild.
   - Level: 15
     JobSwitch:
       JobType: 5
       Level: 12
-      Cost: 170
+      Cost: 450
       Message: Life and death's guardian.
   - Level: 17
     JobSwitch:
       JobType: 3
       Level: 15
-      Cost: 180
+      Cost: 500
       Message: '"Master of nature''s magic."'
   - Level: 19
     JobSwitch:
       JobType: 1
       Level: 15
-      Cost: 190
+      Cost: 550
       Message: Ultimate forest warrior.

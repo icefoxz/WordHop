@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using AOT.Views;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace AOT.BaseUis
 {
@@ -44,6 +43,6 @@ namespace AOT.BaseUis
         public void StopCoroutine(IEnumerator coroutine) => _v.StopCo(coroutine);
         public void StopAllCoroutines() => _v.StopAllCo();
 
-        public void Destroy() => Object.Destroy(GameObject);
+        public void Destroy() => GameObject.Destroy(GameObject);
     }
 }
