@@ -57,7 +57,8 @@ public class InfinityStageModel : ModelBase
     private void LoadChallengeStage()
     {
         var gameStageIndex = Player.GameStageIndex;
-        var dif = new GameDifficulty(gameStageIndex + 1, Game.ConfigureSo.LevelDifficulty);
+        var rounds = gameStageIndex + 1;
+        var dif = new GameDifficulty(rounds, Game.ConfigureSo.LevelDifficulty);
         var difficultyValue = dif.GetCurrentDifficulty(); // 获取难度值
         var exSecs = dif.GetExtraTime(); // 获取额外时间
         var wordLength = dif.GetWordLength();// 获取文字长度, 如果有指定文字长度，则使用指定的文字长度

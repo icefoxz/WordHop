@@ -85,13 +85,21 @@ public class GameDifficulty
 
     public int GetWordLength()
     {
-        var currentDifficulty = GetCurrentDifficulty();
-        var wordLength = LevelConfig.GetWordLengthByDifficulty(currentDifficulty);
-        if (gameCount % 10 == 0) // 每10关7字数
+        // 对于前5关，固定为3个字。
+        if (gameCount <= 5)
         {
-            wordLength += Random.Range(0, 2);
-            return wordLength > 7 ? 7 : wordLength;
+            return 3;
         }
+        var currentDifficulty = GetCurrentDifficulty();
+        // 依据当前的难度和一些随机性来决定单词的长度。
+        var rand = Random.Range(0f, 1f);
+        //var wordLength = LevelConfig.GetWordLengthByDifficulty(currentDifficulty);
+        var wordLength = 3 + (int)(rand * (currentDifficulty * 4f)); // 这里的4f代表最大增加4个字，即最大7个字
+        if (gameCount % 10 == 0) 
+        {
+            wordLength += Random.Range(0, 2); //难度加2字
+        }
+        wordLength = Mathf.Clamp(wordLength, 3, 7); // 确保单词长度在3到7之间
         return wordLength;
     }
 }
