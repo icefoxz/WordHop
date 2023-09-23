@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 
 public class UiManager : MonoBehaviour
 {
-    [SerializeField] private View view_prefab;
+    //[SerializeField] private View view_prefab;
     [SerializeField] private View winView;
     [SerializeField] private View gameOverView;
     [SerializeField] private View homeView;
@@ -61,18 +61,25 @@ public class UiManager : MonoBehaviour
         _blockingPanel.gameObject.SetActive(false);
         WindowsInit();
         RegGamePlayEvent();
-        TapPadList = new PrefabsViewUi<TapPad>(view_prefab, TapPadParent);
         WordSlotMgr = new View_WordSlotMgr(wordSlotView);
+    }
+
+    private void ResetTapPad()
+    {
+        var job = Game.Model.Player.Current.Job.JobType;
+        TapPadList?.ClearList(t => t.Destroy());
+        var view = Game.ConfigureSo.LayoutConfig.GetPad(job);
+        TapPadList = new PrefabsViewUi<TapPad>(view, TapPadParent);
     }
 
     private void RegGamePlayEvent()
     {
         Game.MessagingManager.RegEvent(GameEvents.Level_Init, bag => LoadLevel());
         Game.MessagingManager.RegEvent(GameEvents.Level_Word_Clear, _ => ResetTapPads());
-        Game.MessagingManager.RegEvent(GameEvents.Level_Hints_add, OnHintAdd);
+        Game.MessagingManager.RegEvent(GameEvents.Level_Hints_add, TryAddObstacle);
     }
 
-    private void OnHintAdd(ObjectBag b)
+    private void TryAddObstacle(ObjectBag b)
     {
         var ran = Random.Range(0, 1f);
         var word = Game.Model.WordLevel;
@@ -88,6 +95,7 @@ public class UiManager : MonoBehaviour
     private void LoadLevel()
     {
         var wordLevel = Game.Model.WordLevel;
+        ResetTapPad();
         var wg = wordLevel.WordGroup;
         var wds = wordLevel.WordDifficulties;
         var layout = wordLevel.Layout;

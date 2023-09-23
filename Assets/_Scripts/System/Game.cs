@@ -24,12 +24,15 @@ public class Game : MonoBehaviour
     [SerializeField] private CoroutineService _coroutineService;
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private AdAgent _adAgent;
+    [SerializeField] private AnimationCurve _difficultyCurve;
+    private static AnimationCurve DifficultyCurve { get; set; }
 
     public static PlayerSaveSystem PlayerSave { get; } = new PlayerSaveSystem();
 
     void Start()
     {
         AudioManager = _audioManager;
+        DifficultyCurve = _difficultyCurve;
         CoroutineService = _coroutineService;
         ResLoader = new ResLoader(spriteContainer);
         ConfigureSo = configureSo;
@@ -58,7 +61,24 @@ public class Game : MonoBehaviour
 #if UNITY_EDITOR
     [Button(ButtonSizes.Large),GUIColor("Cyan")]public void HackAchievement(JobTypes types) => _uiManager.AchievementMgr.HackTab(types);
     [Button(ButtonSizes.Medium), GUIColor("yellow")] private void Hack_Level_Win() => Model.InfinityStage.HackWin();
-    [Button(ButtonSizes.Large), GUIColor("red")]
-    public void HackLevel(int exp) => Model.Player.HackUpgrade(exp);
+    [Button(ButtonSizes.Large), GUIColor("red")] public void HackLevel(int exp) => Model.Player.HackUpgrade(exp);
+    [Button(ButtonSizes.Medium), GUIColor("blue")]public void Test_PrintWordsFromDifficulty(int games)
+    {
+        var text = "";
+        for (int i = 1; i < games; i++)
+        {
+            var diff = GetLevelDifficulty(i);
+            var wordLength = diff.GetWordLength();
+            text += $"第{i}关，字数：{wordLength}" + $"，难度：{diff.GetCurrentDifficulty(i, GameDifficulty.ExpectedGameCount)}" + $"，加时：{diff.GetExtraTime()}\n";
+            if (i % 250 == 0)
+            {
+                print(text);
+                text = "";
+            }
+        }
+        print(text);
+    }
+
 #endif
+    public static GameDifficulty GetLevelDifficulty(int i) => new(i, ConfigureSo.LevelDifficulty, DifficultyCurve);
 }

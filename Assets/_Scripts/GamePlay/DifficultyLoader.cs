@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// 关卡加载器
@@ -51,21 +53,26 @@ public class DifficultyLoader
 public class GameDifficulty
 {
     public LevelDifficultySo LevelConfig;
+    private AnimationCurve curve;
     private int gameCount;
 
     private const float K = 0.001f; // 这是我们提到的k值，你可以根据需要调整它
+    public const int ExpectedGameCount = 1000;
 
 
-    public GameDifficulty(int gameCount, LevelDifficultySo levelConfig)
+    public GameDifficulty(int gameCount, LevelDifficultySo levelConfig, AnimationCurve curve)
     {
         this.gameCount = gameCount;
         this.LevelConfig = levelConfig;
+        this.curve = curve;
     }
 
-    public float GetCurrentDifficulty()
+    public float GetCurrentDifficulty(int games, int expectedGameCount)
     {
         // 使用新的难度曲线函数
-        return 1f - Mathf.Exp(-KValue() * gameCount);
+        //return 1f - Mathf.Exp(-KValue() * gameCount);
+        var value = Math.Clamp(1f * games / expectedGameCount, 0, 1);
+        return curve.Evaluate(value);
     }
 
     // 难度曲线函数, k值 如果基于 400局的游戏
@@ -77,7 +84,7 @@ public class GameDifficulty
 
     public int GetExtraTime()
     {
-        var currentDifficulty = GetCurrentDifficulty();
+        var currentDifficulty = GetCurrentDifficulty(gameCount, ExpectedGameCount);
         return gameCount % 10 == 0 ? // 每10关额外加时
             // 考虑为7字数的关卡提供更多的额外时间，可以调整这里的逻辑
             LevelConfig.GetCountdownSecsByDifficulty(1.0f).ExtraSecs : LevelConfig.GetCountdownSecsByDifficulty(currentDifficulty).ExtraSecs;
@@ -90,11 +97,11 @@ public class GameDifficulty
         {
             return 3;
         }
-        var currentDifficulty = GetCurrentDifficulty();
+        var currentDifficulty = GetCurrentDifficulty(gameCount, ExpectedGameCount);
         // 依据当前的难度和一些随机性来决定单词的长度。
-        var rand = Random.Range(0f, 1f);
-        //var wordLength = LevelConfig.GetWordLengthByDifficulty(currentDifficulty);
-        var wordLength = 3 + (int)(rand * (currentDifficulty * 4f)); // 这里的4f代表最大增加4个字，即最大7个字
+        //var rand = Random.Range(0f, 1f);
+        var wordLength = LevelConfig.GetWordLengthByDifficulty(currentDifficulty);
+        //var wordLength = 3 + (int)(rand * (currentDifficulty * 4f)); // 这里的4f代表最大增加4个字，即最大7个字
         if (gameCount % 10 == 0) 
         {
             wordLength += Random.Range(0, 2); //难度加2字
