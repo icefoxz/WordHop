@@ -24,7 +24,7 @@ public class View_SelectJobMgr
                 jobType,
                 jobConfig.GetJobIcon(jobType),
                 jobConfig.GetJobBrief(jobType),
-                jobConfig.GetCardArg(jobType, 1)))
+                jobConfig.GetCardArg(jobType, 1, 1)))
             .ToArray();
         View_selectJob.SetCharacterList(list, type => OnJobSelected?.Invoke(type));
         View_selectJob.Show();
@@ -33,9 +33,12 @@ public class View_SelectJobMgr
     private class View_SelectJob : UiBase
     {
         private ListViewUi<Prefab> CharacterView { get; set; }
+        private Button btn_back { get; set; }
         public View_SelectJob(IView v) : base(v, false)
         {
             CharacterView = new ListViewUi<Prefab>(v, "prefab_character", "scroll_cards");
+            btn_back = v.Get<Button>("btn_back");
+            btn_back.onClick.AddListener(Hide);
         }
 
         public void SetCharacterList((JobTypes jobType,Sprite icon, string message, CardArg arg)[] list,

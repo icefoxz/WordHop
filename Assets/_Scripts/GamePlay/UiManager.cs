@@ -5,6 +5,7 @@ using AOT.Views;
 using AOT.BaseUis;
 using AOT.Utls;
 using DG.Tweening;
+using GamePlay;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,6 +57,9 @@ public class UiManager : MonoBehaviour
 
     private PrefabsViewUi<TapPad> TapPadList { get; set; }
 
+    //标记玩家是否切换了职业, 每局会重置
+    private bool _jobSwitchFlag;
+
     public void Init()
     {
         _blockingPanel.gameObject.SetActive(false);
@@ -77,6 +81,7 @@ public class UiManager : MonoBehaviour
         Game.MessagingManager.RegEvent(GameEvents.Level_Init, bag => LoadLevel());
         Game.MessagingManager.RegEvent(GameEvents.Level_Word_Clear, _ => ResetTapPads());
         Game.MessagingManager.RegEvent(GameEvents.Level_Hints_add, TryAddObstacle);
+        Game.MessagingManager.RegEvent(GameEvents.Player_Job_Switch, _ => _jobSwitchFlag = true);
     }
 
     private void TryAddObstacle(ObjectBag b)
@@ -86,8 +91,8 @@ public class UiManager : MonoBehaviour
         if (ran > word.Difficulty) return;
         var letter = b.Get<string>(0);
         var pad = TapPadList.List
-            .Where(t=>!t.HasItem)
-            .OrderByDescending(_=>Random.Range(0,1f))
+            .Where(t => !t.HasItem)
+            .OrderBy(_ => Random.Range(0, 1f))
             .FirstOrDefault(p => p.Alphabet.Text.Equals(letter));
         pad?.ShowItem();
     }
@@ -121,14 +126,7 @@ public class UiManager : MonoBehaviour
             layout.Rects[i].Apply(pad.RectTransform);
         }
 
-        var badgeCfg = GetBadgeCfgForCurrentLevel();
-        StageClearMgr.SetBadge(badgeCfg);
-    }
-
-    private static BadgeConfiguration GetBadgeCfgForCurrentLevel()
-    {
-        var playerLevel = Game.Model.Player.GetPlayerLevel();
-        return Game.ConfigureSo.BadgeLevelSo.GetBadgeConfig(playerLevel);
+        //LoadBadge(StageClearMgr.GetLevelBarBadge());
     }
 
     private void WindowsInit()
@@ -143,13 +141,16 @@ public class UiManager : MonoBehaviour
         TopSection.Init();
         view_selectJob = new View_SelectJobMgr(selectJobView, OnRoleSelected);
         //StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
-        GameOverMgr = new View_GameOverMgr(gameOverView, view_home.Show, () => XDebug.LogWarning("暂时不支持复活功能!"));
+        GameOverMgr = new View_GameOverMgr(gameOverView, GamePlayController.Home, () => XDebug.LogWarning("暂时不支持复活功能!"));
+        Game.MessagingManager.RegEvent(GameEvents.Game_Home, _ => view_home.Show());
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => SetGameOver());
-        StageClearMgr = new View_StageClearMgr(winView, StartLevel);
-        Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, b => OnLevelClear());
+        StageClearMgr = new View_StageClearMgr(winView, ShowOption);
+        StageClearMgr.SetCardAction(ShowOption, () => PlayDisplayOption(false));
+        Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, b => OnStageClear());
         underAttackView.GameObject.SetActive(false);
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Failed, b => PlayUnderAttack());
     }
+
 
     private void AdAction()
     {
@@ -170,10 +171,11 @@ public class UiManager : MonoBehaviour
         {
             var player = Game.Model.Player;
             StageClearMgr.ActiveAdButton(false);
-            var lastAdded = player.LastCoinAdd;
+            var lastAdded = player.LastAddedCoin;
             Game.Model.Player.AddAdCoin();
-            StageClearMgr.SetCoin(player.LastCoinAdd + lastAdded, player.Coin);
-            var fromCoin = player.Coin - player.LastCoinAdd;
+            RefreshOptions();
+            StageClearMgr.SetCoin(player.LastAddedCoin + lastAdded, player.Coin);
+            var fromCoin = player.Coin - player.LastAddedCoin;
             StageClearMgr.PlayToCoin(fromCoin, player.Coin);
         }
     }
@@ -229,32 +231,32 @@ public class UiManager : MonoBehaviour
         var player = Game.Model.Player;
         var playerLevel = player.Current;
         var job = playerLevel.Job;
-        var badgeCfg = GetBadgeCfgForCurrentLevel();
         var cardArg = GetCardArg();
-        BadgeConfigLoader.LoadPrefab(badgeCfg, GameOverMgr.Badge);
-        GameOverMgr.Set(job.Title, job.Level, playerLevel.Score);
+        LoadBadge(GameOverMgr.Badge);
+        GameOverMgr.Set(job.Title, player.QualityLevel, playerLevel.Score);
         GameOverMgr.SetCard(cardArg);
         GameOverMgr.Show(displayRevive: false);
     }
 
-    private void OnLevelClear()
+    private void OnStageClear()
     {
         StartCoroutine(Call(PlaySlotAnim));
 
         IEnumerator PlaySlotAnim()
         {
-            StageClearMgr.DisplayCardSect(false);
+            StageClearMgr.ResetUi();
             yield return WordSlotMgr.LightUpAll();
             yield return new WaitForSeconds(1f);
             var player = Game.Model.Player;
             var upgradeRec = player.UpgradeRecord;
-            var levelInfo = player.GetPlayerLevelInfo();
-            var badgeCfg = GetBadgeCfgForCurrentLevel();
-            var isUpgrade = upgradeRec.Levels.Count > 1;
+            var lastLevel = upgradeRec.Levels[0];
             var arg = GetCardArg();
             StageClearMgr.ClearCard();
             StageClearMgr.SetCard(arg, true);
             StageClearMgr.DisplayCardSect(true);
+            StageClearMgr.SetLevel(lastLevel.Level);
+            LoadBadge(StageClearMgr.GetCardBadge());//preset
+            //LoadBadge(StageClearMgr.GetLevelBarBadge());//preset
             var isAdAvailable = Game.AdAgent.IsRewardedVideoAvailable();
 #if UNITY_EDITOR
             isAdAvailable = true;
@@ -264,31 +266,80 @@ public class UiManager : MonoBehaviour
             {
                 StageClearMgr.SetComplete(OnGameEnd);
             }
-            if (!isUpgrade)
+            if (!_jobSwitchFlag)
                 yield return StageClearMgr.FadeOutCard(0);
-            var lastAdded = player.LastCoinAdd;
+            var lastAdded = player.AdCoin;
             StageClearMgr.SetCoin(lastAdded, player.Coin);
             var fromCoin = player.Coin - lastAdded;
             StageClearMgr.PlayToCoin(fromCoin, player.Coin);
-            yield return StageClearMgr.PlayExpGrowing(levelInfo?.title, player.Stars, upgradeRec,
-                prefab => BadgeConfigLoader.LoadPrefab(badgeCfg, prefab));
-            if (isUpgrade)
+            yield return StageClearMgr.PlayExpGrowing(player.Stars, upgradeRec);
+            if (_jobSwitchFlag)
             {
                 //yield return StageClearMgr.PlayWindowToY(300, 0.5f);
                 yield return StageClearMgr.FadeOutCard(1.5f);
             }
-            else
-            {
-                var options = arg.options.Where(o => player.Coin >= o.Cost)
-                    .Select(ConvertJobArg).ToArray();
-                if (options.Length > 0)
-                {
-                    StageClearMgr.SetOptions(options,
-                        StartLevel, index => SwitchJob(arg.options[index]));
-                    StageClearMgr.SetCardAction(() => StartCoroutine(StageClearMgr.ShowOptions(1000, 1)));
-                }
-            }
+
+            RefreshOptions();
+
+            _jobSwitchFlag = false;
         }
+    }
+
+    private void RefreshOptions()
+    {
+        var arg = GetCardArg();
+        var player = Game.Model.Player;
+        var qualityCfg = Game.ConfigureSo.QualityConfigSo;
+        var options = arg.options.Where(o => player.Coin >= o.Cost)
+            .Select(ConvertJobArg).ToArray();
+        var qualityOps = qualityCfg.GetQualityOptions(player.Current.Job.JobType);
+        StageClearMgr.SetOptions(
+            qualityOps.Select(o => (o.icon, o.brief, o.cost, o.quality, player.Coin >= o.cost)).ToArray(), options,
+            SelectQualityStartLevel, index => SwitchJob(arg.options[index]));
+    }
+
+    private void ShowOption() => PlayDisplayOption(true);
+    private void PlayDisplayOption(bool display)
+    {
+        var yPos = display ? 900 : 0;
+        StartCoroutine(StageClearMgr.PlayOptions(yPos, 1, display));
+    }
+
+    private void SelectQualityStartLevel(int quality)
+    {
+        var player = Game.Model.Player;
+        var prevQualityLevel = player.QualityLevel;
+        GamePlayController.QualityChange(quality);
+        var nextQualityLevel = player.QualityLevel;
+        StartCoroutine(PlayBadge());
+
+        IEnumerator PlayBadge()
+        {
+            if (prevQualityLevel != nextQualityLevel)
+            {
+                var badge = StageClearMgr.GetCardBadge();
+                yield return badge.PlayFadeIn();
+                LoadBadge(badge);
+                yield return badge.PlayFadeOut();
+            }
+
+            if (_jobSwitchFlag)
+            {
+                var arg = GetCardArg();
+                StageClearMgr.SetCard(arg, false);
+                yield return StageClearMgr.FadeOutCard(1.5f);
+            }
+
+            yield return new WaitForSeconds(0.5f);
+            StartLevel();
+        }
+    }
+    private static void LoadBadge(View_Badge badge)
+    {
+        var player = Game.Model.Player;
+        var cfg = player.GetBadgeCfg();
+        badge.Set(player.Current.Job.Title, player.QualityLevel);
+        BadgeConfigLoader.LoadPrefab(cfg, badge.GameObject);
     }
 
     private void OnGameEnd()
@@ -331,7 +382,7 @@ public class UiManager : MonoBehaviour
 
     private static (string title, string Message, Sprite Icon, int cost) ConvertJobArg(JobSwitch o)
     {
-        var jobInfo = Game.ConfigureSo.JobConfig.GetCardArg(o.JobType, o.Level);
+        var jobInfo = Game.ConfigureSo.JobConfig.GetCardArg(o.JobType, o.Level, o.Quality);
         var jobIcon = Game.ConfigureSo.JobConfig.GetJobIcon(o.JobType);
 
         return (jobInfo.title, o.Message, jobIcon, o.Cost);
@@ -339,6 +390,7 @@ public class UiManager : MonoBehaviour
 
     private void StartLevel()
     {
+        _jobSwitchFlag = false;
         GamePlayController.StartLevel();
         StageClearMgr.Hide();
     }

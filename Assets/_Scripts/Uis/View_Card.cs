@@ -86,15 +86,17 @@ public class View_Card : UiBase
 
 public struct CardArg
 {
+    public int id;
     public string title;
     public int level;
     public Sprite icon;
     public int stars;
     public JobSwitch[] options;
 
-    public CardArg(string title, int level, int stars, Sprite icon,
+    public CardArg(int id,string title, int level, int stars, Sprite icon,
         JobSwitch[] options)
     {
+        this.id = id;
         this.title = title;
         this.level = level;
         this.stars = stars;

@@ -20,59 +20,69 @@ MonoBehaviour:
     JobSwitch:
       JobType: 2
       Level: 7
+      Quality: 1
       Cost: 200
       Message: Cosmic knowledge beckons.
   - Level: 5
     JobSwitch:
       JobType: 4
       Level: 6
+      Quality: 1
       Cost: 210
       Message: Nature's arcane secrets.
   - Level: 7
     JobSwitch:
       JobType: 1
       Level: 8
+      Quality: 1
       Cost: 250
       Message: Magic-infused combat.
   - Level: 7
     JobSwitch:
       JobType: 5
       Level: 7
+      Quality: 1
       Cost: 260
       Message: Twilight energies surge.
   - Level: 9
     JobSwitch:
       JobType: 2
       Level: 10
+      Quality: 1
       Cost: 300
       Message: The cosmos awaits.
   - Level: 11
     JobSwitch:
       JobType: 4
       Level: 10
+      Quality: 1
       Cost: 360
       Message: Arcane nature's champion.
   - Level: 13
     JobSwitch:
       JobType: 1
       Level: 11
+      Quality: 1
       Cost: 350
       Message: Mage knight trials.
   - Level: 15
     JobSwitch:
       JobType: 5
       Level: 10
+      Quality: 1
       Cost: 450
       Message: Master of dark arts.
   - Level: 17
     JobSwitch:
       JobType: 2
       Level: 13
+      Quality: 1
       Cost: 500
       Message: Ultimate cosmic truths.
   - Level: 19
     JobSwitch:
       JobType: 4
       Level: 12
+      Quality: 1
       Cost: 550
       Message: Guardian of magic forests.

@@ -4,6 +4,7 @@ using AOT.Utls;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
@@ -51,30 +52,44 @@ public class AudioManager : MonoBehaviour
         RegSfx(GameEvents.Level_Alphabet_Add, sfxData.Level_Alphabet_Add);
         RegSfx(GameEvents.Level_Hints_add, sfxData.Level_Hints_add);
         RegSfx(GameEvents.Level_Item_Clear, sfxData.Level_Item_Clear);
-        RegSfx(GameEvents.Stage_Job_Switch, sfxData.Job_Switch);
+        RegSfx(GameEvents.Player_Job_Switch, sfxData.Job_Switch);
     }
 
     private void RegSfx(string gameEvent, AudioData aud) => Game.MessagingManager.RegEvent(gameEvent, _ => PlaySound(aud));
 
     private void BgmInit()
     {
-        Game.MessagingManager.RegEvent(GameEvents.Game_Init, _ =>
+        RegBgm(GameEvents.Game_Init, _ =>
         {
             randomPlayBgm = false;
             PlayMusic(0);
         });        
-        Game.MessagingManager.RegEvent(GameEvents.Stage_Quit, _ =>
+        RegBgm(GameEvents.Stage_Quit, _ =>
         {
             randomPlayBgm = false;
             PlayMusic(0);
         });
-        Game.MessagingManager.RegEvent(GameEvents.Stage_Start, _ =>
+        RegBgm(GameEvents.Stage_Start, _ =>
         {
             StopMusic();
             randomPlayBgm = true;
             ResetBgmList();
         });
+        RegBgm(GameEvents.Stage_Level_Lose, _ =>
+        {
+            StopMusic();
+            randomPlayBgm = false;
+        });
+        RegBgm(GameEvents.Game_Home, _ =>
+        {
+            StopMusic();
+            randomPlayBgm = false;
+            PlayMusic(0);
+        });
     }
+
+    private void RegBgm(string gameEvent, Action<ObjectBag> invokeAction) =>
+        Game.MessagingManager.RegEvent(gameEvent, invokeAction);
 
     public void SetSfxVolume(float volume) => mixer.SetFloat(SFXVolume, LinearToDecibel(volume));
     public void SetBgmVolume(float volume) => mixer.SetFloat(BGMVolume, LinearToDecibel(volume));

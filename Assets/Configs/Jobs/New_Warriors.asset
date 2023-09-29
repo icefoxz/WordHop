@@ -1,0 +1,153 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c97c9cbc1297824eb22e005aa45fcc7, type: 3}
+  m_Name: New_Warriors
+  m_EditorClassIdentifier: 
+  "\u804C\u4E1A\u7B49\u7EA7":
+  - _id: 1
+    "\u7B49\u7EA7": 1
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Warrior Child
+    "\u56FE\u6807": {fileID: 21300000, guid: 8450721efc05e614aad4c0e244fb7bf2, type: 3}
+  - _id: 2
+    "\u7B49\u7EA7": 2
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Apprentice Warrior
+    "\u56FE\u6807": {fileID: 21300000, guid: c13e8e3cd862d174f88927d9b4ad0372, type: 3}
+  - _id: 3
+    "\u7B49\u7EA7": 3
+    "\u54C1\u8D28": 18
+    "\u79F0\u53F7": Fighting Genius
+    "\u56FE\u6807": {fileID: 21300000, guid: 8208be684d719b54f8f112167318cdc5, type: 3}
+  - _id: 4
+    "\u7B49\u7EA7": 3
+    "\u54C1\u8D28": 7
+    "\u79F0\u53F7": Wild Youth
+    "\u56FE\u6807": {fileID: 21300000, guid: 656be06274c5b414f91f6c5d427670dd, type: 3}
+  - _id: 5
+    "\u7B49\u7EA7": 4
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Rebellious Explorer
+    "\u56FE\u6807": {fileID: 21300000, guid: 2ac521ae11791664bb1c230aaff6122e, type: 3}
+  - _id: 6
+    "\u7B49\u7EA7": 5
+    "\u54C1\u8D28": 14
+    "\u79F0\u53F7": Young Braver
+    "\u56FE\u6807": {fileID: 21300000, guid: 840dafd3b0a950a4ba086ad3d6c90c6f, type: 3}
+  - _id: 7
+    "\u7B49\u7EA7": 6
+    "\u54C1\u8D28": 12
+    "\u79F0\u53F7": Young Warrior
+    "\u56FE\u6807": {fileID: 21300000, guid: 7461ed22ca11c344d91ba18cb03167c1, type: 3}
+  - _id: 8
+    "\u7B49\u7EA7": 7
+    "\u54C1\u8D28": 7
+    "\u79F0\u53F7": Ranger
+    "\u56FE\u6807": {fileID: 21300000, guid: 5a20adef4cf84614691e6f617a6b3ef0, type: 3}
+  - _id: 9
+    "\u7B49\u7EA7": 8
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Assassin'S Apprentice
+    "\u56FE\u6807": {fileID: 21300000, guid: a21a2c2a39c58524190aa7a921c803a0, type: 3}
+  - _id: 10
+    "\u7B49\u7EA7": 9
+    "\u54C1\u8D28": 17
+    "\u79F0\u53F7": Sword Dancer
+    "\u56FE\u6807": {fileID: 21300000, guid: 3d1ce15ac42e3d940b9fed9f3021afc7, type: 3}
+  - _id: 11
+    "\u7B49\u7EA7": 10
+    "\u54C1\u8D28": 14
+    "\u79F0\u53F7": Mature Warrior
+    "\u56FE\u6807": {fileID: 21300000, guid: ab00a8a1fc36c254883d0dd9236bae14, type: 3}
+  - _id: 12
+    "\u7B49\u7EA7": 11
+    "\u54C1\u8D28": 6
+    "\u79F0\u53F7": Mercenary
+    "\u56FE\u6807": {fileID: 21300000, guid: 2f344f4a7d7692b468ec5f1340bf198a, type: 3}
+  - _id: 13
+    "\u7B49\u7EA7": 12
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Bandit
+    "\u56FE\u6807": {fileID: 21300000, guid: 1ea38e199bd9b0141b2244a8839e9baa, type: 3}
+  - _id: 14
+    "\u7B49\u7EA7": 13
+    "\u54C1\u8D28": 15
+    "\u79F0\u53F7": Knight
+    "\u56FE\u6807": {fileID: 21300000, guid: 7c3e5229d4513774797e5fd15142ac55, type: 3}
+  - _id: 15
+    "\u7B49\u7EA7": 14
+    "\u54C1\u8D28": 11
+    "\u79F0\u53F7": Gladiator
+    "\u56FE\u6807": {fileID: 21300000, guid: 3606b921b0a7f8e42a9d76fba12bb97b, type: 3}
+  - _id: 16
+    "\u7B49\u7EA7": 14
+    "\u54C1\u8D28": 7
+    "\u79F0\u53F7": Adventurer
+    "\u56FE\u6807": {fileID: 21300000, guid: ffacf7860c2f8814f9f5e7ffcb022d0c, type: 3}
+  - _id: 17
+    "\u7B49\u7EA7": 15
+    "\u54C1\u8D28": 4
+    "\u79F0\u53F7": Bounty Hunter
+    "\u56FE\u6807": {fileID: 21300000, guid: 6d70ec30b025e55428c9ea4e038505f8, type: 3}
+  - _id: 18
+    "\u7B49\u7EA7": 16
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Rebels
+    "\u56FE\u6807": {fileID: 21300000, guid: 7c6a31f52a5544c41b8cb53c7f84fdba, type: 3}
+  - _id: 19
+    "\u7B49\u7EA7": 17
+    "\u54C1\u8D28": 18
+    "\u79F0\u53F7": War Hero
+    "\u56FE\u6807": {fileID: 21300000, guid: 0bb014ad531ffce4ab6e4416c63e0830, type: 3}
+  - _id: 20
+    "\u7B49\u7EA7": 17
+    "\u54C1\u8D28": 15
+    "\u79F0\u53F7": Guardian Of Honor
+    "\u56FE\u6807": {fileID: 21300000, guid: b7d526f6435dbb548a38d1880f63f4bc, type: 3}
+  - _id: 21
+    "\u7B49\u7EA7": 17
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Tactical Master
+    "\u56FE\u6807": {fileID: 21300000, guid: 8af1fc1359352ad40a89bcc91c359d8b, type: 3}
+  - _id: 22
+    "\u7B49\u7EA7": 18
+    "\u54C1\u8D28": 7
+    "\u79F0\u53F7": Righteous Outlaw
+    "\u56FE\u6807": {fileID: 21300000, guid: 2a86a5c6dfe808d4e9116e6fb4657b6a, type: 3}
+  - _id: 23
+    "\u7B49\u7EA7": 18
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Rebellion Leader
+    "\u56FE\u6807": {fileID: 21300000, guid: d35e583a33c562342a9f86cca12bf6cf, type: 3}
+  - _id: 24
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Retired Warrior
+    "\u56FE\u6807": {fileID: 21300000, guid: 2f914f07dad5a334baf1d094bfa03d50, type: 3}
+  - _id: 25
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Elderly Strategist
+    "\u56FE\u6807": {fileID: 21300000, guid: 07ac179f15c4b4343810a7d8e9997a1b, type: 3}
+  - _id: 26
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 15
+    "\u79F0\u53F7": Great Warlord
+    "\u56FE\u6807": {fileID: 21300000, guid: ed73bb1adf3fdb843bae2e25f167d429, type: 3}
+  - _id: 27
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 20
+    "\u79F0\u53F7": Undefeated War King
+    "\u56FE\u6807": {fileID: 21300000, guid: 3afb7ecdbda5c2c47b2e5110fd94327f, type: 3}
+  "\u91D1\u5E01\u5956\u52B1\u500D\u7387": 1.4
+  "\u7ECF\u9A8C\u5956\u52B1\u500D\u7387": 1.5
+  csvFile: {fileID: 4900000, guid: db3812deec1ce874c84294452ba60213, type: 3}

@@ -30,13 +30,20 @@ public class JobConfigSo : ScriptableObject
         return null;
     }
 
-    public PlayerJob GetPlayerJob(JobTypes type, int level)
+    public float GetCoinRatio(JobTypes jobType) => GetField(jobType).JobSo.CoinRewardRatio;
+    public float GetExpRatio(JobTypes jobType) => GetField(jobType).JobSo.ExpRewardRatio;
+
+    public PlayerJob GetPlayerJob(JobTypes type, int level,int quality)
     {
         var job = GetField(type);
-        var levelSet = job.JobSo.LevelSets.FirstOrDefault(j => j.Level == level);
+        var levelSet = job.JobSo.LevelSets
+            .Where(j => j.Level <= level && j.MinQuality <= quality)
+            .OrderByDescending(j => j.Level)
+            .ThenByDescending(j => j.MinQuality)
+            .FirstOrDefault();
         if(levelSet == null)
             throw new ArgumentOutOfRangeException(nameof(level), level, null);
-        return new PlayerJob(levelSet.Title, level, type);
+        return new PlayerJob(levelSet.Id, levelSet.Title, level, type, quality);
     }
 
     public Dictionary<JobTypes, CardArg[]> Data()=>
@@ -54,7 +61,7 @@ public class JobConfigSo : ScriptableObject
     {
         var field = GetField(type);
         return field.JobSo.LevelSets
-            .Select(s => new CardArg(s.Title, s.Level, GetStars(s.Level), s.Icon, GetJobSwitches(type,s.Level)))
+            .Select(s => new CardArg(s.Id,s.Title, s.Level, GetStars(s.Level), s.Icon, GetJobSwitches(type,s.Level)))
             .ToArray();
     }
 
@@ -75,15 +82,19 @@ public class JobConfigSo : ScriptableObject
         };
     }
 
-    public CardArg GetCardArg(PlayerJob job)=> GetCardArg(job.JobType, job.Level);
+    public CardArg GetCardArg(PlayerJob job)=> GetCardArg(job.JobType, job.Level, job.Quality);
 
-    public CardArg GetCardArg(JobTypes type, int level)
+    public CardArg GetCardArg(JobTypes type, int level, int quality)
     {
         var job = GetField(type);
-        var levelSet = job.JobSo.LevelSets.FirstOrDefault(j => j.Level == level);
+        var levelSet = job.JobSo.LevelSets.Where(j => j.Level <= level && j.MinQuality <= quality)
+            .OrderByDescending(j => j.Level)
+            .ThenByDescending(j => j.MinQuality)
+            .FirstOrDefault();
         if (levelSet == null)
             throw new ArgumentOutOfRangeException(nameof(level), level, null);
-        return new CardArg(levelSet.Title, level, GetStars(level), levelSet.Icon, GetJobSwitches(type, levelSet.Level));
+        return new CardArg(levelSet.Id, levelSet.Title, level, GetStars(level), levelSet.Icon,
+            GetJobSwitches(type, levelSet.Level));
     }
 
     private int GetStars(int level)
@@ -114,17 +125,7 @@ public class JobConfigSo : ScriptableObject
         };
     }
 
-    public (string title, Sprite sprite)? GetJobInfo(JobTypes type, int level) => GetJobInfo(GetJobName(type), level);
-
     public Sprite GetJobIcon(JobTypes type) => GetJobTree(type).JobIcon;
-
-    public (string title, Sprite sprite)? GetJobInfo(string jobName,int level)
-    {
-        var job = GetJobType(jobName).LevelSets.FirstOrDefault(j => j.Level == level);
-        if (job != null) return (job.Title, job.Icon);
-        Debug.LogError($"没有找到职业{jobName}的{level}级设定");
-        return null;
-    }
 
     [Serializable]private class JobTypeField
     {

@@ -1,28 +1,68 @@
 using AOT.BaseUis;
+using AOT.Utls;
 using AOT.Views;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class View_TopSection : UiBase
 {
+    private enum Modes
+    {
+        Home, Stage
+    }
     private View_SubMenu view_subMenu { get; set; }
+    private View_Badge view_badge { get; }
+    private Text text_days { get; }
+    private Transform trans_flag { get; }
+
 
     public View_TopSection(IView v, UnityAction onSettingAction, UnityAction onHomeAction) : base(v)
     {
         view_subMenu = new View_SubMenu(v.Get<View>("view_subMenu"),
             onSettingAction,
             onHomeAction);
+        view_badge = new View_Badge(v.Get<View>("view_badge"));
+        text_days = v.Get<Text>("text_days");
+        trans_flag = v.Get<Transform>("trans_flag");
+
     }
 
     public void Init()
     {
-        Game.MessagingManager.RegEvent(GameEvents.Stage_Start, _ => view_subMenu.DisplayHomeButton(true));
-        Game.MessagingManager.RegEvent(GameEvents.Stage_Quit, _ => view_subMenu.DisplayHomeButton(false));
-        view_subMenu.DisplayHomeButton(false);
+        Game.MessagingManager.RegEvent(GameEvents.Stage_Start, _ => SetMode(Modes.Stage));
+        Game.MessagingManager.RegEvent(GameEvents.Stage_Quit, _ => SetMode(Modes.Home));
+        Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Start, LevelStartLoadInfo);
+        SetMode(Modes.Home);
+    }
+
+    private void SetMode(Modes mode)
+    {
+        trans_flag.gameObject.SetActive(mode == Modes.Stage);
+        view_badge.Display(mode == Modes.Stage);
+        view_subMenu.SetMode(mode);
+    }
+
+    private void SetDays(int days) => text_days.text = days.ToString();
+
+    private void LevelStartLoadInfo(ObjectBag obj)
+    {
+        var player = Game.Model.Player;
+        var job = player.Current.Job;
+        SetDays(player.Days);
+        SetBadge(job.Title, player.QualityLevel);
+    }
+
+    private void SetBadge(string title, int level)
+    {
+        view_badge.Set(title, level);
+        var badgeCfg = Game.Model.Player.GetBadgeCfg();
+        BadgeConfigLoader.LoadPrefab(badgeCfg, view_badge.GameObject);
     }
 
     private class View_SubMenu : UiBase
     {
+
         private Element_Sub element_sub_mission { get; }
         private Element_Sub element_sub_rank { get; }
         private Button btn_settings { get; }
@@ -39,7 +79,10 @@ public class View_TopSection : UiBase
             btn_settings.onClick.AddListener(onSettingAction);
         }
 
-        public void DisplayHomeButton(bool display) => btn_home.gameObject.SetActive(display);
+        public void SetMode(Modes mode)
+        {
+            btn_home.gameObject.SetActive(mode == Modes.Stage);
+        }
 
         private class Element_Sub : UiBase
         {

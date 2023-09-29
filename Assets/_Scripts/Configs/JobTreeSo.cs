@@ -26,6 +26,7 @@ public class JobSwitch
 {
     public JobTypes JobType;
     public int Level;
+    public int Quality = 1;
     public int Cost;
     public string Message;
 }

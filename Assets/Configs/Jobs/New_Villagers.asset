@@ -1,0 +1,158 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c97c9cbc1297824eb22e005aa45fcc7, type: 3}
+  m_Name: New_Villagers
+  m_EditorClassIdentifier: 
+  "\u804C\u4E1A\u7B49\u7EA7":
+  - _id: 1
+    "\u7B49\u7EA7": 1
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Newcomer
+    "\u56FE\u6807": {fileID: 21300000, guid: bd384b54edf729c4584e04b3d845980c, type: 3}
+  - _id: 2
+    "\u7B49\u7EA7": 2
+    "\u54C1\u8D28": 11
+    "\u79F0\u53F7": Aristocratic Children
+    "\u56FE\u6807": {fileID: 21300000, guid: 876e4f5bd610ae046a986e13eb220d46, type: 3}
+  - _id: 3
+    "\u7B49\u7EA7": 3
+    "\u54C1\u8D28": 14
+    "\u79F0\u53F7": Craftsman Apprentice
+    "\u56FE\u6807": {fileID: 21300000, guid: c679321c300fd174fb650592ea806648, type: 3}
+  - _id: 4
+    "\u7B49\u7EA7": 4
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Herding Children
+    "\u56FE\u6807": {fileID: 21300000, guid: 7f4864eecc24b434bb89067c43bb0b94, type: 3}
+  - _id: 5
+    "\u7B49\u7EA7": 5
+    "\u54C1\u8D28": 7
+    "\u79F0\u53F7": Street Urchin
+    "\u56FE\u6807": {fileID: 21300000, guid: 7314cbb5581525b4997493437665fb49, type: 3}
+  - _id: 6
+    "\u7B49\u7EA7": 5
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Little Beggar
+    "\u56FE\u6807": {fileID: 21300000, guid: 9cac6068945a48348930cf21d0823be4, type: 3}
+  - _id: 7
+    "\u7B49\u7EA7": 6
+    "\u54C1\u8D28": 17
+    "\u79F0\u53F7": Knight Squire
+    "\u56FE\u6807": {fileID: 21300000, guid: ba6c1cab5fd4c3443b9d5ce9322d40c3, type: 3}
+  - _id: 8
+    "\u7B49\u7EA7": 6
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Delivery Boy
+    "\u56FE\u6807": {fileID: 21300000, guid: 70496295218a30042bc126a59e8e420a, type: 3}
+  - _id: 9
+    "\u7B49\u7EA7": 7
+    "\u54C1\u8D28": 14
+    "\u79F0\u53F7": Blacksmith Apprentice
+    "\u56FE\u6807": {fileID: 21300000, guid: b818d3afdc9bd1440884468954b4cb77, type: 3}
+  - _id: 10
+    "\u7B49\u7EA7": 8
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Thief
+    "\u56FE\u6807": {fileID: 21300000, guid: 8238cd72f308b32499de4ea5ea4be3e0, type: 3}
+  - _id: 11
+    "\u7B49\u7EA7": 10
+    "\u54C1\u8D28": 18
+    "\u79F0\u53F7": Noble
+    "\u56FE\u6807": {fileID: 21300000, guid: 04992bff46e1db04c948c1d0ab33dba6, type: 3}
+  - _id: 12
+    "\u7B49\u7EA7": 11
+    "\u54C1\u8D28": 15
+    "\u79F0\u53F7": Community Contributor
+    "\u56FE\u6807": {fileID: 21300000, guid: dc2b6e2ff92b2fc46807c3ed738c1d26, type: 3}
+  - _id: 13
+    "\u7B49\u7EA7": 12
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Skilled Worker
+    "\u56FE\u6807": {fileID: 21300000, guid: 3b6cd90ff1935f94bb7b1c8d11d0ae62, type: 3}
+  - _id: 14
+    "\u7B49\u7EA7": 13
+    "\u54C1\u8D28": 7
+    "\u79F0\u53F7": Hunter
+    "\u56FE\u6807": {fileID: 21300000, guid: 451435b07a102c744ae7a0b0b82f76f5, type: 3}
+  - _id: 15
+    "\u7B49\u7EA7": 14
+    "\u54C1\u8D28": 4
+    "\u79F0\u53F7": Farmer
+    "\u56FE\u6807": {fileID: 21300000, guid: ffe3a7e0e63073345bf5c2924e1fbb63, type: 3}
+  - _id: 16
+    "\u7B49\u7EA7": 14
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Vagabond
+    "\u56FE\u6807": {fileID: 21300000, guid: d4e054813743bb24f9c75fdbf6e7cc59, type: 3}
+  - _id: 17
+    "\u7B49\u7EA7": 15
+    "\u54C1\u8D28": 17
+    "\u79F0\u53F7": Land Mogul
+    "\u56FE\u6807": {fileID: 21300000, guid: f0e47b49f5cfa6b468f8daa94a6cbc22, type: 3}
+  - _id: 18
+    "\u7B49\u7EA7": 16
+    "\u54C1\u8D28": 13
+    "\u79F0\u53F7": Commerce Member
+    "\u56FE\u6807": {fileID: 21300000, guid: 7587b8de5887d94449ed46ef40682404, type: 3}
+  - _id: 19
+    "\u7B49\u7EA7": 16
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Small Trader
+    "\u56FE\u6807": {fileID: 21300000, guid: 40b54fdafdafed544b6deb5fa2f5d110, type: 3}
+  - _id: 20
+    "\u7B49\u7EA7": 17
+    "\u54C1\u8D28": 7
+    "\u79F0\u53F7": Blacksmith
+    "\u56FE\u6807": {fileID: 21300000, guid: 3748b738983c43c459188b15e0b26745, type: 3}
+  - _id: 21
+    "\u7B49\u7EA7": 18
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Wandering Elder
+    "\u56FE\u6807": {fileID: 21300000, guid: 515b9cc5c75c2604b9b694a99693c3f7, type: 3}
+  - _id: 22
+    "\u7B49\u7EA7": 18
+    "\u54C1\u8D28": 17
+    "\u79F0\u53F7": Community Legend
+    "\u56FE\u6807": {fileID: 21300000, guid: 014c2e0177cc2a74f91c27cabf2b4997, type: 3}
+  - _id: 23
+    "\u7B49\u7EA7": 19
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Local Luminary
+    "\u56FE\u6807": {fileID: 21300000, guid: 8ffa902915ff9ee4ba2b9f2231b4c583, type: 3}
+  - _id: 24
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 15
+    "\u79F0\u53F7": Leisurely Elder
+    "\u56FE\u6807": {fileID: 21300000, guid: e8d642c538d2f4e4aaaf9f64aadfe4e3, type: 3}
+  - _id: 25
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Beggar King
+    "\u56FE\u6807": {fileID: 21300000, guid: cb84890ea255fe6428695f67839db28f, type: 3}
+  - _id: 26
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 19
+    "\u79F0\u53F7": Influential Elder
+    "\u56FE\u6807": {fileID: 21300000, guid: 33467e8f31a61554ea7ba81cea4fb9f4, type: 3}
+  - _id: 27
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Enduring Elder
+    "\u56FE\u6807": {fileID: 21300000, guid: 9db5bc0656a5bc34ca323673d4684965, type: 3}
+  - _id: 28
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 6
+    "\u79F0\u53F7": Lonely Elder
+    "\u56FE\u6807": {fileID: 21300000, guid: f8b6662fa80c6ab43a1d933df30155e6, type: 3}
+  "\u91D1\u5E01\u5956\u52B1\u500D\u7387": 1
+  "\u7ECF\u9A8C\u5956\u52B1\u500D\u7387": 1
+  csvFile: {fileID: 4900000, guid: e150b8080fdeb474fb64624a3cdfd403, type: 3}

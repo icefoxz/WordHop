@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace GamePlay
         /// 用于不断攀升增加难度的数值
         /// </summary>
         public int GameStageIndex { get; private set; }
+        public int Days => GameStageIndex + 1;
         private IPlayerLevelField[] Levels { get; set; }
         public UpgradingRecord UpgradeRecord { get; private set; }
         public PlayerRec Current { get; private set; }
@@ -22,15 +24,18 @@ namespace GamePlay
         public int Exp => Current.Exp;
         public int Coin => Current.Coin;
         public int Stars { get; private set; }
+        public int QualityLevel { get; private set; } = 1;
 
-        public int LastCoinAdd { get; private set; }
+        public int AdCoin { get; private set; }
+        public int LastAddedCoin { get; private set; }
 
-        public PlayerModel(PlayerRec current, IPlayerLevelField[] levelFields)
+        public PlayerModel(PlayerRec current, IPlayerLevelField[] levelFields, int qualityLevel)
         {
             Current = current;
             HighestRec = current;
             Levels = levelFields;
             UpgradeHandler = new PlayerUpgradeHandler(Levels);
+            QualityLevel = qualityLevel;
         }
 
         public void SetHighestLevel(PlayerRec rec)
@@ -39,30 +44,48 @@ namespace GamePlay
                 HighestRec = rec;
         }
 
-        public int GetScore() => Exp + Levels.Where(l => l.Level < Current.Level).Sum(l => l.MaxExp);
-
-        public int GetPlayerLevel() => Current.Level;
-        public int GetMaxExp(int level) => Levels.FirstOrDefault(l => l.Level == level)?.MaxExp ?? -1;
-        public int GetMaxExpOfCurrentLevel() => UpgradeHandler.CurrentLevel.MaxExp;
-
-        private void ScoreCalculation(int secs,int maxSecs,float difficulty, int missTake)
+        private void ScoreCalculation(int secs, int maxSecs, float difficulty, int missTake)
         {
+            var lastJob = GetPlayerCurrentJob();
             var rewardConfig = Game.ConfigureSo.GameRoundConfigSo;
             var point = secs - missTake;
             var reward = rewardConfig.GetRewardsByQuality(secs, maxSecs, difficulty);
             var currentLevel = Upgrade(reward.Exp);
-            var adRatio = reward.AdRatio;
             var isLevelUp = UpgradeRecord.Levels.Count > 1;
+            var job = GetPlayerCurrentJob();
             Stars = rewardConfig.CalculateStars(secs, WordLevel.TotalSeconds, difficulty);
-            AddCoin(reward.Coin);
-            Current.AddScore(reward.Exp);
-            var job = Game.ConfigureSo.JobConfig.GetPlayerJob(Current.Job.JobType, currentLevel);
+            var (exp, coin) = ResolveReward(reward, job.JobType);
+            AdCoin = CountRewardAdCoin(reward, coin);
+            AddCoin(coin);
+            Current.AddScore(exp);
             Current.UpdateJob(job);
             SendEvent(GameEvents.Stage_Point_Update, point);
-            if(isLevelUp) SendEvent(GameEvents.Player_Level_Up, currentLevel);
+            if (isLevelUp) SendEvent(GameEvents.Player_Level_Up, currentLevel);
+            if (job != lastJob) SendEvent(GameEvents.Player_Job_Switch, job);
         }
 
-        public void AddAdCoin() => AddCoin(LastCoinAdd /2);
+        private PlayerJob GetPlayerCurrentJob() =>
+            Game.ConfigureSo.JobConfig.GetPlayerJob(Current.Job.JobType, Current.Level, QualityLevel);
+
+        private static int CountRewardAdCoin(GameRoundConfigSo.RewardResult reward, int coin)
+        {
+            var result = (int)((reward.AdRatio - 1) * coin);
+            return Math.Max(1, result);//最少加1金币
+        }
+
+        private (int exp, int coin) ResolveReward(GameRoundConfigSo.RewardResult reward, JobTypes jobType)
+        {
+            var config = Game.ConfigureSo.JobConfig;
+            var expRatio = config.GetExpRatio(jobType);
+            var coinRatio = config.GetCoinRatio(jobType);
+            var exp = Count(expRatio, reward.Exp);
+            var coin = Count(coinRatio, reward.Coin);
+            return (exp, coin);
+
+            int Count(float ratio, int value) => (int)Math.Max(0, value * ratio);
+        }
+
+        public void AddAdCoin() => AddCoin(AdCoin);
 
         /// <summary>
         /// 一般用在内部调用, 除非Hack等级
@@ -78,42 +101,27 @@ namespace GamePlay
             return currentLevel;
         }
 
-        public void CompareAndReplaceHighest()
+        public void SwitchJob(JobSwitch op, int exp = 0)
         {
-            if (HighestRec == null || (Current != HighestRec && Current.Score > HighestRec.Score))
-            {
-                HighestRec = Current;
-                SendEvent(GameEvents.Stage_Highest_Rec_Update, HighestRec);
-            }
-        }
-
-        public void SwitchJob(JobSwitch op)
-        {
-            UpgradeHandler.SetLevel(op.Level, 0);
-            Current.SetLevel(op.Level, 0);
-            var job = Game.ConfigureSo.JobConfig.GetPlayerJob(op.JobType, op.Level);
+            UpgradeHandler.SetLevel(op.Level, exp);
+            Current.SetLevel(op.Level, exp);
+            var job = GetPlayerCurrentJob();
             Current.UpdateJob(job);
-            SendEvent(GameEvents.Stage_Job_Switch);
+            SendEvent(GameEvents.Player_Job_Switch);
         }
         
         public void AddCoin(int coin)
         {
-            LastCoinAdd = coin;
+            LastAddedCoin = coin;
             Current.AddCoin(coin);
             SendEvent(GameEvents.Stage_Coin_Update, coin);
         }
-
-        //public void SetCoin(int coin)
-        //{
-        //    Current.SetCoin(coin);
-        //    SendEvent(GameEvents.Stage_Coin_Update, coin);
-        //}
 
         public void StageLevelPass(int secs)
         {
             var missTake = WordLevel.GetMissTakes();
             var difficulty = WordLevel.Difficulty;
-            ScoreCalculation(secs, WordLevel.TotalSeconds,difficulty, missTake);
+            ScoreCalculation(secs, WordLevel.TotalSeconds, difficulty, missTake);
             GameStageIndex++;
         }
 
@@ -123,16 +131,25 @@ namespace GamePlay
             UpgradeHandler.Reset();
         }
 
-        public (string title, Sprite sprite)? GetPlayerLevelInfo()
-        {
-            var playerLevel = GetPlayerLevel();
-            return Game.ConfigureSo.JobConfig.GetJobInfo(Current.Job.JobType, playerLevel);
-        }
-
         public bool IsMaxLevel() => Current.Level >= Game.ConfigureSo.UpgradeConfigSo.GetMaxLevel();
 
 #if UNITY_EDITOR
         public void HackUpgrade(int exp) => Upgrade(exp);
 #endif
+        public BadgeConfiguration GetBadgeCfg() =>
+            Game.ConfigureSo.BadgeLevelSo.GetBadgeConfig(QualityLevel);
+
+        public void AddQuality(int quality)
+        {
+            var lastJob = GetPlayerCurrentJob();
+            QualityLevel = Math.Clamp(QualityLevel + quality, 1, 20);
+            var job = GetPlayerCurrentJob();
+            if (job != lastJob)
+            {
+                Current.UpdateJob(job);
+                SendEvent(GameEvents.Player_Job_Switch, job);
+            }
+            SendEvent(GameEvents.Stage_Quality_Update, QualityLevel);
+        }
     }
 }

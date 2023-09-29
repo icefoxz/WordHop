@@ -31,7 +31,7 @@ namespace AOT.BaseUis
         protected virtual void OnUiHide() { }
         public void Show() => Display(true);
         public void Hide() => Display(false);
-        private void Display(bool display)
+        public void Display(bool display)
         {
             if (display) OnUiShow();
             else OnUiHide();

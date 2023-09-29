@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using AOT.Core;
 using UnityEngine;
 
@@ -55,5 +57,25 @@ public class GamePlayController : MonoBehaviour, IController
         Quit();
     }
 
-    public void Quit() => StageModel.Quit();
+    private void Quit() => StageModel.Quit();
+
+    public void Home()=> Game.MessagingManager.SendParams(GameEvents.Game_Home);
+
+    public void QualityChange(int quality)
+    {
+        var player = Game.Model.Player;
+        var arg = Config.QualityConfigSo
+            .GetQualityOptions(player.Current.Job.JobType)
+            .First(q => q.quality == quality);
+        player.AddCoin(-arg.cost);
+        player.AddQuality(ConvertQuality(quality));
+
+        int ConvertQuality(int q) => q switch
+        {
+            2 => 1,
+            0 => -1,
+            _ => 0
+        };
+    }
+
 }

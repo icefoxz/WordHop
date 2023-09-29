@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c97c9cbc1297824eb22e005aa45fcc7, type: 3}
+  m_Name: New_Elves
+  m_EditorClassIdentifier: 
+  "\u804C\u4E1A\u7B49\u7EA7":
+  - _id: 1
+    "\u7B49\u7EA7": 1
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Naive Sprout
+    "\u56FE\u6807": {fileID: 21300000, guid: 2fc5ba9b28ba6e84e888d54836007abf, type: 3}
+  - _id: 2
+    "\u7B49\u7EA7": 2
+    "\u54C1\u8D28": 18
+    "\u79F0\u53F7": Son Of Earth
+    "\u56FE\u6807": {fileID: 21300000, guid: 36432a0b884428a4488b9ebdef4a5096, type: 3}
+  - _id: 3
+    "\u7B49\u7EA7": 4
+    "\u54C1\u8D28": 12
+    "\u79F0\u53F7": Handy Sprite
+    "\u56FE\u6807": {fileID: 21300000, guid: cbbdc22e8d42ef440b3d459ad72b8708, type: 3}
+  - _id: 4
+    "\u7B49\u7EA7": 5
+    "\u54C1\u8D28": 8
+    "\u79F0\u53F7": Natural Wanderer
+    "\u56FE\u6807": {fileID: 21300000, guid: 240d106f9a560184b90287dbc1b0f773, type: 3}
+  - _id: 5
+    "\u7B49\u7EA7": 6
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Impish Elf
+    "\u56FE\u6807": {fileID: 21300000, guid: 85a6f999e968a4d4ea4d29369e2e4df8, type: 3}
+  - _id: 6
+    "\u7B49\u7EA7": 7
+    "\u54C1\u8D28": 12
+    "\u79F0\u53F7": Greenwood Archer
+    "\u56FE\u6807": {fileID: 21300000, guid: 8ec717d55591daa43a605f010a3e78d7, type: 3}
+  - _id: 7
+    "\u7B49\u7EA7": 8
+    "\u54C1\u8D28": 7
+    "\u79F0\u53F7": War Elf
+    "\u56FE\u6807": {fileID: 21300000, guid: 9fe7f5f1f68044546b84b94c1b11d567, type: 3}
+  - _id: 8
+    "\u7B49\u7EA7": 9
+    "\u54C1\u8D28": 14
+    "\u79F0\u53F7": Forest Dancer
+    "\u56FE\u6807": {fileID: 21300000, guid: 125928edaa8c03443baeb5b7a235f078, type: 3}
+  - _id: 9
+    "\u7B49\u7EA7": 10
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Forest Guide
+    "\u56FE\u6807": {fileID: 21300000, guid: 4f2a66191a4bc9f4ab55d1f43434047e, type: 3}
+  - _id: 10
+    "\u7B49\u7EA7": 11
+    "\u54C1\u8D28": 7
+    "\u79F0\u53F7": Nightshade Hunter
+    "\u56FE\u6807": {fileID: 21300000, guid: ac10ab122a8d99943b5ef51f6a7ed1ca, type: 3}
+  - _id: 11
+    "\u7B49\u7EA7": 12
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Mischievous Element
+    "\u56FE\u6807": {fileID: 21300000, guid: bf98f4dc7b257de49a0c4f6fb8f4c125, type: 3}
+  - _id: 12
+    "\u7B49\u7EA7": 13
+    "\u54C1\u8D28": 18
+    "\u79F0\u53F7": Superior Elf
+    "\u56FE\u6807": {fileID: 21300000, guid: ba81fbe1ad4676649845365fde67ade9, type: 3}
+  - _id: 13
+    "\u7B49\u7EA7": 14
+    "\u54C1\u8D28": 14
+    "\u79F0\u53F7": Elven Noble
+    "\u56FE\u6807": {fileID: 21300000, guid: 455be9b389cc22f4b9257a075d18267a, type: 3}
+  - _id: 14
+    "\u7B49\u7EA7": 15
+    "\u54C1\u8D28": 10
+    "\u79F0\u53F7": Forest Guardian
+    "\u56FE\u6807": {fileID: 21300000, guid: fcbc354df9a615d4b8ecd7c0f4557c9b, type: 3}
+  - _id: 15
+    "\u7B49\u7EA7": 16
+    "\u54C1\u8D28": 16
+    "\u79F0\u53F7": Moon Elf
+    "\u56FE\u6807": {fileID: 21300000, guid: 41091355bd778a6459132e237ea94a12, type: 3}
+  - _id: 16
+    "\u7B49\u7EA7": 17
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Renegade Marksman
+    "\u56FE\u6807": {fileID: 21300000, guid: 3546fac3882041f4382fbdb1cd12fa99, type: 3}
+  - _id: 17
+    "\u7B49\u7EA7": 18
+    "\u54C1\u8D28": 5
+    "\u79F0\u53F7": Greedy Trader
+    "\u56FE\u6807": {fileID: 21300000, guid: 9844c4b442c555b45bc276c44b6f924e, type: 3}
+  - _id: 18
+    "\u7B49\u7EA7": 19
+    "\u54C1\u8D28": 14
+    "\u79F0\u53F7": Ancient Elf
+    "\u56FE\u6807": {fileID: 21300000, guid: 2f9249b7899cca34a9b462358adec33a, type: 3}
+  - _id: 19
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 1
+    "\u79F0\u53F7": Solitary Rover
+    "\u56FE\u6807": {fileID: 21300000, guid: 811d77a5b2ebdf14194eb3e8fea2413c, type: 3}
+  - _id: 20
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 15
+    "\u79F0\u53F7": Master Of The Wild
+    "\u56FE\u6807": {fileID: 21300000, guid: 4a23bad0fd327be40a39b909c7ab99dc, type: 3}
+  - _id: 21
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 9
+    "\u79F0\u53F7": Lord Of The Forest
+    "\u56FE\u6807": {fileID: 21300000, guid: 61774628f47c5be4380b7da312050501, type: 3}
+  - _id: 22
+    "\u7B49\u7EA7": 20
+    "\u54C1\u8D28": 20
+    "\u79F0\u53F7": Elven King
+    "\u56FE\u6807": {fileID: 21300000, guid: b7a84c0926703f84e88439b4d5b89f04, type: 3}
+  "\u91D1\u5E01\u5956\u52B1\u500D\u7387": 0.8
+  "\u7ECF\u9A8C\u5956\u52B1\u500D\u7387": 0.8
+  csvFile: {fileID: 4900000, guid: 03a35adb7423ea645be7827ce8a8a89d, type: 3}

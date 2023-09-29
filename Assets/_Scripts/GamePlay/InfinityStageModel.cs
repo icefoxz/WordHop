@@ -34,7 +34,7 @@ public class InfinityStageModel : ModelBase
     {
         for (var i = 3; i <= 7; i++)
         {
-            var words = WordConfig.GetWords(i);
+            var words = WordConfig.GetWords(i).OrderByDescending(_=>Random.Range(0,1f));
             Data.Add(i, words.ToList());
         }
     }
@@ -51,6 +51,7 @@ public class InfinityStageModel : ModelBase
         if (_countdownCoroutine) _countdownCoroutine.StopCo();
         LoadChallengeStage();
         _countdownCoroutine = Game.CoroutineService.RunCo(StartCountdown(), nameof(InfinityStageModel));
+        SendEvent(GameEvents.Stage_Level_Start);
     }
 
     // 挑战模式, 无限关卡, 动态生成, 难度递增
@@ -134,8 +135,9 @@ public class InfinityStageModel : ModelBase
         if (_countdownCoroutine) _countdownCoroutine.StopCo(); // 停止倒计时
     }
 
-    public void HackWin()
+    public void HackWin(int secs)
     {
+        _timer = secs;
         WordLevel.SetAllAlphabetSelected();
         Win();
     }

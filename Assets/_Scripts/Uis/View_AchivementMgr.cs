@@ -23,10 +23,10 @@ public class View_AchievementMgr
 
     private void OnTabFocus(JobTypes jobType, bool all)
     {
-        int[] cardLevels = Pref.GetCardData(jobType);
+        int[] cardId = Pref.GetCardData(jobType);
         var map = Game.ConfigureSo.JobConfig.Data();
         var args = map[jobType];
-        var cards = all ? args : args.Where(c => cardLevels.Contains(c.level)).ToArray();
+        var cards = all ? args : args.Where(c => cardId.Contains(c.id)).ToArray();
         View_achivement.SetFocus(jobType, cards);
     }
 

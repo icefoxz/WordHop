@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class View_GameOverMgr
 {
     private View_GameOver View_gameOver { get; set; }
-    public GameObject Badge => View_gameOver.view_badge.GameObject;
+    public View_Badge Badge => View_gameOver.view_badge;
 
     public View_GameOverMgr(IView view, UnityAction onOkAction, UnityAction onReviveAction)
     {

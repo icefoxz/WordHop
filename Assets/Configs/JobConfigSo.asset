@@ -14,19 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u804C\u4E1A":
   - "\u804C\u4E1A\u540D\u79F0": Warriors
-    "\u804C\u4E1A": {fileID: 11400000, guid: b35fb3786bd38754fbd29bcbe68e6fa7, type: 2}
+    "\u804C\u4E1A": {fileID: 11400000, guid: f8b6d7a8f00d43f4190fa7633a84e5a8, type: 2}
   - "\u804C\u4E1A\u540D\u79F0": Mages
-    "\u804C\u4E1A": {fileID: 11400000, guid: 86169661b8b9d5b41a8993176644dd2d, type: 2}
+    "\u804C\u4E1A": {fileID: 11400000, guid: ff1eaf0bb90f62243aa56a6bc326452e, type: 2}
   - "\u804C\u4E1A\u540D\u79F0": Elves
-    "\u804C\u4E1A": {fileID: 11400000, guid: 8f54a54f293c26a43ac2ecffc8a8dd72, type: 2}
-  - "\u804C\u4E1A\u540D\u79F0": Rouges
-    "\u804C\u4E1A": {fileID: 11400000, guid: 9c102a7372d227e4e8d00e9c6074df51, type: 2}
+    "\u804C\u4E1A": {fileID: 11400000, guid: 6797134ec3e14c54a8466761b0d4cf09, type: 2}
   - "\u804C\u4E1A\u540D\u79F0": Mysterious
-    "\u804C\u4E1A": {fileID: 11400000, guid: afd3bef39d6e9074da4272998ebd0cbb, type: 2}
+    "\u804C\u4E1A": {fileID: 11400000, guid: 4e17e2ec7fe783845919b3107df8eb81, type: 2}
   - "\u804C\u4E1A\u540D\u79F0": Villagers
     "\u804C\u4E1A": {fileID: 11400000, guid: 05684072cfb8ff74da778eba15a2a58f, type: 2}
   - "\u804C\u4E1A\u540D\u79F0": Necromancer
-    "\u804C\u4E1A": {fileID: 11400000, guid: 2bc4f0ce76f4a6044ae8ad664e6eb504, type: 2}
+    "\u804C\u4E1A": {fileID: 11400000, guid: c8dc431036275234fa6b0142a2ec8dff, type: 2}
   "\u6751\u6C11": {fileID: 11400000, guid: f47d46995bae20544bd676e178e3aa95, type: 2}
   "\u52C7\u58EB": {fileID: 11400000, guid: 179cfdb66ef7c2d4a91373b4c976bd9e, type: 2}
   "\u795E\u79D8": {fileID: 11400000, guid: 16f1e3e81ec078d4ba2d3c322382c4ea, type: 2}

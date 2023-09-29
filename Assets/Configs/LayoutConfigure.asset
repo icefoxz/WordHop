@@ -12,6 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06a306d2b1da6a840a297ff7c71627e0, type: 3}
   m_Name: LayoutConfigure
   m_EditorClassIdentifier: 
+  villagerPad: {fileID: 6599287427861967131, guid: 0eb8b8c1637060b40a990b1c4d12cfde,
+    type: 3}
+  warriorPad: {fileID: 6599287427861967131, guid: 3ec205bb38353524d80ea68d39f2ead8,
+    type: 3}
+  magePad: {fileID: 6599287427861967131, guid: 9dca8d3986ab45f46bd5e1405831197a, type: 3}
+  elfPad: {fileID: 6599287427861967131, guid: 024b042429de7d343aa18bad5c13637e, type: 3}
+  necromancerPad: {fileID: 6599287427861967131, guid: 780350ff218407f42b2c2ff60fc34213,
+    type: 3}
+  mysteriousPad: {fileID: 6599287427861967131, guid: 58be9f6b0deb6c341a57316ea47f5c8b,
+    type: 3}
   "\u5E03\u5C40_3\u952E":
   - {fileID: 4900000, guid: 04eec6a2768ea5d4b8ded44db3803b5e, type: 3}
   - {fileID: 4900000, guid: a97902b0b4749c543be7138a9f9a79da, type: 3}
