@@ -71,6 +71,7 @@ public class View_StageClearMgr
     public void SetCard(CardArg arg, bool resetPos) => View_stageClear.SetCard(arg, resetPos);
     public void SetCardAction(UnityAction cardAction,UnityAction backAction) => View_stageClear.SetCardAction(cardAction,backAction);
     public void PlayToCoin(int fromCoin, int toCoin, float secs = 1f) => View_stageClear.PlayToCoin(fromCoin, toCoin, secs);
+
     public void SetCoin(int addedCoin, int total) => View_stageClear.SetCoin(addedCoin, total);
 
     public IEnumerator PlayOptions(float localY, float seconds, bool isShow)
@@ -92,7 +93,7 @@ public class View_StageClearMgr
     public IEnumerator PlayWindowToY(float localY, float seconds) => View_stageClear.PlayWindowToY(localY, seconds);
 
     public void SetOptions((Sprite icon, string brief, int cost, int quality, bool active)[] qualities,
-        (string title, string message, Sprite icon, int cost)[] args,
+        (string title, string message, Sprite icon, int cost, bool enable)[] args,
         UnityAction<int> onQualityAction,
         UnityAction<int> onOpSelectedAction) =>
         View_stageClear.SetOptions(qualities, args ,onQualityAction, onOpSelectedAction);
@@ -168,6 +169,7 @@ public class View_StageClearMgr
         {
             tmp_coinAdd.text = coin.ToString();
             tmp_coin.text = sum.ToString();
+            view_cardSect.SetCoin(coin);
         }
 
         public void SetCardAction(UnityAction cardAction, UnityAction backAction) =>
@@ -218,7 +220,9 @@ public class View_StageClearMgr
         public Tween PlayToCoin(int fromValue, int toValue, float seconds)
         {
             tmp_coin.text = fromValue.ToString();
-            return DOTween.To(() => fromValue, v => tmp_coin.text = v.ToString(), toValue, seconds);
+            return DOTween.Sequence()
+                .Append(PlayOptionsCoin(fromValue, toValue, seconds))
+                .Join(DOTween.To(() => fromValue, v => tmp_coin.text = v.ToString(), toValue, seconds));
         }
 
         public void ResetWindowPos()
@@ -233,7 +237,7 @@ public class View_StageClearMgr
         }
 
         public void SetOptions((Sprite icon, string brief, int cost, int quality, bool active)[] qualityOptions,
-            (string title, string message, Sprite icon, int cost)[] options,
+            (string title, string message, Sprite icon, int cost, bool enable)[] options,
             UnityAction<int> qualityOptionAction, UnityAction<int> selectAction)
         {
             view_options.SetOptions(options);
@@ -336,11 +340,13 @@ public class View_StageClearMgr
             public void SetLevel(int level) => tmp_level.text = level.ToString();
         }
 
+        private Tween PlayOptionsCoin(int fromCoin, int toCoin, float seconds) => view_cardSect.PlayCoin(fromCoin, toCoin, seconds);
+
         private class View_options : UiBase
         {
+            private Element_quality element_quality_0 { get; set; }
             private Element_quality element_quality_1 { get; set; }
             private Element_quality element_quality_2 { get; set; }
-            private Element_quality element_quality_3 { get; set; }
             private Element_quality[] ElementQualities { get; set; }
             private Element_option element_option_1 { get; set; }
             private Element_option element_option_2 { get; set; }
@@ -354,10 +360,10 @@ public class View_StageClearMgr
             public View_options(IView v, UnityAction<int> onQualitySelectAction, UnityAction<int> onClickAction) : base(v,
                 false)
             {
+                element_quality_0 = new Element_quality(v.Get<View>("element_quality_0"), onQualitySelectAction);
                 element_quality_1 = new Element_quality(v.Get<View>("element_quality_1"), onQualitySelectAction);
                 element_quality_2 = new Element_quality(v.Get<View>("element_quality_2"), onQualitySelectAction);
-                element_quality_3 = new Element_quality(v.Get<View>("element_quality_3"), onQualitySelectAction);
-                ElementQualities = new Element_quality[] { element_quality_1, element_quality_2, element_quality_3 };
+                ElementQualities = new Element_quality[] { element_quality_0, element_quality_1, element_quality_2 };
                 element_option_1 = new Element_option(v.Get<View>("element_option_1"), () => onClickAction(0));
                 element_option_2 = new Element_option(v.Get<View>("element_option_2"), () => onClickAction(1));
                 element_option_3 = new Element_option(v.Get<View>("element_option_3"), () => onClickAction(2));
@@ -373,7 +379,7 @@ public class View_StageClearMgr
             }
 
 
-            public void SetOptions((string title, string message, Sprite icon, int cost)[] options)
+            public void SetOptions((string title, string message, Sprite icon, int cost, bool enable)[] options)
             {
                 for (var i = 0; i < ElementOptions.Length; i++)
                 {
@@ -384,9 +390,10 @@ public class View_StageClearMgr
                         continue;
                     }
 
-                    var (title, message, icon, cost) = options[i];
+                    var (title, message, icon, cost, enable) = options[i];
                     element.SetIcon(icon);
                     element.Set(title, message, cost);
+                    element.Enable(enable);
                     element.Show();
                 }
             }
@@ -415,6 +422,7 @@ public class View_StageClearMgr
                 private TMP_Text tmp_title { get; set; }
                 private TMP_Text tmp_message { get; set; }
                 private TMP_Text tmp_cost { get; set; }
+                private Image img_disable { get; set; }
                 private Button btn_click { get; set; }
 
                 public Element_option(IView v, UnityAction onClickAction) : base(v, true)
@@ -423,6 +431,7 @@ public class View_StageClearMgr
                     tmp_title = v.Get<TMP_Text>("tmp_title");
                     tmp_message = v.Get<TMP_Text>("tmp_message");
                     tmp_cost = v.Get<TMP_Text>("tmp_cost");
+                    img_disable = v.Get<Image>("img_disable");
                     btn_click = v.Get<Button>("btn_click");
                     btn_click.onClick.AddListener(onClickAction);
                 }
@@ -435,6 +444,8 @@ public class View_StageClearMgr
                     tmp_message.text = message;
                     tmp_cost.text = cost.ToString();
                 }
+
+                public void Enable(bool enable) => img_disable.gameObject.SetActive(!enable);
             }
 
             private class Element_quality : UiBase
@@ -444,7 +455,7 @@ public class View_StageClearMgr
                 private Image img_mid { get; }
                 private Image img_icon { get; }
                 private Transform trans_cost { get; }
-                private TMP_Text tmp_brief { get; }
+                //private TMP_Text tmp_brief { get; }
                 private Text text_cost { get; }
                 private Button btn_select { get; }
 
@@ -456,7 +467,7 @@ public class View_StageClearMgr
                     img_up = v.Get<Image>("img_up");
                     img_mid = v.Get<Image>("img_mid");
                     img_icon = v.Get<Image>("img_icon");
-                    tmp_brief = v.Get<TMP_Text>("tmp_brief");
+                    //tmp_brief = v.Get<TMP_Text>("tmp_brief");
                     text_cost = v.Get<Text>("text_cost");
                     trans_cost = v.Get<Transform>("trans_cost");
                     btn_select = v.Get<Button>("btn_select");
@@ -466,7 +477,7 @@ public class View_StageClearMgr
                 public void Set(Sprite icon, string brief, int cost, int quality, bool active)
                 {
                     img_icon.sprite = icon;
-                    tmp_brief.text = brief;
+                    //tmp_brief.text = brief;
                     text_cost.text = cost.ToString();
                     trans_cost.gameObject.SetActive(cost != 0);
                     btn_select.interactable = active;
@@ -491,6 +502,8 @@ public class View_StageClearMgr
             private Button btn_back { get; }
             private View_Card view_card { get; }
             private Image img_optionNotify { get; }
+            private Transform trans_coin { get; }
+            private TMP_Text tmp_coin { get; }
 
             public View_cardSect(IView v, bool display = true) : base(v, display)
             {
@@ -500,6 +513,8 @@ public class View_StageClearMgr
                 btn_back = v.Get<Button>("btn_back");
                 view_card = new View_Card(v.Get<View>("view_card"));
                 img_optionNotify = v.Get<Image>("img_optionNotify");
+                trans_coin = v.Get<Transform>("trans_coin");
+                tmp_coin = v.Get<TMP_Text>("tmp_coin");
             }
 
             public void SetCardAction(UnityAction cardAction, UnityAction backAction)
@@ -517,6 +532,7 @@ public class View_StageClearMgr
             {
                 DisplayPanel(false);
                 DisplayPanel(false);
+                trans_coin.gameObject.SetActive(false);
                 Hide();
             }
 
@@ -524,9 +540,14 @@ public class View_StageClearMgr
 
             public Tween DisplayOptions(float cardYPos, float secs, bool isShow)
             {
-                DisplayPanel(isShow);
-                SetOptionNotify(isShow);
-                return canvas_card.transform.DOLocalMoveY(cardYPos, secs);
+                return DOTween.Sequence()
+                    .Append(canvas_card.transform.DOLocalMoveY(cardYPos, secs))
+                    .AppendCallback(() =>
+                    {
+                        DisplayPanel(isShow);
+                        SetOptionNotify(isShow);
+                        trans_coin.gameObject.SetActive(isShow);
+                    });
             }
 
             public void SetCardModeActive() => view_card.SetMode(View_Card.Modes.Active);
@@ -555,6 +576,20 @@ public class View_StageClearMgr
             public void DisplayPanel(bool display) => trans_cardBg.gameObject.SetActive(display);
 
             private void SetOptionNotify(bool display) => img_optionNotify.gameObject.SetActive(display);
+
+            public void SetCoin(int coin)
+            {
+                tmp_coin.text = coin.ToString();
+                trans_coin.gameObject.SetActive(true);
+            }
+
+            public Tween PlayCoin(int fromCoin, int toCoin, float seconds)
+            {
+                if (trans_coin.gameObject.activeSelf)
+                    return DOTween.To(() => fromCoin,
+                        v => tmp_coin.text = v.ToString(), toCoin, seconds);
+                return null;
+            }
         }
         private class View_complete : UiBase
         {

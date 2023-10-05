@@ -61,12 +61,12 @@ public class JobConfigSo : ScriptableObject
     {
         var field = GetField(type);
         return field.JobSo.LevelSets
-            .Select(s => new CardArg(s.Id,s.Title, s.Level, GetStars(s.Level), s.Icon, GetJobSwitches(type,s.Level)))
+            .Select(s => new CardArg(s.Id,s.Title, s.Level, GetStars(s.Level), s.Icon))
             .ToArray();
     }
 
-    private JobSwitch[] GetJobSwitches(JobTypes type, int level) =>
-        GetJobTree(type).GetJobSwitches(level).ToArray();
+    public JobSwitch[] GetJobSwitches(JobTypes type, int level, int switchQuality) =>
+        GetJobTree(type).GetJobSwitches(level,switchQuality).ToArray();
 
     private JobTreeSo GetJobTree(JobTypes type)
     {
@@ -82,7 +82,8 @@ public class JobConfigSo : ScriptableObject
         };
     }
 
-    public CardArg GetCardArg(PlayerJob job)=> GetCardArg(job.JobType, job.Level, job.Quality);
+    public CardArg GetCardArg(PlayerJob job) =>
+        GetCardArg(job.JobType, job.Level, job.Quality);
 
     public CardArg GetCardArg(JobTypes type, int level, int quality)
     {
@@ -93,8 +94,7 @@ public class JobConfigSo : ScriptableObject
             .FirstOrDefault();
         if (levelSet == null)
             throw new ArgumentOutOfRangeException(nameof(level), level, null);
-        return new CardArg(levelSet.Id, levelSet.Title, level, GetStars(level), levelSet.Icon,
-            GetJobSwitches(type, levelSet.Level));
+        return new CardArg(levelSet.Id, levelSet.Title, level, GetStars(level), levelSet.Icon);
     }
 
     private int GetStars(int level)

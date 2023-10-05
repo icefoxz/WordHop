@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34be6d5d454bd834e9d5a082c685cbd6, type: 3}
+  m_Name: JobTree_Mysterious 1
+  m_EditorClassIdentifier: 
+  "\u804C\u4E1A\u56FE\u6807": {fileID: 21300000, guid: 7effad5cd0ddf4f3692773445504dd61,
+    type: 3}
+  "\u4ECB\u7ECD": Shadows whisper, secrets stir. Arcane rites, shrouded nights.
+  "\u804C\u4E1A\u7B49\u7EA7":
+  - Level: 4
+    JobSwitch:
+      JobType: 3
+      Level: 4
+      Quality: 1
+      Cost: 200
+      Message: Harness your potential.
+  - Level: 4
+    JobSwitch:
+      JobType: 5
+      Level: 4
+      Quality: 1
+      Cost: 200
+      Message: Seek deeper mysteries.
+  - Level: 6
+    JobSwitch:
+      JobType: 1
+      Level: 7
+      Quality: 1
+      Cost: 250
+      Message: Cosmic blade training.
+  - Level: 6
+    JobSwitch:
+      JobType: 4
+      Level: 7
+      Quality: 1
+      Cost: 260
+      Message: Mysteries of nature unfold.
+  - Level: 8
+    JobSwitch:
+      JobType: 3
+      Level: 8
+      Quality: 1
+      Cost: 310
+      Message: Cosmic spells.
+  - Level: 10
+    JobSwitch:
+      JobType: 5
+      Level: 8
+      Quality: 1
+      Cost: 350
+      Message: Seek the forbidden.
+  - Level: 12
+    JobSwitch:
+      JobType: 1
+      Level: 9
+      Quality: 1
+      Cost: 380
+      Message: Warrior of the cosmos.
+  - Level: 14
+    JobSwitch:
+      JobType: 4
+      Level: 9
+      Quality: 1
+      Cost: 460
+      Message: Nature's mystic protector.
+  - Level: 16
+    JobSwitch:
+      JobType: 3
+      Level: 11
+      Quality: 1
+      Cost: 520
+      Message: Arcane mastery.
+  - Level: 18
+    JobSwitch:
+      JobType: 0
+      Level: 19
+      Quality: 1
+      Cost: 550
+      Message: Return with knowledge.

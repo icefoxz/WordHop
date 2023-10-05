@@ -59,9 +59,9 @@ public class Game : MonoBehaviour
         Time.timeScale = pauseGame ? 0 : 1;
     }
 #if UNITY_EDITOR
-    [Button(ButtonSizes.Medium), GUIColor("yellow")] private void Hack_Level_Win_Mid() => Model.InfinityStage.HackWin(13);
     [Button(ButtonSizes.Medium), GUIColor("green")] private void Hack_Level_Win_High() => Model.InfinityStage.HackWin(20);
-    [Button(ButtonSizes.Medium), GUIColor("red")] private void Hack_Level_Win_Low() => Model.InfinityStage.HackWin(7);
+    [Button(ButtonSizes.Medium), GUIColor("yellow")] private void Hack_Level_Win_Mid() => Model.InfinityStage.HackWin(13);
+    [Button(ButtonSizes.Medium), GUIColor("red")] private void Hack_Level_Win_Low() => Model.InfinityStage.HackWin(1);
     [Button(ButtonSizes.Large),GUIColor("Cyan")]public void HackAchievement(JobTypes types) => _uiManager.AchievementMgr.HackTab(types);
     [Button(ButtonSizes.Large), GUIColor("red")] public void HackLevel(int exp) => Model.Player.HackUpgrade(exp);
     [Button(ButtonSizes.Medium), GUIColor("blue")]public void Test_PrintWordsFromDifficulty(int games)

@@ -91,16 +91,13 @@ public struct CardArg
     public int level;
     public Sprite icon;
     public int stars;
-    public JobSwitch[] options;
-
-    public CardArg(int id,string title, int level, int stars, Sprite icon,
-        JobSwitch[] options)
+    
+    public CardArg(int id,string title, int level, int stars, Sprite icon)
     {
         this.id = id;
         this.title = title;
         this.level = level;
         this.stars = stars;
         this.icon = icon;
-        this.options = options;
     }
 }

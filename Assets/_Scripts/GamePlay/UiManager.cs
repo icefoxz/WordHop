@@ -279,23 +279,25 @@ public class UiManager : MonoBehaviour
                 yield return StageClearMgr.FadeOutCard(1.5f);
             }
 
+            yield return new WaitForSeconds(0.5f);
             RefreshOptions();
-
+            
             _jobSwitchFlag = false;
         }
     }
 
     private void RefreshOptions()
     {
-        var arg = GetCardArg();
         var player = Game.Model.Player;
+        var job = player.Current.Job;
         var qualityCfg = Game.ConfigureSo.QualityConfigSo;
-        var options = arg.options.Where(o => player.Coin >= o.Cost)
-            .Select(ConvertJobArg).ToArray();
+        var options = Game.ConfigureSo.JobConfig.GetJobSwitches(job.JobType, player.Current.Level, player.QualityLevel)
+            .ToArray();
         var qualityOps = qualityCfg.GetQualityOptions(player.Current.Job.JobType);
         StageClearMgr.SetOptions(
-            qualityOps.Select(o => (o.icon, o.brief, o.cost, o.quality, player.Coin >= o.cost)).ToArray(), options,
-            SelectQualityStartLevel, index => SwitchJob(arg.options[index]));
+            qualityOps.Select(o => (o.icon, o.brief, o.cost, o.quality, player.Coin >= o.cost)).ToArray(),
+            options.Select(ConvertJobArg).ToArray(),
+            SelectQualityStartLevel, index => SwitchJob(options[index]));
     }
 
     private void ShowOption() => PlayDisplayOption(true);
@@ -318,6 +320,9 @@ public class UiManager : MonoBehaviour
             if (prevQualityLevel != nextQualityLevel)
             {
                 var badge = StageClearMgr.GetCardBadge();
+                var fromCoin = player.Coin - player.LastAddedCoin;
+                StageClearMgr.PlayToCoin(fromCoin, player.Coin);
+                yield return new WaitForSeconds(0.5f);
                 yield return badge.PlayFadeIn();
                 LoadBadge(badge);
                 yield return badge.PlayFadeOut();
@@ -380,12 +385,13 @@ public class UiManager : MonoBehaviour
         return Game.ConfigureSo.JobConfig.GetCardArg(player.Current.Job);
     }
 
-    private static (string title, string Message, Sprite Icon, int cost) ConvertJobArg(JobSwitch o)
+    private static (string title, string Message, Sprite Icon, int cost, bool enable) ConvertJobArg(JobSwitch o)
     {
+        var player = Game.Model.Player;
         var jobInfo = Game.ConfigureSo.JobConfig.GetCardArg(o.JobType, o.Level, o.Quality);
         var jobIcon = Game.ConfigureSo.JobConfig.GetJobIcon(o.JobType);
 
-        return (jobInfo.title, o.Message, jobIcon, o.Cost);
+        return (jobInfo.title, o.Message, jobIcon, o.Cost, player.Coin >= o.Cost);
     }
 
     private void StartLevel()

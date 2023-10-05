@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34be6d5d454bd834e9d5a082c685cbd6, type: 3}
+  m_Name: JobTree_Villagers 1
+  m_EditorClassIdentifier: 
+  "\u804C\u4E1A\u56FE\u6807": {fileID: 21300000, guid: d573fba858eba46919e9e2965a8c6e68,
+    type: 3}
+  "\u4ECB\u7ECD": Born from soil, roots run deep. Humble starter, potential unfolds.
+  "\u804C\u4E1A\u7B49\u7EA7":
+  - Level: 2
+    JobSwitch:
+      JobType: 1
+      Level: 2
+      Quality: 1
+      Cost: 130
+      Message: Train as a soldier.
+  - Level: 2
+    JobSwitch:
+      JobType: 2
+      Level: 2
+      Quality: 1
+      Cost: 150
+      Message: Feel a mystic presence.
+  - Level: 4
+    JobSwitch:
+      JobType: 1
+      Level: 3
+      Quality: 1
+      Cost: 190
+      Message: Join the knights.
+  - Level: 4
+    JobSwitch:
+      JobType: 2
+      Level: 3
+      Quality: 1
+      Cost: 205
+      Message: The secrets await.
+  - Level: 6
+    JobSwitch:
+      JobType: 3
+      Level: 4
+      Quality: 1
+      Cost: 260
+      Message: Sense arcane vibes.
+  - Level: 6
+    JobSwitch:
+      JobType: 4
+      Level: 4
+      Quality: 1
+      Cost: 270
+      Message: Nature calls out.
+  - Level: 8
+    JobSwitch:
+      JobType: 2
+      Level: 5
+      Quality: 1
+      Cost: 290
+      Message: Secrets deepen.
+  - Level: 8
+    JobSwitch:
+      JobType: 5
+      Level: 4
+      Quality: 1
+      Cost: 315
+      Message: A shadowy promise.
+  - Level: 10
+    JobSwitch:
+      JobType: 1
+      Level: 6
+      Quality: 1
+      Cost: 350
+      Message: Elite knight trials.
+  - Level: 10
+    JobSwitch:
+      JobType: 3
+      Level: 6
+      Quality: 1
+      Cost: 395
+      Message: A magical calling.
+  - Level: 12
+    JobSwitch:
+      JobType: 4
+      Level: 6
+      Quality: 1
+      Cost: 420
+      Message: A summons from the forest.
+  - Level: 14
+    JobSwitch:
+      JobType: 5
+      Level: 7
+      Quality: 1
+      Cost: 480
+      Message: The shadows strengthen.
+  - Level: 16
+    JobSwitch:
+      JobType: 1
+      Level: 8
+      Quality: 1
+      Cost: 500
+      Message: Royal knight invitation.
+  - Level: 18
+    JobSwitch:
+      JobType: 3
+      Level: 9
+      Quality: 1
+      Cost: 630
+      Message: Mastery of the arcane.
