@@ -17,100 +17,128 @@ MonoBehaviour:
   "\u4ECB\u7ECD": Born from soil, roots run deep. Humble starter, potential unfolds.
   "\u804C\u4E1A\u7B49\u7EA7":
   - Level: 2
+    Quality: 0
     JobSwitch:
       JobType: 1
       Level: 2
       Quality: 1
-      Cost: 130
+      Cost: 100
       Message: Train as a soldier.
+      CnMessage: 
   - Level: 2
+    Quality: 0
     JobSwitch:
       JobType: 2
       Level: 2
       Quality: 1
-      Cost: 150
+      Cost: 120
       Message: Feel a mystic presence.
+      CnMessage: 
   - Level: 4
+    Quality: 0
     JobSwitch:
       JobType: 1
       Level: 3
       Quality: 1
       Cost: 190
       Message: Join the knights.
+      CnMessage: 
   - Level: 4
+    Quality: 0
     JobSwitch:
       JobType: 2
       Level: 3
       Quality: 1
       Cost: 205
       Message: The secrets await.
+      CnMessage: 
   - Level: 6
+    Quality: 0
     JobSwitch:
       JobType: 3
       Level: 4
       Quality: 1
       Cost: 260
       Message: Sense arcane vibes.
+      CnMessage: 
   - Level: 6
+    Quality: 0
     JobSwitch:
       JobType: 4
       Level: 4
       Quality: 1
       Cost: 270
       Message: Nature calls out.
+      CnMessage: 
   - Level: 8
+    Quality: 0
     JobSwitch:
       JobType: 2
       Level: 5
       Quality: 1
       Cost: 290
       Message: Secrets deepen.
+      CnMessage: 
   - Level: 8
+    Quality: 0
     JobSwitch:
       JobType: 5
       Level: 4
       Quality: 1
       Cost: 315
       Message: A shadowy promise.
+      CnMessage: 
   - Level: 10
+    Quality: 0
     JobSwitch:
       JobType: 1
       Level: 6
       Quality: 1
       Cost: 350
       Message: Elite knight trials.
+      CnMessage: 
   - Level: 10
+    Quality: 0
     JobSwitch:
       JobType: 3
       Level: 6
       Quality: 1
       Cost: 395
       Message: A magical calling.
+      CnMessage: 
   - Level: 12
+    Quality: 0
     JobSwitch:
       JobType: 4
       Level: 6
       Quality: 1
       Cost: 420
       Message: A summons from the forest.
+      CnMessage: 
   - Level: 14
+    Quality: 0
     JobSwitch:
       JobType: 5
       Level: 7
       Quality: 1
       Cost: 480
       Message: The shadows strengthen.
+      CnMessage: 
   - Level: 16
+    Quality: 0
     JobSwitch:
       JobType: 1
       Level: 8
       Quality: 1
       Cost: 500
       Message: Royal knight invitation.
+      CnMessage: 
   - Level: 18
+    Quality: 0
     JobSwitch:
       JobType: 3
       Level: 9
       Quality: 1
       Cost: 630
       Message: Mastery of the arcane.
+      CnMessage: 

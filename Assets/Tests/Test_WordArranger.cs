@@ -1,5 +1,5 @@
 #if UNITY_EDITOR
-
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,9 +11,11 @@ using UnityEngine;
 
 public class Test_WordArranger : MonoBehaviour
 {
+    private const string ConfigsWordsPath = "/Configs/Words/";
+
     [Button]public void ConvertWordsToGroup(TextAsset asset)
     {
-        var text = TextAssetProcess(asset);
+        var text = TextAssetProcessToRows(asset);
         var group = text.Select(s => new{key=new string(s.OrderBy(c=>c).ToArray()), text= s}).GroupBy(a=>a.key,a=>a.text).ToList();
 
         var wordGroup = new List<WordGroup>();
@@ -32,52 +34,36 @@ public class Test_WordArranger : MonoBehaviour
         //}
         var json = Json.Serialize(wordGroup);
         //write to file /Configs/Words/
-        var path = Application.dataPath + "/Configs/Words/" + asset.name + "Group.json";
+        var path = GetFilePath(asset.name + "Group.json");
         File.WriteAllText(path, json);
         AssetDatabase.Refresh();
     }
 
-    private static string[] TextAssetProcess(TextAsset asset)
+    private static string GetFilePath(string fileName) => Application.dataPath + ConfigsWordsPath + fileName;
+
+    private static string[] TextAssetProcessToRows(TextAsset asset)
     {
         return asset.text.Split('\n')
             .Where(s=>!s.IsNullOrWhitespace())
             .Select(w=>w.Trim('\r').ToLower())
             .Distinct()
-            .Where(c=>!IsShortForm(c) && !HasTripleConsecutiveChars(c))
+            .Where(c=>!WordUtl.IsShortForm(c) && !WordUtl.HasTripleConsecutiveChars(c))
             .ToArray();
     }
 
-    static bool HasTripleConsecutiveChars(string word)
+    [Button]public void SplitWords(TextAsset asset, string filePrefix = "common")
     {
-        if(word.Length < 3) return false;
-        for (int i = 0; i < word.Length - 2; i++)
-        {
-            if (word[i] == word[i + 1] && word[i] == word[i + 2])
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static bool IsShortForm(string word)
-    {
-        // 创建一个元音集合
-        char[] vowels = { 'a', 'e', 'i', 'o', 'u', 'y' };
-
-        // 如果word中不存在任何元音，则判定为简写
-        return !word.ToLower().Any(c => vowels.Contains(c));
-    }
-
-    [Button]
-    public void SplitWords(TextAsset asset, string filePrefix = "common")
-    {
-        var text = TextAssetProcess(asset);
+        var text = TextAssetProcessToRows(asset);
         var lettersGroup = text.GroupBy(w => w.Length, w => w).ToArray();
+        SplitWord(filePrefix, lettersGroup);
+    }
+
+    private static void SplitWord(string filePrefix, IGrouping<int, string>[] lettersGroup)
+    {
         foreach (var letters in lettersGroup)
         {
             var wgList = new List<WordGroup>();
-            foreach (var w in letters.GroupBy(l=>new string(l.OrderBy(c=>c).ToArray()), l=>l))
+            foreach (var w in letters.GroupBy(l => new string(l.OrderBy(c => c).ToArray()), l => l))
             {
                 var wg = new WordGroup
                 {
@@ -86,29 +72,57 @@ public class Test_WordArranger : MonoBehaviour
                 };
                 wgList.Add(wg);
             }
+
             //print(string.Join('\n', wgList));
             var json = Json.Serialize(wgList);
-            var path = Application.dataPath + "/Configs/Words/" + filePrefix + "_" + letters.Key + ".txt";
+            var path = GetFilePath(filePrefix + "_" + letters.Key + ".txt");
             File.WriteAllText(path, json);
         }
+
         AssetDatabase.Refresh();
-    }    
-    
-    [Button]
-    public void GroupTexts(TextAsset asset, string filePrefix = "Filtered")
+    }
+
+    [Button]public void GroupTexts(TextAsset asset, string filePrefix = "Filtered")
     {
-        var text = TextAssetProcess(asset);
+        var text = TextAssetProcessToRows(asset);
         var lettersGroup = text.GroupBy(w => w.Length, w => w).ToArray();
+        GroupText(filePrefix, lettersGroup);
+    }
+
+    private static void GroupText(string filePrefix, IGrouping<int, string>[] lettersGroup)
+    {
         foreach (var letters in lettersGroup)
         {
             //print(string.Join('\n', wgList));
-            var list = letters.Where(l=>!string.IsNullOrWhiteSpace(l)).ToArray();
+            var list = letters.Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
             var json = string.Join(" ", list);
-            var path = Application.dataPath + "/Configs/Words/" + filePrefix + "_" + letters.Key + ".txt";
+            var path = GetFilePath(filePrefix + "_" + letters.Key + ".txt");
             File.WriteAllText(path, json);
         }
+
+        AssetDatabase.Refresh();
+    }
+
+    [Button]public void DeserializeFromCsv(TextAsset asset,TextAsset dirtyText ,string filePrefix = "Filtered")
+    {
+        var rows = TextAssetProcessToRows(asset);
+        var dirtyTexts = dirtyText?.text.Split('\n').Select(s=>s.Trim('\r').ToLower()).ToArray() ?? Array.Empty<string>();
+        var letters = rows.Select(r =>
+        {
+            var a = r.Split(',');
+            return a[0];
+        }).Except(dirtyTexts).ToArray();
+        var letterGroups = letters.GroupBy(l => l.Length, l => l).ToArray();
+        SplitWord(filePrefix, letterGroups);
+    }
+
+    [Button]public void ResolveText(TextAsset asset,string fileName = null)
+    {
+        var words = asset.text.Split('\n').Select(s=>s.Split(' ')[0]).ToArray();
+        var csv = string.Join("\n", words);
+        var path = GetFilePath(fileName ?? asset.name + ".csv");
+        File.WriteAllText(path, csv);
         AssetDatabase.Refresh();
     }
 }
-
 #endif

@@ -1,1 +1,1 @@
-a i e o y u
+[{"Key":"a","Words":["a"]},{"Key":"i","Words":["i"]}]

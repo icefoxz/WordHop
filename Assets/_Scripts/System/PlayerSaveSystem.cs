@@ -34,14 +34,7 @@ public class PlayerSaveSystem
         Player.SetHighestLevel(highestLevel);
     }
 
-    public void StartGame(JobTypes jobType)
-    {
-        var job = Game.ConfigureSo.JobConfig.GetPlayerJob(jobType, 1, 1);
-        var levelFields = Game.ConfigureSo.UpgradeConfigSo.GetLevels();
-        var player = new PlayerModel(new PlayerRec(1, 0, 0, 0, job), levelFields, 6);
-        Game.Model.InitPlayer(player);
-        Game.PlayerSave.LoadHighestRecord();
-    }
+    public void StartGame(JobTypes jobType) => Game.Model.InitPlayer(jobType);
 
     public JobTypes[] GetUnlockedJobs()
     {

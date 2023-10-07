@@ -34,9 +34,11 @@ public class View_AchievementMgr
     {
         OnTabFocus(JobTypes.Villagers, false);
         View_achivement.Show();
-        var highest = Game.Model.Player.HighestRec;
-        SetGem(highest.Score);
-        SetGold(highest.Coin);
+        var player = Game.Model.TryGetPlayer();
+        var highestCoin = player.HighestRec?.Coin ?? 0;
+        var highestScore = player.HighestRec?.Score ?? 0;
+        SetGem(highestScore);
+        SetGold(highestCoin);
     }
 
     private void SetGold(int gold) => View_achivement.SetGold(gold);
@@ -52,30 +54,8 @@ public class View_AchievementMgr
         private Element_Tab element_tab_necromancers { get; set; }
 
         private Dictionary<JobTypes, Element_Tab> Tabs { get; }
+        private ListViewUi<Prefab_Card> CardListView { get; }
 
-        #region 20_Cards
-        private Element_Card element_card_1 { get; set; }
-        private Element_Card element_card_2 { get; set; }
-        private Element_Card element_card_3 { get; set; }
-        private Element_Card element_card_4 { get; set; }
-        private Element_Card element_card_5 { get; set; }
-        private Element_Card element_card_6 { get; set; }
-        private Element_Card element_card_7 { get; set; }
-        private Element_Card element_card_8 { get; set; }
-        private Element_Card element_card_9 { get; set; }
-        private Element_Card element_card_10 { get; set; }
-        private Element_Card element_card_11{ get; set; }
-        private Element_Card element_card_12 { get; set; }
-        private Element_Card element_card_13 { get; set; }
-        private Element_Card element_card_14 { get; set; }
-        private Element_Card element_card_15 { get; set; }
-        private Element_Card element_card_16 { get; set; }
-        private Element_Card element_card_17 { get; set; }
-        private Element_Card element_card_18 { get; set; }
-        private Element_Card element_card_19 { get; set; }
-        private Element_Card element_card_20 { get; set; }
-        #endregion
-        private Element_Card[] Element_Cards { get; set; }
 
         public View_Achivement(IView v, UnityAction onClickBack, UnityAction onClickHome,
             UnityAction<JobTypes> onFocusAction) : base(v, false)
@@ -101,53 +81,30 @@ public class View_AchievementMgr
                 { JobTypes.Mysterious, element_tab_mysterious },
                 { JobTypes.Necromancers, element_tab_necromancers },
             };
-            element_card_1 = new Element_Card(v.Get<View>("element_card_1"));
-            element_card_2 = new Element_Card(v.Get<View>("element_card_2"));
-            element_card_3 = new Element_Card(v.Get<View>("element_card_3"));
-            element_card_4 = new Element_Card(v.Get<View>("element_card_4"));
-            element_card_5 = new Element_Card(v.Get<View>("element_card_5"));
-            element_card_6 = new Element_Card(v.Get<View>("element_card_6"));
-            element_card_7 = new Element_Card(v.Get<View>("element_card_7"));
-            element_card_8 = new Element_Card(v.Get<View>("element_card_8"));
-            element_card_9 = new Element_Card(v.Get<View>("element_card_9"));
-            element_card_10 = new Element_Card(v.Get<View>("element_card_10"));
-            element_card_11 = new Element_Card(v.Get<View>("element_card_11"));
-            element_card_12 = new Element_Card(v.Get<View>("element_card_12"));
-            element_card_13 = new Element_Card(v.Get<View>("element_card_13"));
-            element_card_14 = new Element_Card(v.Get<View>("element_card_14"));
-            element_card_15 = new Element_Card(v.Get<View>("element_card_15"));
-            element_card_16 = new Element_Card(v.Get<View>("element_card_16"));
-            element_card_17 = new Element_Card(v.Get<View>("element_card_17"));
-            element_card_18 = new Element_Card(v.Get<View>("element_card_18"));
-            element_card_19 = new Element_Card(v.Get<View>("element_card_19"));
-            element_card_20 = new Element_Card(v.Get<View>("element_card_20"));
-            Element_Cards = new Element_Card[]
-            {
-                element_card_1, element_card_2, element_card_3, element_card_4, element_card_5, element_card_6,
-                element_card_7, element_card_8, element_card_9, element_card_10, element_card_11, element_card_12,
-                element_card_13, element_card_14, element_card_15, element_card_16, element_card_17, element_card_18,
-                element_card_19, element_card_20
-            };
+            CardListView = new ListViewUi<Prefab_Card>(v, "prefab_card", "scroll_cards");
         }
 
         public void SetGold(int gold) => TopBarView.SetGold(gold);
         public void SetGem(int gem) => TopBarView.SetGem(gem);
         public void SetFocus(JobTypes jobType, CardArg[] args)
         {
+            CardListView.ClearList(ui=>ui.Destroy());
             foreach (var (type,ui) in Tabs) ui.SetFocus(type == jobType);
-            var list = args.ToList();
-            for (var i = 0; i < Element_Cards.Length; i++)
+            var cards = Game.ConfigureSo.JobConfig.Data()[jobType];
+            var list = cards.Select(c => new { card = c, hasCard = args.Any(a => a.id == c.id) })
+                .OrderBy(c => c.card.id)
+                .ToList();
+            foreach (var a in list)
             {
-                var level = i + 1;
-                var ui = Element_Cards[i];  
-                var arg = list.FirstOrDefault(a => a.level == level);
-                if (arg.level == 0)
+                var hasCard = a.hasCard;
+                var arg = a.card;
+                var ui = CardListView.Instance(v => new Prefab_Card(v));
+                if (!hasCard)
                 {
                     ui.DisableCard();
                     continue;
                 }
-                list.Remove(arg);
-                ui.SetCard(arg);    
+                ui.SetCard(arg);
             }
         }
         private class View_topBar : UiBase
@@ -194,10 +151,10 @@ public class View_AchievementMgr
             }
         }
 
-        private class Element_Card : UiBase
+        private class Prefab_Card : UiBase
         {
             private View_Card view_card { get; set; }
-            public Element_Card(IView v) : base(v, true)
+            public Prefab_Card(IView v) : base(v, true)
             {
                 view_card = new View_Card(v.Get<View>("view_card"));
             }

@@ -23,7 +23,7 @@ public class JobTreeSo : ScriptableObject
         public int Quality;
         public JobSwitch JobSwitch;
 
-        public static JobSwitchField Instance(JobTreeCompiler.JobTree a)
+        public static JobSwitchField Instance(JobTree a)
         {
             return new JobSwitchField
             {
@@ -42,10 +42,39 @@ public class JobTreeSo : ScriptableObject
         }
     }
 
-    public void SetJobTree(JobTreeCompiler.JobTree[] jobTree)
+    public void SetJobTree(JobTree[] jobTree)
     {
         var fields = jobTree.Select(JobSwitchField.Instance).ToArray();
         职业等级 = fields;
+    }
+
+    public class JobTree
+    {
+        public int FromTypeId { get; }
+        public int SwitchLevel { get; }
+        public int SwitchQuality { get; }
+        public int ToTypeId { get; }
+        public int ToLevel { get; }
+        public int ToQuality { get; }
+        public int Cost { get; }
+        public string Message { get; }
+        public string CnMessage { get; }
+
+        public JobTypes FromType => (JobTypes)FromTypeId;
+        public JobTypes ToType => (JobTypes)ToTypeId;
+
+        public JobTree(string[] line)
+        {
+            FromTypeId = int.Parse(line[0]);
+            SwitchLevel = int.Parse(line[1]);
+            SwitchQuality = int.Parse(line[2]);
+            ToTypeId = int.Parse(line[3]);
+            ToLevel = int.Parse(line[4]);
+            ToQuality = int.Parse(line[5]);
+            Cost = int.Parse(line[6]);
+            Message = line[7];
+            CnMessage = line[8];
+        }
     }
 }
 

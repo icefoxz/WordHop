@@ -1,9 +1,12 @@
+using System;
 using AOT.Core;
 using AOT.Core.Systems.Coroutines;
 using AOT.Core.Systems.Messaging;
 using IsAd.Scripts;
 #if UNITY_EDITOR
+using System.IO;
 using Sirenix.OdinInspector;
+using UnityEditor;
 #endif
 using UnityEngine;
 
@@ -59,6 +62,30 @@ public class Game : MonoBehaviour
         Time.timeScale = pauseGame ? 0 : 1;
     }
 #if UNITY_EDITOR
+    [Button(ButtonSizes.Large), GUIColor("Orange")] private void ScreenShot()
+    {
+        // 获取当前的分辨率
+        var resolution = Screen.width + "x" + Screen.height;
+
+        // 生成一个GUID
+        var guid = Guid.NewGuid().ToString();
+
+        // 使用分辨率和GUID组合成文件名
+        var fileName = "Screenshot_" + resolution + "_" + guid + ".png";
+        // 确保Assets/Screenshot文件夹存在
+        string folderPath = "Assets/Screenshot";
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+
+        // 设置保存路径为Assets/Screenshot文件夹
+        string path = folderPath + "/" + fileName;
+
+        ScreenCapture.CaptureScreenshot(path);
+        AssetDatabase.Refresh();
+    }
+
     [Button(ButtonSizes.Medium), GUIColor("green")] private void Hack_Level_Win_High() => Model.InfinityStage.HackWin(20);
     [Button(ButtonSizes.Medium), GUIColor("yellow")] private void Hack_Level_Win_Mid() => Model.InfinityStage.HackWin(13);
     [Button(ButtonSizes.Medium), GUIColor("red")] private void Hack_Level_Win_Low() => Model.InfinityStage.HackWin(1);
@@ -67,7 +94,7 @@ public class Game : MonoBehaviour
     [Button(ButtonSizes.Medium), GUIColor("blue")]public void Test_PrintWordsFromDifficulty(int games)
     {
         var text = "";
-        for (int i = 1; i < games; i++)
+        for (var i = 1; i < games; i++)
         {
             var diff = GetLevelDifficulty(i);
             var wordLength = diff.GetWordLength();
@@ -80,7 +107,6 @@ public class Game : MonoBehaviour
         }
         print(text);
     }
-
 #endif
     public static GameDifficulty GetLevelDifficulty(int i) => new(i, ConfigureSo.LevelDifficulty, DifficultyCurve);
 }

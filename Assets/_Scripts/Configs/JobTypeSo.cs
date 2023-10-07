@@ -77,5 +77,4 @@ public class JobField
     public int MinQuality => 品质;
     public string Title => 称号;
     public Sprite Icon => 图标;
-
 }

@@ -1,1 +1,0 @@
-[{"Key":"a","Words":["a"]},{"Key":"i","Words":["i"]},{"Key":"e","Words":["e"]},{"Key":"o","Words":["o"]},{"Key":"y","Words":["y"]},{"Key":"u","Words":["u"]}]

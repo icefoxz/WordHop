@@ -105,8 +105,8 @@ namespace GamePlay
         {
             UpgradeHandler.SetLevel(op.Level, exp);
             Current.SetLevel(op.Level, exp);
-            var job = GetPlayerCurrentJob();
-            Current.UpdateJob(job);
+            var newJob = Game.ConfigureSo.JobConfig.GetPlayerJob(op.JobType, op.Level, op.Quality);
+            Current.UpdateJob(newJob);
             SendEvent(GameEvents.Player_Job_Switch);
         }
         

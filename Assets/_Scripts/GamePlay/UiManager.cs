@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using AOT.Views;
 using AOT.BaseUis;
@@ -107,6 +108,7 @@ public class UiManager : MonoBehaviour
         var letters = wg.Key.OrderBy(_ => Random.Range(0, 1f)).ToArray(); // 随机排序
         TapPadList.ClearList(p => p.Destroy());
         WordSlotMgr.SetDisplay(letters.Length);
+        var layoutPrefabs = new List<RectTransform>();
         for (var i = 0; i < letters.Length; i++)
         {
             var alphabet = letters[i];
@@ -124,9 +126,50 @@ public class UiManager : MonoBehaviour
                 return p;
             });
             layout.Rects[i].Apply(pad.RectTransform);
+            layoutPrefabs.Add(pad.RectTransform);
         }
+        AdjustToSymmetricCenterHorizontally((RectTransform)TapPadParent, layoutPrefabs);
 
         //LoadBadge(StageClearMgr.GetLevelBarBadge());
+    }
+
+    private void AdjustToSymmetricCenterHorizontally(RectTransform layoutParent, List<RectTransform> prefabs)
+    {
+        if (layoutParent == null || prefabs.Count == 0)
+            return;
+
+        // 计算所有prefabs的左右边界
+        float left = float.MaxValue;
+        float right = float.MinValue;
+
+        foreach (var prefab in prefabs)
+        {
+            Vector2 size = prefab.rect.size;
+            Vector2 anchorPos = prefab.anchoredPosition;
+
+            float prefabLeft = anchorPos.x - size.x * prefab.pivot.x;
+            float prefabRight = anchorPos.x + size.x * (1 - prefab.pivot.x);
+
+            left = Mathf.Min(left, prefabLeft);
+            right = Mathf.Max(right, prefabRight);
+        }
+
+        float layoutWidth = layoutParent.rect.width;
+        float contentWidth = right - left;
+
+        // 中心偏移量
+        float centerOffset = (layoutWidth - contentWidth) * 0.5f;
+
+        // 需要移动的距离
+        float shiftAmount = centerOffset - left;
+
+        // 移动每个prefab以左右对称居中
+        foreach (var prefab in prefabs)
+        {
+            Vector2 newPosition = prefab.anchoredPosition;
+            newPosition.x += shiftAmount;
+            prefab.anchoredPosition = newPosition;
+        }
     }
 
     private void WindowsInit()
@@ -313,15 +356,18 @@ public class UiManager : MonoBehaviour
         var prevQualityLevel = player.QualityLevel;
         GamePlayController.QualityChange(quality);
         var nextQualityLevel = player.QualityLevel;
+        StageClearMgr.FadeQualityOptions(0, 1);
         StartCoroutine(PlayBadge());
 
         IEnumerator PlayBadge()
         {
+            var secs = 2f;
+            var fromCoin = player.Coin - player.LastAddedCoin;
+            StageClearMgr.PlayToCoin(fromCoin, player.Coin);
             if (prevQualityLevel != nextQualityLevel)
             {
+                secs -= 0.5f;
                 var badge = StageClearMgr.GetCardBadge();
-                var fromCoin = player.Coin - player.LastAddedCoin;
-                StageClearMgr.PlayToCoin(fromCoin, player.Coin);
                 yield return new WaitForSeconds(0.5f);
                 yield return badge.PlayFadeIn();
                 LoadBadge(badge);
@@ -330,12 +376,13 @@ public class UiManager : MonoBehaviour
 
             if (_jobSwitchFlag)
             {
+                secs -= 1.5f;
                 var arg = GetCardArg();
                 StageClearMgr.SetCard(arg, false);
                 yield return StageClearMgr.FadeOutCard(1.5f);
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(secs);
             StartLevel();
         }
     }

@@ -104,6 +104,8 @@ public class View_StageClearMgr
 
     public void SetAdButton(bool isAdAvailable, UnityAction adAction) => View_stageClear.SetAd(isAdAvailable, adAction);
 
+    public Tween FadeQualityOptions(float alpha, float seconds) => View_stageClear.FadeQualityOptions(alpha, seconds);
+
     public View_Badge GetCardBadge() => View_stageClear.view_badge;
 
     private class View_StageClear : UiBase
@@ -201,6 +203,8 @@ public class View_StageClearMgr
             yield return view_cardSect.DisplayOptions(cardYPos, secs, isShow).WaitForCompletion();
             if(isShow) view_options.Show();
         }
+
+        public Tween FadeQualityOptions(float alpha, float seconds) => view_options.FadeQualityOptions(alpha, seconds);
 
         public Tween PlayStars(int stars)
         {
@@ -355,6 +359,7 @@ public class View_StageClearMgr
             private Element_option element_option_5 { get; set; }
             private Element_option element_option_6 { get; set; }
             private Element_option[] ElementOptions { get; set; }
+
             private Image img_optionPanel { get; set; }
 
             public View_options(IView v, UnityAction<int> onQualitySelectAction, UnityAction<int> onClickAction) : base(v,
@@ -377,7 +382,6 @@ public class View_StageClearMgr
                 };
                 img_optionPanel = v.Get<Image>("img_optionPanel");
             }
-
 
             public void SetOptions((string title, string message, Sprite icon, int cost, bool enable)[] options)
             {
@@ -415,6 +419,11 @@ public class View_StageClearMgr
                 }
             }
 
+            public Tween FadeQualityOptions(float alpha, float secs) =>
+                DOTween.Sequence()
+                    .Join(element_quality_0.Fade(alpha,secs))
+                    .Join(element_quality_1.Fade(alpha,secs))
+                    .Join(element_quality_2.Fade(alpha,secs));
 
             private class Element_option : UiBase
             {
@@ -458,6 +467,7 @@ public class View_StageClearMgr
                 //private TMP_Text tmp_brief { get; }
                 private Text text_cost { get; }
                 private Button btn_select { get; }
+                private CanvasGroup canvas_quality { get; }
 
                 private int Quality { get; set; }
 
@@ -472,6 +482,7 @@ public class View_StageClearMgr
                     trans_cost = v.Get<Transform>("trans_cost");
                     btn_select = v.Get<Button>("btn_select");
                     btn_select.onClick.AddListener(()=>onSelectAction(Quality));
+                    canvas_quality = v.Get<CanvasGroup>("canvas_quality");
                 }
 
                 public void Set(Sprite icon, string brief, int cost, int quality, bool active)
@@ -481,6 +492,7 @@ public class View_StageClearMgr
                     text_cost.text = cost.ToString();
                     trans_cost.gameObject.SetActive(cost != 0);
                     btn_select.interactable = active;
+                    canvas_quality.alpha = 1;
                     SetQuality(quality);
                 }
                 private void SetQuality(int quality)
@@ -491,9 +503,9 @@ public class View_StageClearMgr
                     img_up.gameObject.SetActive(quality >= 2);
                 }
 
+                public Tween Fade(float alpha, float secs) => canvas_quality.DOFade(alpha, secs);
             }
         }
-
         private class View_cardSect : UiBase
         {
             private Transform trans_cardBg { get; }
