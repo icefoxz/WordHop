@@ -71,6 +71,20 @@ public class InfinityStageModel : ModelBase
         }
         var wds = DifficultyLoader.GetTapPadSettings(difficultyValue, wordLength);
         var wg = GetWordGroup(wds);
+#if UNITY_EDITOR
+        if (Game.Instance.IsCustomWord)
+        {
+            var word = Game.Instance.CustomWord;
+            word = word.ToUpper();
+            var cwg = new WordGroup
+            {
+                Key = word,
+                Words = new[] { word }
+            };
+            wg = cwg;
+            wds = DifficultyLoader.GetTapPadSettings(difficultyValue, word.Length);
+        }
+#endif
         var secs = exSecs + //最多5秒
                    wg.Key.Length + //最多7字
                    Game.ConfigureSo.GameRoundConfigSo.BaseSeconds;

@@ -128,46 +128,49 @@ public class UiManager : MonoBehaviour
             layout.Rects[i].Apply(pad.RectTransform);
             layoutPrefabs.Add(pad.RectTransform);
         }
-        AdjustToSymmetricCenterHorizontally((RectTransform)TapPadParent, layoutPrefabs);
+        AdjustToCenter((RectTransform)TapPadParent, layoutPrefabs);
 
         //LoadBadge(StageClearMgr.GetLevelBarBadge());
     }
 
-    private void AdjustToSymmetricCenterHorizontally(RectTransform layoutParent, List<RectTransform> prefabs)
+    private void AdjustToCenter(RectTransform layoutParent, List<RectTransform> prefabs)
     {
         if (layoutParent == null || prefabs.Count == 0)
             return;
 
-        // 计算所有prefabs的左右边界
-        float left = float.MaxValue;
-        float right = float.MinValue;
+        float minX = float.MaxValue, maxX = float.MinValue;
+        float minY = float.MaxValue, maxY = float.MinValue;
 
+        // 计算所有prefabs的最大边界
         foreach (var prefab in prefabs)
         {
-            Vector2 size = prefab.rect.size;
-            Vector2 anchorPos = prefab.anchoredPosition;
+            var left = prefab.anchoredPosition.x - prefab.rect.width / 2;
+            var right = prefab.anchoredPosition.x + prefab.rect.width / 2;
+            var top = prefab.anchoredPosition.y + prefab.rect.height / 2;
+            var bottom = prefab.anchoredPosition.y - prefab.rect.height / 2;
 
-            float prefabLeft = anchorPos.x - size.x * prefab.pivot.x;
-            float prefabRight = anchorPos.x + size.x * (1 - prefab.pivot.x);
-
-            left = Mathf.Min(left, prefabLeft);
-            right = Mathf.Max(right, prefabRight);
+            minX = Mathf.Min(minX, left);
+            maxX = Mathf.Max(maxX, right);
+            minY = Mathf.Min(minY, bottom);
+            maxY = Mathf.Max(maxY, top);
         }
 
-        float layoutWidth = layoutParent.rect.width;
-        float contentWidth = right - left;
+        // 计算“布局”矩形的中心
+        var layoutCenterX = (minX + maxX) / 2;
+        var layoutCenterY = (minY + maxY) / 2;
 
-        // 中心偏移量
-        float centerOffset = (layoutWidth - contentWidth) * 0.5f;
+        // 计算移动到`TapPadParent`中心需要的偏移量
+        var parentCenterX = layoutParent.rect.width / 2f; // 锚点为0.5
+        var parentCenterY = layoutParent.rect.height / 2f; // 锚点为0.5
+        var shiftAmountX = parentCenterX - layoutCenterX;
+        var shiftAmountY = parentCenterY - layoutCenterY;
 
-        // 需要移动的距离
-        float shiftAmount = centerOffset - left;
-
-        // 移动每个prefab以左右对称居中
+        // 将每个prefab移到正确的位置
         foreach (var prefab in prefabs)
         {
-            Vector2 newPosition = prefab.anchoredPosition;
-            newPosition.x += shiftAmount;
+            var newPosition = prefab.anchoredPosition;
+            newPosition.x += shiftAmountX;
+            //newPosition.y += shiftAmountY;
             prefab.anchoredPosition = newPosition;
         }
     }

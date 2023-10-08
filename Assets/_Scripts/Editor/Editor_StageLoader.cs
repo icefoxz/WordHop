@@ -40,5 +40,14 @@ public class Editor_StageLoader : MonoBehaviour
                 Debug.LogWarning($"No matching View found for TapHopConfig with order {tapHopConfig.clickOrder}");
         }
     }
+
+    [Button(ButtonSizes.Medium),GUIColor("RED")]private void ClearPrefabs()
+    {
+        foreach (Transform obj in 目标父物件)
+        {
+            GameObject.Destroy(obj.gameObject);
+        }
+        Debug.Log("布局清除!", 目标父物件);
+    }
 }
 #endif

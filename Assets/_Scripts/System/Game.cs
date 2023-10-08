@@ -12,6 +12,7 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
+    public static Game Instance { get; private set; }
     public static MessagingManager MessagingManager { get; private set; } = new MessagingManager();
     public static ResLoader ResLoader { get; private set; }
     public static GameModelContainer Model { get; private set; } = new GameModelContainer();
@@ -32,8 +33,14 @@ public class Game : MonoBehaviour
 
     public static PlayerSaveSystem PlayerSave { get; } = new PlayerSaveSystem();
 
+#if UNITY_EDITOR
+    public bool IsCustomWord;
+    public string CustomWord = "test";
+#endif
+
     void Start()
     {
+        Instance = this;
         AudioManager = _audioManager;
         DifficultyCurve = _difficultyCurve;
         CoroutineService = _coroutineService;
