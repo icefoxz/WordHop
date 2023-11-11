@@ -187,7 +187,7 @@ public class UiManager : MonoBehaviour
         TopSection.Init();
         view_selectJob = new View_SelectJobMgr(selectJobView, OnRoleSelected);
         //StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
-        GameOverMgr = new View_GameOverMgr(gameOverView, GamePlayController.Home, () => XDebug.LogWarning("暂时不支持复活功能!"));
+        GameOverMgr = new View_GameOverMgr(gameOverView, GamePlayController.QuitToHome, () => XDebug.LogWarning("暂时不支持复活功能!"));
         Game.MessagingManager.RegEvent(GameEvents.Game_Home, _ => view_home.Show());
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Lose, bag => SetGameOver());
         StageClearMgr = new View_StageClearMgr(winView, ShowOption);

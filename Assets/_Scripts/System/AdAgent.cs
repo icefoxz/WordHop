@@ -1,3 +1,4 @@
+using AOT.Utls;
 using IsAd.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
@@ -25,6 +26,24 @@ public class AdAgent : MonoBehaviour
         IronSourceEvents.onInterstitialAdShowSucceededEvent += ()=>InterstitialShowCallback?.Invoke(true,string.Empty);
         IronSourceEvents.onInterstitialAdShowFailedEvent += e => InterstitialShowCallback?.Invoke(false,e.getErrorCode().ToString());
         IronSourceEvents.onInterstitialAdClosedEvent += () => InterstitialAdClosedEvent?.Invoke();
+        RegEvents();
+    }
+
+    private void RegEvents()
+    {
+        Game.MessagingManager.RegEvent(GameEvents.Game_Init, _ =>
+        {
+            LoadInterstitial(null);
+            ShowBanner((success, msg) =>
+            {
+                XDebug.Log($"Banner {success} {msg}");
+            });
+        });
+        Game.MessagingManager.RegEvent(GameEvents.Game_Home, _ =>
+        {
+            if (IsInterstitialAvailable())
+                ShowInterstitial(null, () => LoadInterstitial(null));
+        });
     }
 
 
@@ -67,9 +86,12 @@ public class AdAgent : MonoBehaviour
     private event UnityAction<bool, string> BannerAdLoadedEvent;
     public void ShowBanner(UnityAction<bool,string> callbackAction)
     {
-        BannerAdLoadedEvent = callbackAction;
+        BannerAdLoadedEvent = (isSuccess, msg) =>
+        {
+            callbackAction?.Invoke(isSuccess, msg);
+            if (isSuccess) Agent.displayBanner();
+        };
         Agent.loadBanner(IronSourceBannerSize.SMART, IronSourceBannerPosition.BOTTOM, BannerPlacementName);
-        Agent.displayBanner();
     }
 
     public void HideBanner() => Agent.hideBanner();
@@ -77,7 +99,7 @@ public class AdAgent : MonoBehaviour
     private event UnityAction InterstitialAdClosedEvent;
     private event UnityAction<bool,string> InterstitialLoadCallback;
 
-    public void IsInterstitialAvailable() => Agent.isInterstitialReady();
+    public bool IsInterstitialAvailable() => Agent.isInterstitialReady();
     public void LoadInterstitial(UnityAction<bool, string> callbackAction)
     {
         InterstitialLoadCallback = callbackAction;

@@ -50,12 +50,13 @@ namespace GamePlay
             var rewardConfig = Game.ConfigureSo.GameRoundConfigSo;
             var point = secs - missTake;
             var reward = rewardConfig.GetRewardsByQuality(secs, maxSecs, difficulty);
+            var perfectReward = rewardConfig.GetRewardsByQuality(maxSecs, maxSecs, difficulty);
             var currentLevel = Upgrade(reward.Exp);
             var isLevelUp = UpgradeRecord.Levels.Count > 1;
             var job = GetPlayerCurrentJob();
             Stars = rewardConfig.CalculateStars(secs, WordLevel.TotalSeconds, difficulty);
             var (exp, coin) = ResolveReward(reward, job.JobType);
-            AdCoin = CountRewardAdCoin(reward, coin);
+            AdCoin = CountRewardAdCoin(perfectReward, job.JobType);
             AddCoin(coin);
             Current.AddScore(exp);
             Current.UpdateJob(job);
@@ -67,8 +68,9 @@ namespace GamePlay
         private PlayerJob GetPlayerCurrentJob() =>
             Game.ConfigureSo.JobConfig.GetPlayerJob(Current.Job.JobType, Current.Level, QualityLevel);
 
-        private static int CountRewardAdCoin(GameRoundConfigSo.RewardResult reward, int coin)
+        private int CountRewardAdCoin(GameRoundConfigSo.RewardResult reward, JobTypes jobType)
         {
+            var (exp,coin) = ResolveReward(reward, jobType);
             var result = (int)((reward.AdRatio - 1) * coin);
             return Math.Max(1, result);//最少加1金币
         }

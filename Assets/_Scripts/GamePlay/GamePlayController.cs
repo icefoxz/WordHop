@@ -54,12 +54,15 @@ public class GamePlayController : MonoBehaviour, IController
     public void QuitCurrentGame()
     {
         StageModel.StopService();
-        Quit();
+        QuitToHome();
     }
 
-    private void Quit() => StageModel.Quit();
+    public void QuitToHome()
+    {
+        StageModel.Quit();
+        Game.MessagingManager.SendParams(GameEvents.Game_Home);
+    }
 
-    public void Home()=> Game.MessagingManager.SendParams(GameEvents.Game_Home);
 
     public void QualityChange(int quality)
     {
