@@ -17,11 +17,12 @@ public class View_TopSection : UiBase
     private Transform trans_flag { get; }
 
 
-    public View_TopSection(IView v, UnityAction onSettingAction, UnityAction onHomeAction) : base(v)
+    public View_TopSection(IView v, UnityAction onSettingAction, UnityAction onHomeAction, UnityAction onShopAction) : base(v)
     {
         view_subMenu = new View_SubMenu(v.Get<View>("view_subMenu"),
             onSettingAction,
-            onHomeAction);
+            onHomeAction,
+            onShopAction);
         view_badge = new View_Badge(v.Get<View>("view_badge"));
         text_days = v.Get<Text>("text_days");
         trans_flag = v.Get<Transform>("trans_flag");
@@ -67,8 +68,9 @@ public class View_TopSection : UiBase
         private Element_Sub element_sub_rank { get; }
         private Button btn_settings { get; }
         private Button btn_home { get; }
+        private Button btn_shop { get; }
 
-        public View_SubMenu(IView v, UnityAction onSettingAction, UnityAction onHomeAction, bool display = true) :
+        public View_SubMenu(IView v, UnityAction onSettingAction, UnityAction onHomeAction, UnityAction onShopAction, bool display = true) :
             base(v, display)
         {
             element_sub_mission = new Element_Sub(v.Get<View>("element_sub_mission"), () => { }, false);
@@ -77,6 +79,8 @@ public class View_TopSection : UiBase
             btn_home.onClick.AddListener(onHomeAction);
             btn_settings = v.Get<Button>("btn_settings");
             btn_settings.onClick.AddListener(onSettingAction);
+            btn_shop = v.Get<Button>("btn_shop");
+            btn_shop.onClick.AddListener(onShopAction);
         }
 
         public void SetMode(Modes mode)

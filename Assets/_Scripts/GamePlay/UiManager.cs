@@ -183,7 +183,10 @@ public class UiManager : MonoBehaviour
         view_popMessage = new View_popMessage(popMessageView);
         SettingsMgr = new View_SettingsMgr(settingsView);
         SettingsMgr.Init();
-        TopSection = new View_TopSection(topSectionView, SettingsMgr.Show, OnHomeAction);
+        TopSection = new View_TopSection(topSectionView, SettingsMgr.Show, OnHomeAction, () =>
+        {
+
+        });
         TopSection.Init();
         view_selectJob = new View_SelectJobMgr(selectJobView, OnRoleSelected);
         //StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
