@@ -51,4 +51,10 @@ public class PlayerSaveSystem
         if(hasMysterious) jobs.Add(JobTypes.Mysterious);
         return jobs.ToArray();
     }
+
+    public void AddHints(int tickets)
+    {
+        var total = Pref.GetPlayerHints() + tickets;
+        Pref.SetPlayerHints(total);
+    }
 }

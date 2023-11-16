@@ -64,24 +64,79 @@ public class WordLevelModel : ModelBase
 
     public void Update(int secs)
     {
-        var letters = WordGroup.Words[0];
-        var alphabetLength = letters.Length;
+        var word = GetCurrentWord();
+        var alphabetLength = word.Length;
         var elapsed = TotalSeconds - secs;
         var hints =
-            WordHintProvider.CalculateHints(elapsedSeconds: elapsed, totalSeconds: TotalSeconds, totalHints: alphabetLength);
+            WordHintProvider.CalculateHints(elapsedSeconds: elapsed, totalSeconds: TotalSeconds,
+                totalHints: alphabetLength);
 
-        // 使用hintIndex来决定添加哪一个提示，例如，如果hintIndex是1，则添加第二个字母的提示。
-        for (var index = 0; index < hints; index++)
-        {
-            if (index >= letters.Length) break;
-            if (index < _hints.Count) continue;
-            var alphabet = new Alphabet(index, letters[index].ToString());
-            _hints.Add(alphabet);
-            XDebug.Log($"Add hint: {alphabet.Text}");
-            SendEvent(GameEvents.Level_Hints_add, alphabet.Text);
-        }
+        AddHintsOnWord(hints, word);
 
         SendEvent(GameEvents.Stage_Timer_Update, secs);
+
+        void AddHintsOnWord(int hLetters, string word)
+        {
+            // 使用hintIndex来决定添加哪一个提示，例如，如果hintIndex是1，则添加第二个字母的提示。
+            for (var index = 0; index < hLetters; index++)
+            {
+                if (index >= word.Length) break;
+                if (index < _hints.Count) continue;
+                AddHint(index, word);
+            }
+        }
+    }
+
+    //为当前的字增加一个提示
+    private void AddHint(int index, string word)
+    {
+        var alphabet = new Alphabet(index, word[index].ToString());
+        _hints.Add(alphabet);
+        XDebug.Log($"Add hint: {alphabet.Text}");
+        SendEvent(GameEvents.Level_Hints_add, alphabet.Text);
+    }
+
+    /// <summary>
+    /// 为当前的字增加一个提示
+    /// </summary>
+    public bool TryAddHint()
+    {
+        var word = GetCurrentWord();
+        var nextHintCount = _hints.Count + 1;
+        if (nextHintCount > word.Length - 1) return false;//最后一个字不消费提示
+        // 消费提示必须确保填在空位上, 有可能提示字母只有2个,但玩家已经填了3个字母, 所以接下来的提示必须是第4个字母
+        var wordDiff = _selectedList.Count - _hints.Count;
+
+        for (var i = 0; i < wordDiff; i++)
+        {
+            if (TryAddHintsOnWord(nextHintCount, word))
+                nextHintCount++;
+            else return false;
+        }
+
+        return TryAddHintsOnWord(nextHintCount, word);
+
+        bool TryAddHintsOnWord(int hLetters, string word)
+        {
+            // 使用hintIndex来决定添加哪一个提示，例如，如果hintIndex是1，则添加第二个字母的提示。
+            for (var index = 0; index < hLetters; index++)
+            {
+                if (index >= word.Length - 1) return false;//不提示最后一个字
+                if (index < _hints.Count) continue;
+                AddHint(index, word);
+            }
+            return true;
+        }
+    }
+
+    //获取当前有效的单词(已填入或是第一选择的词)
+    private string GetCurrentWord()
+    {
+        var selectedWord = string.Join(string.Empty, SelectedAlphabets.Select(a => a.Text));
+        var word = string.IsNullOrWhiteSpace(selectedWord)
+            ? WordGroup.Words[0]
+            : WordGroup.Words.First(w => w.StartsWith(selectedWord));
+        return word;
     }
 
     public void Reset()

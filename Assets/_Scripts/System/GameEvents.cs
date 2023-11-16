@@ -9,11 +9,11 @@ public static class GameEvents
     public const string Stage_Level_Win = "Stage_Level_Win";
     public const string Stage_Level_Lose = "Stage_Level_Lose";
     public const string Stage_Level_Start = "Stage_Level_Start";
-    public const string Stage_Highest_Rec_Update = "Stage_Highest_Rec_Update";
     public const string Stage_Quality_Update = "Stage_Quality_Update";
 
     public const string Player_Level_Up = "Player_Level_Up";
     public const string Player_Job_Switch = "Player_Job_Switch";
+    public const string Player_Hint_Update = "Player_Hint_Update";
 
     public const string Level_Init = "Level_Init";
     public const string Level_Word_Clear = "Level_Word_Clear";
@@ -25,4 +25,6 @@ public static class GameEvents
     
     public const string Game_Home = "Game_Home";
     public const string Game_Init = "Game_Start";
+    public const string Game_IAP_Purchase = "Game_IAP_Purchase";
+    public const string Game_IAP_Failed = "Game_IAP_Failed";
 }

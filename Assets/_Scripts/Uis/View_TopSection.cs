@@ -37,6 +37,8 @@ public class View_TopSection : UiBase
         SetMode(Modes.Home);
     }
 
+    public void DisplayShop(bool display) => view_subMenu.DisplayShop(display);
+
     private void SetMode(Modes mode)
     {
         trans_flag.gameObject.SetActive(mode == Modes.Stage);
@@ -87,6 +89,7 @@ public class View_TopSection : UiBase
         {
             btn_home.gameObject.SetActive(mode == Modes.Stage);
         }
+        public void DisplayShop(bool display) => btn_shop.gameObject.SetActive(display);
 
         private class Element_Sub : UiBase
         {

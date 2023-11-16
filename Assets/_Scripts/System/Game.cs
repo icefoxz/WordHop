@@ -2,7 +2,7 @@ using System;
 using AOT.Core;
 using AOT.Core.Systems.Coroutines;
 using AOT.Core.Systems.Messaging;
-using IsAd.Scripts;
+using UnityEngine.Purchasing;
 #if UNITY_EDITOR
 using System.IO;
 using Sirenix.OdinInspector;
@@ -17,10 +17,11 @@ public class Game : MonoBehaviour
     public static ResLoader ResLoader { get; private set; }
     public static GameModelContainer Model { get; private set; } = new GameModelContainer();
     public static ControllerServiceContainer Controller { get; } = new ControllerServiceContainer();
-    public static ConfigureSo ConfigureSo { get; private set; }
-    public static CoroutineService CoroutineService { get; private set; }
-    public static AudioManager AudioManager { get; private set; }
-    public static AdAgent AdAgent { get; private set; }
+    public static ConfigureSo ConfigureSo => Instance.configureSo;
+    public static CoroutineService CoroutineService => Instance._coroutineService;
+    public static AudioManager AudioManager => Instance._audioManager;
+    public static AdAgent AdAgent => Instance._adAgent;
+    public static UiManager UiManager => Instance._uiManager;
     [SerializeField] private SpriteContainerSo spriteContainer;
     [SerializeField] private ConfigureSo configureSo;
     [SerializeField] private UiManager _uiManager;
@@ -29,6 +30,7 @@ public class Game : MonoBehaviour
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private AdAgent _adAgent;
     [SerializeField] private AnimationCurve _difficultyCurve;
+    [SerializeField] private IAPManager _iapManager;
     private static AnimationCurve DifficultyCurve { get; set; }
 
     public static PlayerSaveSystem PlayerSave { get; } = new PlayerSaveSystem();
@@ -41,18 +43,25 @@ public class Game : MonoBehaviour
     void Start()
     {
         Instance = this;
-        AudioManager = _audioManager;
         DifficultyCurve = _difficultyCurve;
-        CoroutineService = _coroutineService;
         ResLoader = new ResLoader(spriteContainer);
-        ConfigureSo = configureSo;
-        AdAgent = _adAgent;
         RegControllers(Controllers.AddComponent<GamePlayController>());
         _uiManager.Init();
         _audioManager.Init();
         PlayerSave.Init();
         _adAgent.Init();
+        InitIAP();
         MessagingManager.SendParams(GameEvents.Game_Init);
+    }
+
+    private void InitIAP()
+    {
+        _iapManager.Init();
+#if UNITY_EDITOR
+        StandardPurchasingModule.Instance().useFakeStoreAlways = true;
+#endif
+        _iapManager.OnCompletePurchase += (id, count) => MessagingManager.SendParams(GameEvents.Game_IAP_Purchase, id, count);
+        _iapManager.OnFailedPurchase += reason => MessagingManager.SendParams(GameEvents.Game_IAP_Failed, reason);
     }
 
     private void RegControllers(IController controller) => Controller.Reg(controller);
@@ -116,4 +125,12 @@ public class Game : MonoBehaviour
     }
 #endif
     public static GameDifficulty GetLevelDifficulty(int i) => new(i, ConfigureSo.LevelDifficulty, DifficultyCurve);
+
+    public static void AddHints(int hints)
+    {
+        PlayerSave.AddHints(hints);
+        MessagingManager.SendParams(GameEvents.Player_Hint_Update, Pref.GetPlayerHints());
+    }
+
+    public static void Purchase(ProductCatalogItem product) => Instance._iapManager.OnConfirmPurchase(product.id);
 }

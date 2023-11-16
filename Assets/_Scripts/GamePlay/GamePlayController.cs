@@ -14,6 +14,7 @@ public class GamePlayController : MonoBehaviour, IController
     private DifficultyLoader ChallengeLoader { get; set; }
     //当前游戏进度
     private InfinityStageModel StageModel => Game.Model.InfinityStage;
+    private WordLevelModel WordLevel => Game.Model.WordLevel;
 
     public void Start()
     {
@@ -81,4 +82,5 @@ public class GamePlayController : MonoBehaviour, IController
         };
     }
 
+    public bool TryAddHint() => WordLevel.TryAddHint();
 }

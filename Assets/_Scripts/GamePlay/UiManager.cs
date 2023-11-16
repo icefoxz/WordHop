@@ -9,6 +9,7 @@ using DG.Tweening;
 using GamePlay;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -26,6 +27,8 @@ public class UiManager : MonoBehaviour
     [SerializeField] private View windowConfirmView;
     [SerializeField] private View selectJobView;
     [SerializeField] private View popMessageView;
+    [SerializeField] private View shopView;
+    [SerializeField] private View hintsView;
 
     [SerializeField] private Transform _tapPadParent;
     [SerializeField] private Image _blockingPanel;
@@ -52,6 +55,8 @@ public class UiManager : MonoBehaviour
     private View_windowConfirm view_windowConfirm { get; set; }
     private View_SelectJobMgr view_selectJob { get; set; }
     private View_popMessage view_popMessage { get; set; }
+    private View_ShopMgr view_shop { get; set; }
+    private View_HintsMgr view_hints { get; set; }
 
     private Transform TapPadParent => _tapPadParent;
     private GamePlayController GamePlayController => Game.Controller.Get<GamePlayController>();
@@ -63,10 +68,17 @@ public class UiManager : MonoBehaviour
 
     public void Init()
     {
-        _blockingPanel.gameObject.SetActive(false);
-        WindowsInit();
-        RegGamePlayEvent();
-        WordSlotMgr = new View_WordSlotMgr(wordSlotView);
+        try
+        {
+            _blockingPanel.gameObject.SetActive(false);
+            WindowsInit();
+            RegGamePlayEvent();
+            WordSlotMgr = new View_WordSlotMgr(wordSlotView);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message, this);
+        }
     }
 
     private void ResetTapPad()
@@ -183,10 +195,8 @@ public class UiManager : MonoBehaviour
         view_popMessage = new View_popMessage(popMessageView);
         SettingsMgr = new View_SettingsMgr(settingsView);
         SettingsMgr.Init();
-        TopSection = new View_TopSection(topSectionView, SettingsMgr.Show, OnHomeAction, () =>
-        {
-
-        });
+        view_shop = new View_ShopMgr(shopView);
+        TopSection = new View_TopSection(topSectionView, SettingsMgr.Show, OnHomeAction, view_shop.Show);
         TopSection.Init();
         view_selectJob = new View_SelectJobMgr(selectJobView, OnRoleSelected);
         //StartWindow = new WindowButtonUi(startView, () => GamePlayController.StartGame(), true);
@@ -198,8 +208,15 @@ public class UiManager : MonoBehaviour
         Game.MessagingManager.RegEvent(GameEvents.Stage_Level_Win, b => OnStageClear());
         underAttackView.GameObject.SetActive(false);
         Game.MessagingManager.RegEvent(GameEvents.Level_Alphabet_Failed, b => PlayUnderAttack());
+        view_hints = new View_HintsMgr(hintsView, ConsumeHint);
     }
 
+    private void ConsumeHint()
+    {
+        if (!GamePlayController.TryAddHint()) return;
+        Game.AddHints(-1);
+        view_hints.PlayAnim();
+    }
 
     private void AdAction()
     {
@@ -229,10 +246,10 @@ public class UiManager : MonoBehaviour
         }
     }
 
-    public void PopMessage(string message)
-    {
-        StartCoroutine(view_popMessage.SetMessage(message));
-    }
+    public void PopMessage(string message) => StartCoroutine(view_popMessage.SetMessage(message));
+
+    public void ConfirmWindow(string title, string message, UnityAction onConfirmAction) =>
+        view_windowConfirm.Set(title, message, onConfirmAction, pauseGame: true);
 
     private void OnRoleSelected(JobTypes job)
     {
@@ -458,6 +475,8 @@ public class UiManager : MonoBehaviour
     {
         foreach (var pad in TapPadList.List) pad.ResetColor();
     }
+
+    public void DisplayShop(bool display) => TopSection.DisplayShop(display);
 }
 
 public class View_popMessage: UiBase
@@ -468,12 +487,12 @@ public class View_popMessage: UiBase
         tmp_message = v.Get<TMP_Text>("tmp_message");
     }
 
-    public IEnumerator SetMessage(string message)
+    public IEnumerator SetMessage(string message, float seconds = 3f)
     {
         tmp_message.text = message;
         tmp_message.DOFade(1, 0);
         Show();
-        yield return tmp_message.DOFade(0, 1).WaitForCompletion();
+        yield return tmp_message.DOFade(0, seconds).WaitForCompletion();
         Hide();
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using AOT.Utl;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,6 +11,7 @@ public class Pref
     private const string SFX_VOLUME = "SFX_VOLUME";
     private const string Highestlevel = "HighestLevel";
     private const string Playerlevel = "PlayerLevel";
+    private const string PlayerHints = "PlayerHints";
 
     private const string VillagersSet = "VillagersSet";
     private const string WarriorsSet = "WarriorSet";
@@ -147,4 +147,7 @@ public class Pref
         var json = Json.Serialize(lists);
         PlayerPrefs.SetString(key, json);
     }
+
+    public static void SetPlayerHints(int hints) => PlayerPrefs.SetInt(PlayerHints, hints);
+    public static int GetPlayerHints() => CheckOrDefault(PlayerHints, 0);
 }
